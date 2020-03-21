@@ -154,11 +154,11 @@ define :drums_playMultiSample do |softHit, hardHit, velocity|
 end
 define :drums_playSample do |drumSample, velocity|
   sample drumSample, amp: (velocity/127.0)
-                          end
-                          
-                          live_loop :midi_piano do
-                            use_real_time
-                            midiNoteHandler MidiBaseStr
-                          end
+end
+
+live_loop :midi_piano do
+  use_real_time
+  midiNoteHandler MidiBaseStr
+end
                           
                           
