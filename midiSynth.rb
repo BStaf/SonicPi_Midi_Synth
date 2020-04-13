@@ -6,6 +6,9 @@ RLPF_Cutoff = 100
 ENV_Attack = 0
 ENV_Release = 1
 
+MidiSynthQueue = Queue.new #queued midi events for synth
+MidiDrumQueue = Queue.new #queued midi events for drums
+
 ns=[] #array to store note playing references
 nv=[0]*128 #array to store state of note for a particlar pitch 1=on, 0 = 0ff
 
@@ -49,14 +52,26 @@ end
 ########################################################
 # Midi keyboard Logic
 ########################################################
-define :getMidiCommandFromAddress do |address|
+# define :getMidiCommandFromAddress do |address|
+#   #get_event may be depricated in the future.
+#   #split event by ',' and grab the element that contains the midi command
+#   command = get_event(address).to_s.split(",")[6]
+#   print command[3..-2].split(":").last
+#   #get the last part of the command string
+#   channel_operation = command[3..-2].split(":").last.split("/")
+#   return { channel: channel_operation[0], operation: channel_operation[1] }
+# end
+
+define :getMidiCntrlObjFromMidiInput do |midiBase|
+  note, vol = sync midiBase + "/note_*"
+  vol = vol*0.75
   #get_event may be depricated in the future.
   #split event by ',' and grab the element that contains the midi command
-  command = get_event(address).to_s.split(",")[6]
-  print command[3..-2].split(":").last
+  command = get_event(midiBase + "/*").to_s.split(",")[6]
+  #print command[3..-2].split(":").last
   #get the last part of the command string
   channel_operation = command[3..-2].split(":").last.split("/")
-  return { channel: channel_operation[0], operation: channel_operation[1] }
+  return {note: note, volume: vol, operation: channel_operation[1], channel: channel_operation[0]}
 end
 
 define :noteOn do |note, vol|
@@ -72,9 +87,10 @@ define :noteOn do |note, vol|
     use_synth :prophet
     #max duration of note set to 5 on next line. Can increase if you wish.
     
-    with_fx :rlpf, res: RLPF_Res, cutoff: RLPF_Cutoff do
-      node = play note, amp: vol/127.0, attack: ENV_Attack , release: 1, sustain: 50 #play note
-    end
+    #with_fx :rlpf, res: RLPF_Res, cutoff: RLPF_Cutoff do
+    print vol
+    node = play note, amp: (vol / 127.0), attack: ENV_Attack , release: 1, sustain: 50 #play note
+    #end
     
     set ns[note],node #store reference in ns array
   end
@@ -90,28 +106,31 @@ define :noteOff do |note|
   end
 end
 
-define :midiNoteHandler do |midiBase|
-  #ait for midi note command
-  note, vol = sync midiBase + "/note_*"
-  vol = vol*0.75
-  cmd = getMidiCommandFromAddress midiBase + "/*"
-  #res= parse_sync_address midiBase + "/*"
-  #puts res[1]
+define :midiInputHandler do |midiBase|
+  # note, vol = sync midiBase + "/note_*"
+  # vol = vol*0.75
+  # cmd = getMidiCommandFromAddress midiBase + "/*"
+  # #res= parse_sync_address midiBase + "/*"
+  # #puts res[1]
   
-  node = get(ns[note])
+  # #node = get(ns[note])
+  #wait for midi note command
+  cmd = getMidiCntrlObjFromMidiInput midiBase
   print cmd
-  print cmd[:channel]
+  #print cmd[:channel]
   if cmd[:channel] == "10"
-    if cmd[:operation] == "note_on"
-      playDrums note, vol
-    end
+    MidiDrumQueue << cmd
+    # if cmd[:operation] == "note_on"
+    #   playDrums note, vol
+    # end
   else
-    if cmd[:operation] == "note_on"
-      puts note,nv[note]
-      noteOn note, vol
-    else
-      noteOff note
-    end
+    MidiSynthQueue << cmd
+    # if cmd[:operation] == "note_on"
+    #   puts note,nv[note]
+    #   noteOn note, vol
+    # else
+    #   noteOff note
+    # end
   end
 end
 ########################################################
@@ -156,9 +175,53 @@ define :drums_playSample do |drumSample, velocity|
   sample drumSample, amp: (velocity/127.0)
 end
 
-live_loop :midi_piano do
-  use_real_time
-  midiNoteHandler MidiBaseStr
+define :synth_doCommand do |cmd|
+  note = cmd[:note]
+  if cmd[:operation] == "note_on"
+    puts note,nv[note]
+    noteOn note, cmd[:volume]
+  else
+    noteOff note
+  end
 end
-                          
-                          
+
+define :drums_doCommand do |cmd|
+  note = cmd[:note]
+  if cmd[:operation] == "note_on"
+    playDrums note, cmd[:volume]
+  end
+end
+
+live_loop :midi_read do
+  use_real_time
+  midiInputHandler MidiBaseStr
+end
+
+#Midi controls thread
+with_fx :rlpf, res: RLPF_Res, cutoff: RLPF_Cutoff do
+  live_loop :play_synth do
+    use_real_time
+    begin
+      if MidiSynthQueue.length > 0
+        synth_doCommand MidiSynthQueue.deq
+      end
+      sleep 0.02
+    rescue
+      print "failed"
+      sleep 0.02
+    end
+  end
+end
+
+live_loop :play_drums do
+  use_real_time
+  begin
+    if MidiDrumQueue.length > 0
+      drums_doCommand MidiDrumQueue.deq
+    end
+    sleep 0.02
+  rescue
+    print "failed"
+    sleep 0.02
+  end
+end
