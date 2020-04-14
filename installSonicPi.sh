@@ -1,4 +1,5 @@
 #!/bin/sh
+#Download and install Sonic Pi
 wget -nc http://r.newman.ch/rpi/sonic-pi-3.2.2/sonic-pi-3.2.2_1.armhf.deb
 sudo rpi-update
 sudo apt install -y ruby
@@ -14,3 +15,16 @@ curl -O https://raw.githubusercontent.com/emlyn/sonic-pi-tool/master/sonic-pi-to
 chmod +x sonic-pi-tool.py
 # Copy it somewhere on the PATH:
 sudo cp sonic-pi-tool.py /usr/local/bin/
+
+chmod +x startSynth.sh
+#setup to run at startup
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+CMD="./$DIR/startSynth.sh" 
+
+if grep -q "$CMD" /etc/rc.local; then
+  echo "script already set up"
+else
+  sed -i '$ d' /etc/rc.local 
+  echo "$CMD &" >> /etc/rc.local
+  echo "exit 0" >> /etc/rc.local
+fi
