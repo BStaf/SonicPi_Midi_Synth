@@ -6,8 +6,14 @@ RLPF_Cutoff = 100
 ENV_Attack = 0
 ENV_Release = 1
 
+MAX_NODES = 8
+
+MidiSynthQueue = Queue.new #queued midi events for synth
+MidiDrumQueue = Queue.new #queued midi events for drums
+
 ns=[] #array to store note playing references
 nv=[0]*128 #array to store state of note for a particlar pitch 1=on, 0 = 0ff
+killList=[] #list of nodes that will need to be killed when finished
 
 128.times do |i|
   ns[i]=("n"+i.to_s).to_sym #set up array of symbols :n0 ...:n127
@@ -49,14 +55,28 @@ end
 ########################################################
 # Midi keyboard Logic
 ########################################################
-define :getMidiCommandFromAddress do |address|
+define :getMidiCntrlObjFromMidiInput do |midiBase|
+  note, vol = sync midiBase + "/note_*"
+  vol = vol*0.75
   #get_event may be depricated in the future.
   #split event by ',' and grab the element that contains the midi command
-  command = get_event(address).to_s.split(",")[6]
-  print command[3..-2].split(":").last
+  command = get_event(midiBase + "/*").to_s.split(",")[6]
+  #print command[3..-2].split(":").last
   #get the last part of the command string
   channel_operation = command[3..-2].split(":").last.split("/")
-  return { channel: channel_operation[0], operation: channel_operation[1] }
+  return {note: note, volume: vol, operation: channel_operation[1], channel: channel_operation[0]}
+end
+
+define :midiInputHandler do |midiBase|
+  #wait for midi note command
+  cmd = getMidiCntrlObjFromMidiInput midiBase
+  print cmd
+  #print cmd[:channel]
+  if cmd[:channel] == "10"
+    MidiDrumQueue << cmd
+  else
+    MidiSynthQueue << cmd
+  end
 end
 
 define :noteOn do |note, vol|
@@ -71,11 +91,8 @@ define :noteOn do |note, vol|
     
     use_synth :prophet
     #max duration of note set to 5 on next line. Can increase if you wish.
-    
-    with_fx :rlpf, res: RLPF_Res, cutoff: RLPF_Cutoff do
-      node = play note, amp: vol/127.0, attack: ENV_Attack , release: 1, sustain: 50 #play note
-    end
-    
+    node = play note, amp: (vol / 127.0), attack: ENV_Attack , release: 1, sustain: 50 #play note
+
     set ns[note],node #store reference in ns array
   end
 end
@@ -86,31 +103,7 @@ define :noteOff do |note|
     nv[note]=0 #set this pitch off
     if node
       control node,amp: 0, amp_slide: ENV_Release #fade note out in 0.02 seconds
-    end
-  end
-end
-
-define :midiNoteHandler do |midiBase|
-  #ait for midi note command
-  note, vol = sync midiBase + "/note_*"
-  vol = vol*0.75
-  cmd = getMidiCommandFromAddress midiBase + "/*"
-  #res= parse_sync_address midiBase + "/*"
-  #puts res[1]
-  
-  node = get(ns[note])
-  print cmd
-  print cmd[:channel]
-  if cmd[:channel] == "10"
-    if cmd[:operation] == "note_on"
-      playDrums note, vol
-    end
-  else
-    if cmd[:operation] == "note_on"
-      puts note,nv[note]
-      noteOn note, vol
-    else
-      noteOff note
+      killList << {node: node, timestamp: Time.now}
     end
   end
 end
@@ -156,9 +149,74 @@ define :drums_playSample do |drumSample, velocity|
   sample drumSample, amp: (velocity/127.0)
 end
 
-live_loop :midi_piano do
-  use_real_time
-  midiNoteHandler MidiBaseStr
+define :synth_doCommand do |cmd|
+  note = cmd[:note]
+  if cmd[:operation] == "note_on"
+    puts note,nv[note]
+    noteOn note, cmd[:volume]
+  else
+    noteOff note
+  end
 end
-                          
-                          
+
+define :drums_doCommand do |cmd|
+  note = cmd[:note]
+  if cmd[:operation] == "note_on"
+    playDrums note, cmd[:volume]
+  end
+end
+
+live_loop :midi_read do
+  use_real_time
+  midiInputHandler MidiBaseStr
+end
+
+#Midi controls thread
+with_fx :rlpf, res: RLPF_Res, cutoff: RLPF_Cutoff do
+  live_loop :play_synth do
+    use_real_time
+    begin
+      sleep 0.02
+
+      if MidiSynthQueue.length > 0
+        synth_doCommand MidiSynthQueue.deq
+      end
+    rescue
+      print "synth failed"
+    end
+  end
+end
+
+live_loop :play_drums do
+  use_real_time
+  begin
+    sleep 0.02
+    if MidiDrumQueue.length > 0
+      drums_doCommand MidiDrumQueue.deq
+    end    
+  rescue
+    print "drums failed"    
+  end
+end
+
+
+#Node cleanup
+#Kill nodes when done making sounds. Kill oldest when count exceeds 9
+in_thread do
+  loop do
+    begin
+      sleep 0.05
+      item = killList.first
+      if item != nil
+        timeDiff = Time.now - item[:timestamp]
+        if killList.length > MAX_NODES || timeDiff > ENV_Release
+          kill item[:node]
+          killList.shift
+        end
+      end
+    rescue
+      print "cleanup failed"
+      
+    end
+  end
+end
