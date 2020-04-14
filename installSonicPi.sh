@@ -18,12 +18,12 @@ sudo cp sonic-pi-tool.py /usr/local/bin/
 
 chmod +x startSynth.sh
 #setup to run at startup
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-CMD="./$DIR/startSynth.sh" 
+CMD=".$PWD/startSynth.sh" 
 
 if grep -q "$CMD" /etc/rc.local; then
   echo "script already set up"
 else
+  echo "adding startup script to rc.local"
   sed -i '$ d' /etc/rc.local 
   echo "$CMD &" >> /etc/rc.local
   echo "exit 0" >> /etc/rc.local
