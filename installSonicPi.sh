@@ -20,11 +20,10 @@ chmod +x startSynth.sh
 #setup to run at startup
 CMD=".$PWD/startSynth.sh" 
 
-if grep -q "$CMD" /etc/rc.local; then
+if grep -q "$CMD" /home/pi/.bashrc; then
   echo "script already set up"
 else
-  echo "adding startup script to rc.local"
-  sed -i '$ d' /etc/rc.local 
-  echo "$CMD &" >> /etc/rc.local
-  echo "exit 0" >> /etc/rc.local
+  echo "adding startup script to .bashrc"
+  echo "run raspiconfig and change Boot Options -> Desktop / CLI -> Console Autologin"
+  echo "$CMD &" >> /home/pi/.bashrc
 fi
