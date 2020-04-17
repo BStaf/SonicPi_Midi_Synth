@@ -92,7 +92,7 @@ define :noteOn do |note, vol|
     use_synth :prophet
     #max duration of note set to 5 on next line. Can increase if you wish.
     node = play note, amp: (vol / 127.0), attack: ENV_Attack , release: 1, sustain: 50 #play note
-
+    
     set ns[note],node #store reference in ns array
   end
 end
@@ -111,14 +111,16 @@ end
 # Drum Logic
 ########################################################
 define :playDrums do |note, velocity|
-  if note == 35
+  if note == 50
     drums_playBass velocity
-  elsif note == 38
-    drums_playSnare velocity
   elsif note == 42
-    drums_playHighhat velocity
+    drums_playSnare velocity
   elsif note == 49
+    drums_playHighhat velocity
+  elsif note == 38
     drums_playSplash velocity
+  elsif note == 35
+    drums_playAlt velocity
   end
 end
 
@@ -132,6 +134,10 @@ end
 
 define :drums_playHighhat do |velocity|
   drums_playSample :drum_cymbal_closed, velocity
+end
+
+define :drums_playAlt do |velocity|
+  drums_playSample :drum_tom_hi_hard, velocity
 end
 
 define :drums_playBass do |velocity|
@@ -177,7 +183,7 @@ with_fx :rlpf, res: RLPF_Res, cutoff: RLPF_Cutoff do
     use_real_time
     begin
       sleep 0.02
-
+      
       if MidiSynthQueue.length > 0
         synth_doCommand MidiSynthQueue.deq
       end
@@ -193,9 +199,9 @@ live_loop :play_drums do
     sleep 0.02
     if MidiDrumQueue.length > 0
       drums_doCommand MidiDrumQueue.deq
-    end    
+    end
   rescue
-    print "drums failed"    
+    print "drums failed"
   end
 end
 
