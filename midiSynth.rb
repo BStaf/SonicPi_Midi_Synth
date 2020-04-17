@@ -182,9 +182,8 @@ with_fx :rlpf, res: RLPF_Res, cutoff: RLPF_Cutoff do
   live_loop :play_synth do
     use_real_time
     begin
-      sleep 0.02
-      
-      if MidiSynthQueue.length > 0
+      sleep 0.02      
+      while MidiSynthQueue.length > 0 do
         synth_doCommand MidiSynthQueue.deq
       end
     rescue
@@ -197,7 +196,7 @@ live_loop :play_drums do
   use_real_time
   begin
     sleep 0.02
-    if MidiDrumQueue.length > 0
+    while MidiDrumQueue.length > 0 do
       drums_doCommand MidiDrumQueue.deq
     end
   rescue
