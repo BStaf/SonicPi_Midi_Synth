@@ -57,7 +57,6 @@ end
 ########################################################
 define :getMidiCntrlObjFromMidiInput do |midiBase|
   note, vol = sync midiBase + "/note_*"
-  vol = vol*0.75
   #get_event may be depricated in the future.
   #split event by ',' and grab the element that contains the midi command
   command = get_event(midiBase + "/*").to_s.split(",")[6]
@@ -78,6 +77,10 @@ define :midiInputHandler do |midiBase|
     MidiSynthQueue << cmd
   end
 end
+define :setSynth do
+  #use_synth :prophet
+  use_synth :blade #tb303 #piano #mod_fm #prophet
+end
 
 define :noteOn do |note, vol|
   node = get(ns[note])
@@ -89,7 +92,7 @@ define :noteOn do |note, vol|
       kill node
     end
     
-    use_synth :prophet
+    setSynth
     #max duration of note set to 5 on next line. Can increase if you wish.
     node = play note, amp: (vol / 127.0), attack: ENV_Attack , release: 1, sustain: 50 #play note
     
@@ -178,50 +181,52 @@ live_loop :midi_read do
 end
 
 #Midi controls thread
-with_fx :rlpf, res: RLPF_Res, cutoff: RLPF_Cutoff do
+#with_fx :rlpf, res: RLPF_Res, cutoff: RLPF_Cutoff do |fxnode|
+with_fx :rlpf do |fxnode|
   live_loop :play_synth do
     use_real_time
     begin
-      sleep 0.02      
+      sleep 0.02
+      control fxnode, res: RLPF_Res, cutoff: RLPF_Cutoff
       while MidiSynthQueue.length > 0 do
-        synth_doCommand MidiSynthQueue.deq
+          synth_doCommand MidiSynthQueue.deq
+        end
+      rescue
+        print "synth failed"
       end
-    rescue
-      print "synth failed"
     end
   end
-end
-
-live_loop :play_drums do
-  use_real_time
-  begin
-    sleep 0.02
-    while MidiDrumQueue.length > 0 do
-      drums_doCommand MidiDrumQueue.deq
-    end
-  rescue
-    print "drums failed"
-  end
-end
-
-
-#Node cleanup
-#Kill nodes when done making sounds. Kill oldest when count exceeds 9
-in_thread do
-  loop do
+  
+  live_loop :play_drums do
+    use_real_time
     begin
-      sleep 0.05
-      item = killList.first
-      if item != nil
-        timeDiff = Time.now - item[:timestamp]
-        if killList.length > MAX_NODES || timeDiff > ENV_Release
-          kill item[:node]
-          killList.shift
+      sleep 0.02
+      while MidiDrumQueue.length > 0 do
+          drums_doCommand MidiDrumQueue.deq
+        end
+      rescue
+        print "drums failed"
+      end
+    end
+    
+    
+    #Node cleanup
+    #Kill nodes when done making sounds. Kill oldest when count exceeds 9
+    in_thread do
+      loop do
+        begin
+          sleep 0.05
+          item = killList.first
+          if item != nil
+            timeDiff = Time.now - item[:timestamp]
+            if killList.length > MAX_NODES || timeDiff > ENV_Release
+              kill item[:node]
+              killList.shift
+            end
+          end
+        rescue
+          print "cleanup failed"
+          
         end
       end
-    rescue
-      print "cleanup failed"
-      
     end
-  end
-end
