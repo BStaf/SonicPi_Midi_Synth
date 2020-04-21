@@ -5,6 +5,8 @@ RLPF_Cutoff = 100
 ENV_Attack = 0
 ENV_Release = 1
 
+MAX_NODES = 9
+
 MidiSynthQueue = Queue.new #queued midi events for synth
 MidiDrumQueue = Queue.new #queued midi events for drums
 
@@ -76,7 +78,7 @@ define :setControlSettings do |cntrlNum, cntrlValue|
   elsif cntrlNum == 19
     ENV_Release = scaleMidiAi cntrlValue, 0, 2
   end
-  control FxNode, res: RLPF_Res, cutoff: RLPF_Cutoff
+  #control FxNode, res: RLPF_Res, cutoff: RLPF_Cutoff
 end
 
 ##########################################################################
