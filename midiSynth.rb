@@ -216,7 +216,7 @@ with_fx :rlpf do |fxnode|
       loop do
         use_real_time
         begin
-          sleep 0.02
+          sleep 0.01
           item = killList.first
           if item != nil
             timeDiff = Time.now - item[:timestamp]
