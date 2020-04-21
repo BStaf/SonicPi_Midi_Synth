@@ -79,7 +79,7 @@ define :midiInputHandler do |midiBase|
 end
 define :setSynth do
   #use_synth :prophet
-  use_synth :blade #tb303 #piano #mod_fm #prophet
+  use_synth :piano #blade tb303 #piano #mod_fm #prophet
 end
 
 define :noteOn do |note, vol|
@@ -186,7 +186,7 @@ with_fx :rlpf do |fxnode|
   live_loop :play_synth do
     use_real_time
     begin
-      sleep 0.02
+      sleep 0.01
       control fxnode, res: RLPF_Res, cutoff: RLPF_Cutoff
       while MidiSynthQueue.length > 0 do
           synth_doCommand MidiSynthQueue.deq
@@ -200,7 +200,7 @@ with_fx :rlpf do |fxnode|
   live_loop :play_drums do
     use_real_time
     begin
-      sleep 0.02
+      sleep 0.01
       while MidiDrumQueue.length > 0 do
           drums_doCommand MidiDrumQueue.deq
         end
@@ -214,8 +214,9 @@ with_fx :rlpf do |fxnode|
     #Kill nodes when done making sounds. Kill oldest when count exceeds 9
     in_thread do
       loop do
+        use_real_time
         begin
-          sleep 0.05
+          sleep 0.02
           item = killList.first
           if item != nil
             timeDiff = Time.now - item[:timestamp]

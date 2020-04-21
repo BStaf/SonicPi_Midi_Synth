@@ -6,7 +6,8 @@ cd $DIR
 #Get latest version
 git pull
 
-jackd -d alsa --device hw:3 --rate 44100 --period 512 &
+#jackd -d alsa --device hw:3 --rate 44100 --period 256 -n 2 &
+jackd -P 70 -d alsa --device hw:3 --rate 44100 --period 128 -n 3 -s &
 sleep 3
 sonic-pi-tool.py start-server --path /opt/sonic-pi-3.2.2/ &
 sleep 23
