@@ -21,27 +21,7 @@ end
 ##########################################################################
 #                      Read Midi Commands                                #
 ##########################################################################
-
-# define :midiInputHandler do |midiBase|
-#   #wait for midi note command
-#   cmd = getMidiCntrlObjFromMidiInput midiBase
- 
-#   if cmd[:operation] == "control_change"
-#     setControlSettings cmd[:controlNum], cmd[:value]
-#   else #I assume this was a note
-#     if cmd[:channel] == "10"
-#       MidiDrumQueue << cmd
-#       cue :PlayDrumsSync
-#     else
-#       MidiSynthQueue << cmd
-#       cue :PlaySynthSync
-#     end
-#   end
-# end
-
 define :getMidiCntrlObjFromMidiInput do |element, value, midiBase|
-  #wait for any midi event
-  #element, value = sync midiBase + "/*"
   #get full event for channel and operation values
   midiEvent = get_event(midiBase + "/*")
   
@@ -74,20 +54,8 @@ in_thread(name: :read_midiControl) do
     cntrlNum, value = sync MidiBaseStr + "/control_change"
     cmd = getMidiCntrlObjFromMidiInput cntrlNum, value, MidiBaseStr
     setControlSettings cmd[:controlNum], cmd[:value]
-    #midiInputHandler MidiBaseStr
   end
 end
-
-
-# MidiControl_16 = nil
-
-# define :setMidiControlParmater do |cmd|
-#   if cmd[:controlNum] == 16
-#     MidiControl_16 = cmd[:value]
-#   elsif cmd[:controlNum] == 17
-#   elsif cmd[:controlNum] == 18
-#   elsif cmd[:controlNum] == 19
-# end
 
 ##########################################################################
 #                           Control Changes                              #
