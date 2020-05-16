@@ -21,22 +21,43 @@ end
 ##########################################################################
 #                      Read Midi Commands                                #
 ##########################################################################
-in_thread(name: :read_midi) do
-  loop do
-    use_real_time
-    midiInputHandler MidiBaseStr
+
+# define :midiInputHandler do |midiBase|
+#   #wait for midi note command
+#   cmd = getMidiCntrlObjFromMidiInput midiBase
+ 
+#   if cmd[:operation] == "control_change"
+#     setControlSettings cmd[:controlNum], cmd[:value]
+#   else #I assume this was a note
+#     if cmd[:channel] == "10"
+#       MidiDrumQueue << cmd
+#       cue :PlayDrumsSync
+#     else
+#       MidiSynthQueue << cmd
+#       cue :PlaySynthSync
+#     end
+#   end
+# end
+
+define :getMidiCntrlObjFromMidiInput do |element, value, midiBase|
+  #wait for any midi event
+  #element, value = sync midiBase + "/*"
+  #get full event for channel and operation values
+  midiEvent = get_event(midiBase + "/*")
+  
+  channel_operation = midiEvent.to_s.split("\"")[1].split(":").last.split("/")
+  if channel_operation[1] == "control_change"
+    return {controlNum: element, value: value, operation: channel_operation[1], channel: channel_operation[0]}
   end
+  return {note: element, volume: value, operation: channel_operation[1], channel: channel_operation[0]}
 end
 
-define :midiInputHandler do |midiBase|
-  #wait for midi note command
-  cmd = getMidiCntrlObjFromMidiInput midiBase
-  print cmd
-  #print cmd[:channel]
-  
-  if cmd[:operation] == "control_change"
-    setControlSettings cmd[:controlNum], cmd[:value]
-  else #I assume this was a note
+in_thread(name: :read_midiNotes) do
+  loop do
+    use_real_time
+    note, volume = sync MidiBaseStr + "/note_*"
+    cmd = getMidiCntrlObjFromMidiInput note, volume, MidiBaseStr
+  #drums are on channel 10
     if cmd[:channel] == "10"
       MidiDrumQueue << cmd
       cue :PlayDrumsSync
@@ -47,18 +68,26 @@ define :midiInputHandler do |midiBase|
   end
 end
 
-define :getMidiCntrlObjFromMidiInput do |midiBase|
-  #wait for any midi event
-  element, value = sync midiBase + "/*"
-  #get full event for channel and operation values
-  midiEvent = get_event(midiBase + "/*")
-  
-  channel_operation = midiEvent.to_s.split("\"")[1].split(":").last.split("/")
-  if channel_operation[1] == "control_change"
-    return {controlNum: element, value: value, operation: channel_operation[1], channel: channel_operation[0]}
+in_thread(name: :read_midiControl) do
+  loop do
+    use_real_time
+    cntrlNum, value = sync MidiBaseStr + "/control_change"
+    cmd = getMidiCntrlObjFromMidiInput cntrlNum, value, MidiBaseStr
+    setControlSettings cmd[:controlNum], cmd[:value]
+    #midiInputHandler MidiBaseStr
   end
-  return {note: element, volume: value, operation: channel_operation[1], channel: channel_operation[0]}
 end
+
+
+# MidiControl_16 = nil
+
+# define :setMidiControlParmater do |cmd|
+#   if cmd[:controlNum] == 16
+#     MidiControl_16 = cmd[:value]
+#   elsif cmd[:controlNum] == 17
+#   elsif cmd[:controlNum] == 18
+#   elsif cmd[:controlNum] == 19
+# end
 
 ##########################################################################
 #                           Control Changes                              #
@@ -92,7 +121,7 @@ with_fx :rlpf do |fxnode|
       use_real_time
       sync :PlaySynthSync
       begin
-        #control fxnode, res: RLPF_Res, cutoff: RLPF_Cutoff
+        control fxnode, res: RLPF_Res, cutoff: RLPF_Cutoff
         while MidiSynthQueue.length > 0 do
           synth_doCommand MidiSynthQueue.deq
         end
@@ -121,16 +150,16 @@ end
 define :noteOn do |note, vol|
   nodeData = ns[note]
   if nodeData[:onStatus] == 0 #check if new start for the note
-    print "set on"
+    #print "set on"
     if nodeData[:node] #kill node for this note as it will bw replaced
       kill nodeData[:node]
-      print "note killed"
+      #print "note killed"
     end
     
     setSynth #set synth instrument
     #max duration of note set to 5 on next line. Can increase if you wish.
     node = play note, amp: (vol / 127.0), attack: ENV_Attack , release: 1, sustain: 50 #play note
-    print "note played"
+    #print "note played"
     ns[note] = {node: node, onStatus: 1}
   end
 end
@@ -139,12 +168,13 @@ define :noteOff do |note|
   nodeData = ns[note]
   if nodeData[:onStatus] == 1 #check if this pitch is on
     nodeData[:onStatus] = 0 #set this pitch off
-    print ns[note]
+    #print ns[note]
     node = nodeData[:node]
     if node
       control node,amp: 0, amp_slide: ENV_Release #fade note out in 0.02 seconds
       killList << {node: node, timestamp: Time.now}
     end
+    cue :Cleanup
   end
 end
 
@@ -158,56 +188,56 @@ in_thread(name: :play_drums) do
     begin
       while MidiDrumQueue.length > 0 do
           drums_doCommand MidiDrumQueue.deq
-        end
-      rescue
-        print "drums failed"
       end
+    rescue
+      print "drums failed"
     end
   end
-  
-  define :playDrums do |note, velocity|
-    if note == 50
-      drums_playBass velocity
-    elsif note == 42
-      drums_playSnare velocity
-    elsif note == 49
-      drums_playHighhat velocity
-    elsif note == 38
-      drums_playSplash velocity
-    elsif note == 35
-      drums_playAlt velocity
-    end
-  end
-  
-  define :drums_playSplash do |velocity|
-    drums_playMultiSample :drum_splash_soft, :drum_splash_hard, velocity
-  end
-  
-  define :drums_playSnare do |velocity|
-    drums_playMultiSample :drum_snare_soft, :drum_snare_hard, velocity
-  end
-  
-  define :drums_playHighhat do |velocity|
-    drums_playSample :drum_cymbal_closed, velocity
-  end
-  
-  define :drums_playAlt do |velocity|
-    drums_playSample :drum_tom_hi_hard, velocity
-  end
-  
-  define :drums_playBass do |velocity|
-    drums_playSample :drum_bass_hard, velocity
-  end
-  
-  define :drums_playMultiSample do |softHit, hardHit, velocity|
-    if velocity < 60
-      sample softHit, amp: velocity/60.0
-    else
-      sample hardHit, amp: (((velocity-60)/67.0)*0.75+0.25)
 end
+  
+define :playDrums do |note, velocity|
+  if note == 50
+    drums_playBass velocity
+  elsif note == 42
+    drums_playSnare velocity
+  elsif note == 49
+    drums_playHighhat velocity
+  elsif note == 38
+    drums_playSplash velocity
+  elsif note == 35
+    drums_playAlt velocity
+  end
+end
+
+define :drums_playSplash do |velocity|
+  drums_playMultiSample :drum_splash_soft, :drum_splash_hard, velocity
+end
+
+define :drums_playSnare do |velocity|
+  drums_playMultiSample :drum_snare_soft, :drum_snare_hard, velocity
+end
+
+define :drums_playHighhat do |velocity|
+  drums_playSample :drum_cymbal_closed, velocity
+end
+
+define :drums_playAlt do |velocity|
+  drums_playSample :drum_tom_hi_hard, velocity
+end
+
+define :drums_playBass do |velocity|
+  drums_playSample :drum_bass_hard, velocity
+end
+
+define :drums_playMultiSample do |softHit, hardHit, velocity|
+  if velocity < 60
+    sample softHit, amp: velocity/60.0
+  else
+    sample hardHit, amp: (((velocity-60)/67.0)*0.75+0.25)
+  end
 end
 define :drums_playSample do |drumSample, velocity|
-sample drumSample, amp: (velocity/127.0)
+  sample drumSample, amp: (velocity/127.0)
 end
 
 ##########################################################################
@@ -216,21 +246,21 @@ end
 #Node cleanup
 #Kill nodes when done making sounds. Kill oldest when count exceeds 9
 in_thread do
-loop do
-  use_real_time
-  begin
-    sleep 0.05
-    item = killList.first
-    if item != nil
-      timeDiff = Time.now - item[:timestamp]
-      if killList.length > MAX_NODES || timeDiff > ENV_Release
-        kill item[:node]
-        killList.shift
+  loop do
+    use_real_time
+    begin
+      sync :Cleanup
+      item = killList.first
+      if item != nil
+        timeDiff = Time.now - item[:timestamp]
+        if killList.length > MAX_NODES || timeDiff > ENV_Release
+          #print "kill"
+          kill item[:node]
+          killList.shift
+        end
       end
+    rescue
+      print "cleanup failed"      
     end
-  rescue
-    print "cleanup failed"
-    
   end
-end
 end
