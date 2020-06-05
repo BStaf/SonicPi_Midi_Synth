@@ -162,17 +162,24 @@ in_thread(name: :play_drums) do
     end
   end
 end
-  
+
+define :drums_doCommand do |cmd|
+  note = cmd[:note]
+  if cmd[:operation] == "note_on"
+    playDrums note, cmd[:volume]
+  end
+end
+
 define :playDrums do |note, velocity|
-  if note == 50
+  if note == 35
     drums_playBass velocity
-  elsif note == 42
-    drums_playSnare velocity
-  elsif note == 49
-    drums_playHighhat velocity
   elsif note == 38
+    drums_playSnare velocity
+  elsif note == 42
+    drums_playHighhat velocity
+  elsif note == 49
     drums_playSplash velocity
-  elsif note == 35
+  elsif note == 50
     drums_playAlt velocity
   end
 end
