@@ -212,7 +212,7 @@ define :drums_playMultiSample do |softHit, hardHit, velocity|
   end
 end
 define :drums_playSample do |drumSample, velocity|
-  sample drumSample, amp: (velocity/127.0)
+  sample drumSample, amp: (velocity/127.0)*2
 end
 
 ##########################################################################
