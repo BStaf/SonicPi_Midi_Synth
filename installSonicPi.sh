@@ -3,12 +3,16 @@
 wget -nc http://r.newman.ch/rpi/sonic-pi-3.2.2/sonic-pi-3.2.2_1.armhf.deb
 sudo rpi-update
 sudo apt install -y ruby
+sudo apt install -y python3-pip
+
+#install sonic-pi
 sudo apt install -y ./sonic-pi-3.2.2_1.armhf.deb
+mkdir -p /home/pi/.sonic-pi/log
 
 ## Script Uses the sonic-pi-tool python port
 ## Get whats needed to run script
 # Install dependencies:
-pip install oscpy click
+pip install click oscpy psutil
 # Download script:
 curl -O https://raw.githubusercontent.com/emlyn/sonic-pi-tool/master/sonic-pi-tool.py
 # Make it executable:
