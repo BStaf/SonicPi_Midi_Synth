@@ -206,9 +206,9 @@ end
 
 define :drums_playMultiSample do |softHit, hardHit, velocity|
   if velocity < 60
-    sample softHit, amp: (velocity/60.0
+    sample softHit, amp: (velocity/60.0)*2
   else
-    sample hardHit, amp: (((velocity-60)/67.0)*0.75+0.25)
+    sample hardHit, amp: (((velocity-60)/67.0)*0.75+0.25)*2
   end
 end
 define :drums_playSample do |drumSample, velocity|
