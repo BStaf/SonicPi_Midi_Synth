@@ -31,3 +31,4 @@ else
   echo "run raspiconfig and change Boot Options -> Desktop / CLI -> Console Autologin"
   echo "$CMD &" >> /home/pi/.bashrc
 fi
+

@@ -1,0 +1,16 @@
+#setup screen 3.5 SPI touchscreen from ebay
+
+git clone https://github.com/goodtft/LCD-show.git
+cd LCD-show
+sudo cp ./usr/tft35a-overlay.dtb /boot/overlays/tft35a.dtbo
+
+if grep -q "$CMD" /home/pi/.bashrc; then
+  echo "screen already set up"
+else
+  echo "setup 3.5 inch touch screen"
+  echo "hdmi_force_hotplug=1" >> /boot/config.txt
+  echo "dtparam=spi=on" >> /boot/config.txt
+  echo "dtoverlay=tft35a" >> /boot/config.txt
+  echo "fbcon=map:10 fbcon=font:ProFont6x11" >> /boot/comdline.txt
+fi
+

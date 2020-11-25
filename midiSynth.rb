@@ -111,8 +111,8 @@ define :synth_doCommand do |cmd|
 end
 
 define :setSynth do
-  #use_synth :prophet
-  use_synth :piano #blade tb303 #piano #mod_fm #prophet
+  use_synth :mod_fm
+  #use_synth :piano #blade tb303 #piano #mod_fm #prophet
 end
 
 define :noteOn do |note, vol|
