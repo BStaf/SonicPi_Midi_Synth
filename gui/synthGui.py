@@ -12,10 +12,8 @@ instrumentList = [
 
 class MidiOut:
     def __init__(self):
-        ports = mido.get_output_names()
-        print(ports)
-        self.midiOut = mido.open_output(ports[1])
-        #self.midiOut = mido.open_output('Control Midi Port', virtual=True)
+        port = [x for x in mido.get_output_names() if "Midi Through" in x][0]
+        self.midiOut = mido.open_output(port)
 
     def sendCmd(self, index):
         msg = mido.Message('program_change', program =index)
@@ -31,6 +29,7 @@ def InstrumentComboBoxCallback(eventObject):
     midiOut.sendCmd(index)
 
 root = Tk()      
+root.wm_attributes('-type', 'splash')
 root.geometry("480x320")
 bigfont = tkFont.Font(family="Helvetica",size=17)
 root.option_add("*Font", bigfont)

@@ -11,7 +11,8 @@ cd $DIR
 #jackd -d alsa --device hw:3 --rate 44100 --period 256 -n 2 &
 jackd -P 70 -d alsa --device hw:$soundcard --rate 44100 --period 256 -n 3 -s &
 sleep 3
-sonic-pi-tool.py start-server --path /opt/sonic-pi-3.2.2/ > /dev/null 2>&1 &
+#sonic-pi-tool.py start-server --path /opt/sonic-pi-3.2.2/ > /dev/null 2>&1 &
+sonic-pi-tool.py start-server --path /opt/sonic-pi-3.2.2/ &
 sleep 40
 echo "Run Program"
-sonic-pi-tool.py run-file $DIR/midiSynth.rb &> /dev/null 2>&1 &
+sonic-pi-tool.py run-file $DIR/midiSynth.rb  &
