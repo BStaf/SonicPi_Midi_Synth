@@ -101,14 +101,14 @@ with_fx :rlpf do |fxnode|
     loop do
       use_real_time
       sync :PlaySynthSync
-      #begin
+      begin
         control fxnode, res: RLPF_Res, cutoff: RLPF_Cutoff
         while MidiSynthQueue.length > 0 do
           synth_doCommand MidiSynthQueue.deq
         end
-      #rescue
-      #  print "synth failed"
-      #end
+      rescue
+        print "synth failed"
+      end
     end
   end
 end
@@ -125,8 +125,6 @@ end
 
 define :setSynth do 
   use_synth InstrumentLookup[CurrentInstrument]
-  #print instIndex
-  #use_synth :blade #tb303 #piano #mod_fm #prophet
 end
 
 define :noteOn do |note, vol|
