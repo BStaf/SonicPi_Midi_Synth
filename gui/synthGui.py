@@ -2,6 +2,9 @@ from tkinter import *
 from tkinter import ttk  
 import tkinter.font as tkFont
 import mido
+import os
+
+guiPicName = os.path.dirname(os.path.realpath(__file__)) + "/guiMain.png"
 
 instrumentList = [
     "piano", 
@@ -12,6 +15,8 @@ instrumentList = [
 
 class MidiOut:
     def __init__(self):
+        print(os.getcwd())
+        print(sys.path[0])
         port = [x for x in mido.get_output_names() if "Midi Through" in x][0]
         self.midiOut = mido.open_output(port)
 
@@ -43,7 +48,7 @@ cbox.place(x=97, y=7)
 cbox.bind("<<ComboboxSelected>>", InstrumentComboBoxCallback)
 
 canvas.pack()
-img = PhotoImage(file="guiMain.png")      
+img = PhotoImage(file=guiPicName)      
 canvas.create_image(0,0, anchor=NW, image=img)    
      
   
