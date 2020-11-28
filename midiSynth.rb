@@ -18,7 +18,7 @@ FxNode = nil
   ns[i] = {node: nil, onStatus: 0}
 end
 
-InstrumentLookup = { 1 => :piano, 2 => :prophet, 3 => :blade }
+InstrumentLookup = { 0 => :piano, 1 => :prophet, 2 => :blade, 3 => :tb303, 4 => :mod_fm }
 CurrentInstrument = 1
 
 ##########################################################################

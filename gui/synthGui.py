@@ -1,48 +1,52 @@
-from tkinter import *
+from tkinter import * 
+from tkinter import ttk  
+import tkinter.font as tkFont
+import mido
 
-root = Tk()
-root.title('Model Definition')
-root.geometry('{}x{}'.format(960, 640))
+instrumentList = [
+    "piano", 
+    "prophet", 
+    "blade",
+    "tb303",
+    "mod_fm"]
 
-# create all of the main containers
-top_frame = Frame(root, bg='cyan', width=450, height=50, pady=3)
-center = Frame(root, bg='gray2', width=50, height=40, padx=3, pady=3)
-btm_frame = Frame(root, bg='white', width=450, height=45, pady=3)
-btm_frame2 = Frame(root, bg='lavender', width=450, height=60, pady=3)
+class MidiOut:
+    def __init__(self):
+        ports = mido.get_output_names()
+        print(ports)
+        self.midiOut = mido.open_output(ports[1])
+        #self.midiOut = mido.open_output('Control Midi Port', virtual=True)
 
-# layout all of the main containers
-root.grid_rowconfigure(1, weight=1)
-root.grid_columnconfigure(0, weight=1)
+    def sendCmd(self, index):
+        msg = mido.Message('program_change', program =index)
+        self.midiOut.send(msg)
 
-top_frame.grid(row=0, sticky="ew")
-center.grid(row=1, sticky="nsew")
-btm_frame.grid(row=3, sticky="ew")
-btm_frame2.grid(row=4, sticky="ew")
 
-# create the widgets for the top frame
-model_label = Label(top_frame, text='Model Dimensions')
-width_label = Label(top_frame, text='Width:')
-length_label = Label(top_frame, text='Length:')
-entry_W = Entry(top_frame, background="pink")
-entry_L = Entry(top_frame, background="orange")
 
-# layout the widgets in the top frame
-model_label.grid(row=0, columnspan=3)
-width_label.grid(row=1, column=0)
-length_label.grid(row=1, column=2)
-entry_W.grid(row=1, column=1)
-entry_L.grid(row=1, column=3)
+midiOut = MidiOut()
 
-# create the center widgets
-center.grid_rowconfigure(0, weight=1)
-center.grid_columnconfigure(1, weight=1)
+def InstrumentComboBoxCallback(eventObject):
+    index = instrumentList.index(eventObject.widget.get())
+    print(index)
+    midiOut.sendCmd(index)
 
-ctr_left = Frame(center, bg='blue', width=100, height=190)
-ctr_mid = Frame(center, bg='yellow', width=250, height=190, padx=3, pady=3)
-ctr_right = Frame(center, bg='green', width=100, height=190, padx=3, pady=3)
+root = Tk()      
+root.geometry("480x320")
+bigfont = tkFont.Font(family="Helvetica",size=17)
+root.option_add("*Font", bigfont)
+canvas = Canvas(root, width = 480, height = 320)    
 
-ctr_left.grid(row=0, column=0, sticky="ns")
-ctr_mid.grid(row=0, column=1, sticky="nsew")
-ctr_right.grid(row=0, column=2, sticky="ns")
+cbox = ttk.Combobox(root, justify='center', values=instrumentList,width=20)
+cbox.current(0)
+cbox.place(x=97, y=7)
 
-root.mainloop()
+
+cbox.bind("<<ComboboxSelected>>", InstrumentComboBoxCallback)
+
+canvas.pack()
+img = PhotoImage(file="guiMain.png")      
+canvas.create_image(0,0, anchor=NW, image=img)    
+     
+  
+mainloop() 
+
