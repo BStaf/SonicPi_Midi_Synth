@@ -18,16 +18,21 @@ FxNode = nil
   ns[i] = {node: nil, onStatus: 0}
 end
 
+InstrumentLookup = { 1 => :piano, 2 => :prophet, 3 => :blade }
+CurrentInstrument = 1
+
 ##########################################################################
 #                      Read Midi Commands                                #
 ##########################################################################
 define :getMidiCntrlObjFromMidiInput do |element, value, midiBase|
   #get full event for channel and operation values
   midiEvent = get_event(midiBase + "/*")
-  
   channel_operation = midiEvent.to_s.split("\"")[1].split(":").last.split("/")
+
   if channel_operation[1] == "control_change"
     return {controlNum: element, value: value, operation: channel_operation[1], channel: channel_operation[0]}
+  elsif channel_operation[1] == "program_change"
+    return {value: value, operation: channel_operation[1], channel: channel_operation[0]} 
   end
   return {note: element, volume: value, operation: channel_operation[1], channel: channel_operation[0]}
 end
@@ -57,6 +62,14 @@ in_thread(name: :read_midiControl) do
   end
 end
 
+in_thread(name: :read_midiProgramChange) do
+  loop do
+    use_real_time
+    value = sync MidiBaseStr + "/program_change"
+    #cmd = getMidiCntrlObjFromMidiInput 0, value, MidiBaseStr
+    CurrentInstrument = value[0]
+  end
+end
 ##########################################################################
 #                           Control Changes                              #
 ##########################################################################
@@ -88,14 +101,14 @@ with_fx :rlpf do |fxnode|
     loop do
       use_real_time
       sync :PlaySynthSync
-      begin
+      #begin
         control fxnode, res: RLPF_Res, cutoff: RLPF_Cutoff
         while MidiSynthQueue.length > 0 do
           synth_doCommand MidiSynthQueue.deq
         end
-      rescue
-        print "synth failed"
-      end
+      #rescue
+      #  print "synth failed"
+      #end
     end
   end
 end
@@ -110,9 +123,10 @@ define :synth_doCommand do |cmd|
   end
 end
 
-define :setSynth do
-  use_synth :mod_fm
-  #use_synth :piano #blade tb303 #piano #mod_fm #prophet
+define :setSynth do 
+  use_synth InstrumentLookup[CurrentInstrument]
+  #print instIndex
+  #use_synth :blade #tb303 #piano #mod_fm #prophet
 end
 
 define :noteOn do |note, vol|
@@ -123,8 +137,7 @@ define :noteOn do |note, vol|
       kill nodeData[:node]
       #print "note killed"
     end
-    
-    setSynth #set synth instrument
+    setSynth
     #max duration of note set to 5 on next line. Can increase if you wish.
     node = play note, amp: (vol / 127.0), attack: ENV_Attack , release: 1, sustain: 50 #play note
     #print "note played"
