@@ -19,7 +19,7 @@ FxNode = nil
 end
 
 InstrumentLookup = { 0 => :piano, 1 => :prophet, 2 => :blade, 3 => :tb303, 4 => :mod_fm }
-CurrentInstrument = 1
+CurrentInstrument = 0
 
 ##########################################################################
 #                      Read Midi Commands                                #
@@ -132,8 +132,9 @@ define :noteOn do |note, vol|
   if nodeData[:onStatus] == 0 #check if new start for the note
     #print "set on"
     if nodeData[:node] #kill node for this note as it will bw replaced
-      kill nodeData[:node]
-      #print "note killed"
+      control nodeData[:node],amp: 0, amp_slide: 0.01
+      cue :Cleanup
+      #kill nodeData[:node]
     end
     setSynth
     #max duration of note set to 5 on next line. Can increase if you wish.
