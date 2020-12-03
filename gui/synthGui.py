@@ -51,12 +51,14 @@ def InstrumentComboBoxCallback(eventObject):
     midiOut.sendProgramChange(index)
 
 def updatePitch(event):
-    midiOut.sendControlChange(20,event)
-    print(event)
+    adjustedVal = 127-event
+    midiOut.sendControlChange(20,adjustedVal)
 
 def updateModulation(event):
     midiOut.sendControlChange(21,event)
-    print(event)
+
+def updateMasterVolume(event):
+    midiOut.sendControlChange(22,event)
 
 root = Tk()      
 root.wm_attributes('-type', 'splash')
@@ -64,12 +66,6 @@ root.geometry("480x320")
 bigfont = tkFont.Font(family="Helvetica",size=17)
 root.option_add("*Font", bigfont)
 canvas = Canvas(root, width = 480, height = 320)    
-
-# x = 10
-# y = 50
-# width = 50
-# height = 200
-
 
 cbox = ttk.Combobox(root, justify='center', values=instrumentList,width=20)
 cbox.current(0)
@@ -81,10 +77,13 @@ cbox.bind("<<ComboboxSelected>>", InstrumentComboBoxCallback)
 
 img = PhotoImage(file=guiPicName)      
 canvas.create_image(0,0, anchor=NW, image=img)    
-PitchSldr = SliderControl(canvas,20,70,45,230,0,127,127/2)
-ModulationSldr = SliderControl(canvas,90,70,45,230,0,127,0)
+#PitchSldr = SliderControl(canvas,20,70,45,230,0,127,127/2)
+PitchSldr = SpringMidiSliderControl(canvas,20,70,127/2)
+ModulationSldr = StandardMidiSliderControl(canvas,90,70,0)
+MasterVolumeSldr = StandardMidiSliderControl(canvas,415,70,0.9*127)
 PitchSldr.OnUpdate(updatePitch)
 ModulationSldr.OnUpdate(updateModulation)
+MasterVolumeSldr.OnUpdate(updateMasterVolume)
 canvas.pack()
   
 mainloop() 

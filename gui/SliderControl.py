@@ -10,17 +10,18 @@ class SliderControl:
         self.maxVal = maxVal
         
         sliderHeight = width/1.5
+        self.sliderHalfHeight = sliderHeight/2
         self.sliderRange = height-sliderHeight
 
         self.lastYpos=0
         self.lastVal=0
 
-        sliderYPos = self.sliderRange - ( (startVal / (self.maxVal-self.minVal)) * self.sliderRange ) + yPos
+        self.startYPos = self.sliderRange - ( (startVal / (self.maxVal-self.minVal)) * self.sliderRange ) + yPos
        
         #self.slider = canvas.create_rectangle(xPos, yPos, width, width, fill="yellow")
         self.rect = canvas.create_rectangle(xPos, yPos, xPos+width, yPos+height, fill="#232628")
         
-        self.slider = canvas.create_rectangle(xPos, sliderYPos, xPos+width, sliderYPos+sliderHeight, fill="#FFBE31")
+        self.slider = canvas.create_rectangle(xPos, self.startYPos, xPos+width, self.startYPos+sliderHeight, fill="#FFBE31")
         canvas.tag_bind(self.slider, '<B1-Motion>',self.motion) 
         canvas.tag_bind(self.slider, '<Button-1>', self.btnDown)
 
@@ -32,13 +33,21 @@ class SliderControl:
         self.lastYpos = event.y
         return
 
-    def motion(self, event):
-        posDif = self.getSliderMovementValue(event.y)
+    def motion(self, event):       
+        self.updateSlider(event.y)
+        self.updateSliderValue(event.y)
+        return
+
+    def updateSlider(self, yPos):
+        posDif = self.getSliderMovementValue(yPos)
         #draw slider
         self.canvas.move(self.slider, 0, posDif)
         self.canvas.update()
+        return
+
+    def updateSliderValue(self, yPos):
         #get updated slider value
-        val = self.calcCurrentPosValue(event.y)
+        val = self.calcCurrentPosValue(yPos)
         #print (f"curent value is {val}")
         if val != self.lastVal:
             for handler in self.handlers:
@@ -57,28 +66,27 @@ class SliderControl:
         curPosY1 = self.canvas.coords(self.slider)[1] - self.objectYpos
         curPosY2 = self.canvas.coords(self.slider)[3] - self.objectYpos
         #get move value
-        posDif = yPos - self.lastYpos
-        self.lastYpos = yPos
+        posDif = yPos - self.canvas.coords(self.slider)[1]-self.sliderHalfHeight
         #disable overrun      
         if curPosY1+posDif < 0: posDif = 0 - curPosY1
         if curPosY2+posDif > self.height: posDif = self.height - curPosY2
 
         return posDif
 
-# def update(event):
-#    print(event)
+class StandardMidiSliderControl(SliderControl):
 
+    def __init__(self, canvas, xPos, yPos, startVal):
+        SliderControl.__init__(self, canvas, xPos, yPos, 45, 230, 0 , 127, startVal) 
 
-# root = Tk()
-# windowWidth = 480
-# windowHeight = 320   
-# root.geometry(f"{windowWidth}x{windowHeight}")
-# C = Canvas(root, height=windowHeight, width=windowWidth)
-# x = 10
-# y = 50
-# width = 50
-# height = 200
-# slider1 = SliderControl(C,x,y,width,height,0,127)
-# slider1.OnUpdate(update)
-# C.pack()
-# root.mainloop()
+#reverts to startVal when let go
+class SpringMidiSliderControl(SliderControl):
+
+    def __init__(self, canvas, xPos, yPos, startVal):
+        SliderControl.__init__(self, canvas, xPos, yPos, 45, 230, 0 , 127, startVal)
+        self.beginVal = self.startYPos+self.sliderHalfHeight
+        canvas.tag_bind(self.slider, '<ButtonRelease-1>', self.btnUp) 
+
+    def btnUp(self, event):
+        self.updateSlider(self.beginVal)
+        self.updateSliderValue(self.beginVal)
+        return
