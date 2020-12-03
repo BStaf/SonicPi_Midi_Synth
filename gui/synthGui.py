@@ -51,8 +51,7 @@ def InstrumentComboBoxCallback(eventObject):
     midiOut.sendProgramChange(index)
 
 def updatePitch(event):
-    adjustedVal = 127-event
-    midiOut.sendControlChange(20,adjustedVal)
+    midiOut.sendControlChange(20,event)
 
 def updateModulation(event):
     midiOut.sendControlChange(21,event)
