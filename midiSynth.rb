@@ -117,7 +117,7 @@ define :synth_doCommand do |cmd|
   note = cmd[:note]
   if cmd[:operation] == "note_on"
     #puts note,nv[note]
-    noteOn note, cmd[:volume]
+    noteOn note, 127#cmd[:volume]
   else
     noteOff note
   end
