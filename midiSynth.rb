@@ -4,6 +4,7 @@ RLPF_Res = 0.5
 RLPF_Cutoff = 100
 ENV_Attack = 0
 ENV_Release = 1
+PITCH_ADJ = 0
 
 MAX_NODES = 9
 
@@ -12,13 +13,16 @@ MidiDrumQueue = Queue.new #queued midi events for drums
 
 ns = [] #array to store note playing references
 killList = []
-FxNode = nil
+#FxNode = nil
 
 128.times do |i|
   ns[i] = {node: nil, onStatus: 0}
 end
 
-InstrumentLookup = { 0 => :piano, 1 => :prophet, 2 => :blade, 3 => :tb303, 4 => :mod_fm }
+InstrumentLookup = { 0 => :piano, 1 => :prophet, 2 => :blade, 3 => :tb303, 4 => :mod_fm,
+                  5 => :hoover, 6 => :zawa, 7 => :pluck, 8 => :dull_bell, 9 => :pretty_bell,
+                  10 => :beep, 11 => :sine, 12 => :saw, 13 => :pulse, 14 => :subpulse}
+
 CurrentInstrument = 0
 
 ##########################################################################
@@ -48,7 +52,7 @@ in_thread(name: :read_midiNotes) do
       cue :PlayDrumsSync
     else
       MidiSynthQueue << cmd
-      cue :PlaySynthSync
+      #cue :PlaySynthSync
     end
   end
 end
@@ -87,6 +91,8 @@ define :setControlSettings do |cntrlNum, cntrlValue|
     ENV_Attack = scaleMidiAi cntrlValue, 0, 1
   elsif cntrlNum == 19
     ENV_Release = scaleMidiAi cntrlValue, 0, 2
+  elsif cntrlNum == 20
+    PITCH_ADJ = 12 - (scaleMidiAi cntrlValue, 0, 24)
   end
   #control FxNode, res: RLPF_Res, cutoff: RLPF_Cutoff
 end
@@ -95,19 +101,23 @@ end
 #                            Play Synth                                  #
 ##########################################################################
 #Midi controls thread
-with_fx :rlpf do |fxnode|
-  in_thread(name: :play_synth) do
-    FxNode = fxnode
-    loop do
-      use_real_time
-      sync :PlaySynthSync
-      begin
-        control fxnode, res: RLPF_Res, cutoff: RLPF_Cutoff
-        while MidiSynthQueue.length > 0 do
-          synth_doCommand MidiSynthQueue.deq
+with_fx :rlpf do |rlpf|
+  with_fx :pitch_shift do |pitchShift|#PITCH_ADJ
+    in_thread(name: :play_synth) do
+      #FxNode = fxnode
+      loop do
+        use_real_time
+        #sync :PlaySynthSync
+        begin
+          control pitchShift, pitch: PITCH_ADJ
+          control rlpf, res: RLPF_Res, cutoff: RLPF_Cutoff
+          while MidiSynthQueue.length > 0 do
+            synth_doCommand MidiSynthQueue.deq
+          end
+        rescue
+          print "synth failed"
         end
-      rescue
-        print "synth failed"
+        sleep 0.05
       end
     end
   end
