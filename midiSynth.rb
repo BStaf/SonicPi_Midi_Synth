@@ -93,6 +93,9 @@ define :setControlSettings do |cntrlNum, cntrlValue|
     ENV_Release = scaleMidiAi cntrlValue, 0, 2
   elsif cntrlNum == 20
     PITCH_ADJ = (scaleMidiAi cntrlValue, 0, 12) - 6
+    if PITCH_ADJ < 0.1 && PITCH_ADJ > -0.1
+      PITCH_ADJ = 0
+    end
   elsif cntrlNum == 22
     set_volume! (scaleMidiAi cntrlValue, 0, 1)
   end

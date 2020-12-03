@@ -27,8 +27,8 @@ instrumentList = [
 
 class MidiOut:
     def __init__(self):
-        print(os.getcwd())
-        print(sys.path[0])
+        #print(os.getcwd())
+        #print(sys.path[0])
         port = [x for x in mido.get_output_names() if "Midi Through" in x][0]
         self.midiOut = mido.open_output(port)
         #self.midiOut = mido.open_output(mido.get_output_names()[1])
@@ -77,7 +77,7 @@ cbox.bind("<<ComboboxSelected>>", InstrumentComboBoxCallback)
 img = PhotoImage(file=guiPicName)      
 canvas.create_image(0,0, anchor=NW, image=img)    
 #PitchSldr = SliderControl(canvas,20,70,45,230,0,127,127/2)
-PitchSldr = SpringMidiSliderControl(canvas,20,70,127/2)
+PitchSldr = SpringMidiSliderControl(canvas,20,70,63)
 ModulationSldr = StandardMidiSliderControl(canvas,90,70,0)
 MasterVolumeSldr = StandardMidiSliderControl(canvas,415,70,0.9*127)
 PitchSldr.OnUpdate(updatePitch)
