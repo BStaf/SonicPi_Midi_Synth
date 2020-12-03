@@ -92,7 +92,7 @@ define :setControlSettings do |cntrlNum, cntrlValue|
   elsif cntrlNum == 19
     ENV_Release = scaleMidiAi cntrlValue, 0, 2
   elsif cntrlNum == 20
-    PITCH_ADJ = 12 - (scaleMidiAi cntrlValue, 0, 24)
+    PITCH_ADJ = 6 - (scaleMidiAi cntrlValue, 0, 12)
   end
   #control FxNode, res: RLPF_Res, cutoff: RLPF_Cutoff
 end

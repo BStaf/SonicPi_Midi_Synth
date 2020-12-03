@@ -59,7 +59,7 @@ def updateModulation(event):
     print(event)
 
 root = Tk()      
-#root.wm_attributes('-type', 'splash')
+root.wm_attributes('-type', 'splash')
 root.geometry("480x320")
 bigfont = tkFont.Font(family="Helvetica",size=17)
 root.option_add("*Font", bigfont)
