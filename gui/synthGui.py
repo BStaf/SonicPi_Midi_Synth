@@ -1,48 +1,89 @@
-from tkinter import *
+from tkinter import * 
+from tkinter import ttk  
+from SliderControl import *
+import tkinter.font as tkFont
+import mido
+import os
 
-root = Tk()
-root.title('Model Definition')
-root.geometry('{}x{}'.format(960, 640))
+guiPicName = os.path.dirname(os.path.realpath(__file__)) + "/guiMain.png"
 
-# create all of the main containers
-top_frame = Frame(root, bg='cyan', width=450, height=50, pady=3)
-center = Frame(root, bg='gray2', width=50, height=40, padx=3, pady=3)
-btm_frame = Frame(root, bg='white', width=450, height=45, pady=3)
-btm_frame2 = Frame(root, bg='lavender', width=450, height=60, pady=3)
+instrumentList = [
+    "piano", 
+    "prophet", 
+    "blade",
+    "tb303",
+    "mod_fm",
+    "hoover",
+    "zawa",
+    "pluck",
+    "dull_bell",
+    "pretty_bell",
+    "beep",
+    "sine",
+    "saw",
+    "pulse",
+    "subpulse"
+    ]
 
-# layout all of the main containers
-root.grid_rowconfigure(1, weight=1)
-root.grid_columnconfigure(0, weight=1)
+class MidiOut:
+    def __init__(self):
+        #print(os.getcwd())
+        #print(sys.path[0])
+        port = [x for x in mido.get_output_names() if "Midi Through" in x][0]
+        self.midiOut = mido.open_output(port)
+        #self.midiOut = mido.open_output(mido.get_output_names()[1])
 
-top_frame.grid(row=0, sticky="ew")
-center.grid(row=1, sticky="nsew")
-btm_frame.grid(row=3, sticky="ew")
-btm_frame2.grid(row=4, sticky="ew")
+    def sendProgramChange(self, index):
+        msg = mido.Message('program_change', program =index)
+        self.midiOut.send(msg)
 
-# create the widgets for the top frame
-model_label = Label(top_frame, text='Model Dimensions')
-width_label = Label(top_frame, text='Width:')
-length_label = Label(top_frame, text='Length:')
-entry_W = Entry(top_frame, background="pink")
-entry_L = Entry(top_frame, background="orange")
+    def sendControlChange(self, cntrlId, value):
+        msg = mido.Message('control_change', channel=1, control=cntrlId, value=value)
+        self.midiOut.send(msg)
 
-# layout the widgets in the top frame
-model_label.grid(row=0, columnspan=3)
-width_label.grid(row=1, column=0)
-length_label.grid(row=1, column=2)
-entry_W.grid(row=1, column=1)
-entry_L.grid(row=1, column=3)
 
-# create the center widgets
-center.grid_rowconfigure(0, weight=1)
-center.grid_columnconfigure(1, weight=1)
 
-ctr_left = Frame(center, bg='blue', width=100, height=190)
-ctr_mid = Frame(center, bg='yellow', width=250, height=190, padx=3, pady=3)
-ctr_right = Frame(center, bg='green', width=100, height=190, padx=3, pady=3)
+midiOut = MidiOut()
 
-ctr_left.grid(row=0, column=0, sticky="ns")
-ctr_mid.grid(row=0, column=1, sticky="nsew")
-ctr_right.grid(row=0, column=2, sticky="ns")
+def InstrumentComboBoxCallback(eventObject):
+    index = instrumentList.index(eventObject.widget.get())
+    print(index)
+    midiOut.sendProgramChange(index)
 
-root.mainloop()
+def updatePitch(event):
+    midiOut.sendControlChange(20,event)
+
+def updateModulation(event):
+    midiOut.sendControlChange(21,event)
+
+def updateMasterVolume(event):
+    midiOut.sendControlChange(22,event)
+
+root = Tk()      
+root.wm_attributes('-type', 'splash')
+root.geometry("480x320")
+bigfont = tkFont.Font(family="Helvetica",size=17)
+root.option_add("*Font", bigfont)
+canvas = Canvas(root, width = 480, height = 320)    
+
+cbox = ttk.Combobox(root, justify='center', values=instrumentList,width=20)
+cbox.current(0)
+cbox.place(x=97, y=7)
+
+
+cbox.bind("<<ComboboxSelected>>", InstrumentComboBoxCallback)
+
+
+img = PhotoImage(file=guiPicName)      
+canvas.create_image(0,0, anchor=NW, image=img)    
+#PitchSldr = SliderControl(canvas,20,70,45,230,0,127,127/2)
+PitchSldr = SpringMidiSliderControl(canvas,20,70,63)
+ModulationSldr = StandardMidiSliderControl(canvas,90,70,0)
+MasterVolumeSldr = StandardMidiSliderControl(canvas,415,70,0.9*127)
+PitchSldr.OnUpdate(updatePitch)
+ModulationSldr.OnUpdate(updateModulation)
+MasterVolumeSldr.OnUpdate(updateMasterVolume)
+canvas.pack()
+  
+mainloop() 
+
