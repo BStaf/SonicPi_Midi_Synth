@@ -1,98 +1,58 @@
-from tkinter import *
+import tkinter as tk
 
-class SliderRectangle:
-    def __init__(self, canvas, xPos, yPos, width, height, minVal, maxVal):
-        self.handlers = []
-        self.canvas = canvas
-        self.objectYpos = yPos
-        self.height = height
-        self.minVal = minVal
-        self.maxVal = maxVal
-        
-        sliderHeight = width/1.5
-        self.sliderRange = height-sliderHeight
+class Page(tk.Frame):
+    def __init__(self, *args, **kwargs):
+        tk.Frame.__init__(self, *args, **kwargs)
+    def show(self):
+        self.lift()
 
-        self.lastYpos=0
-        self.lastVal=0
+class Page1(Page):
+   def __init__(self, *args, **kwargs):
+       Page.__init__(self, *args, **kwargs)
+       label = tk.Label(self, text="This is page 1")
+       label.pack(side="top", fill="both", expand=True)
 
-        #self.slider = canvas.create_rectangle(xPos, yPos, width, width, fill="yellow")
-        self.rect = canvas.create_rectangle(xPos, yPos, xPos+width, yPos+height, fill="black")
-        
-        self.slider = canvas.create_rectangle(xPos, yPos, xPos+width, yPos+sliderHeight, fill="yellow")
-        canvas.tag_bind(self.slider, '<B1-Motion>',self.motion) 
-        canvas.tag_bind(self.slider, '<Button-1>', self.btnDown)
+class Page2(Page):
+   def __init__(self, *args, **kwargs):
+       Page.__init__(self, *args, **kwargs)
+       label = tk.Label(self, text="This is page 2")
+       label.pack(side="top", fill="both", expand=True)
 
-    def OnUpdate(self, handler):
-        self.handlers.append(handler)
-        return
+class Page3(Page):
+   def __init__(self, *args, **kwargs):
+       Page.__init__(self, *args, **kwargs)
+       label = tk.Label(self, text="This is page 3")
+       label.pack(side="top", fill="both", expand=True)
 
-    def btnDown(self, event):
-        self.lastYpos = event.y
-        return
+class MainView(tk.Frame):
+    def __init__(self, *args, **kwargs):
+        tk.Frame.__init__(self, *args, **kwargs)
+        p1 = Page1(self)
+        p2 = Page2(self)
+        p3 = Page3(self)
 
-    def motion(self, event):
-        posDif = self.getSliderMovementValue(event.y)
-        #draw slider
-        self.canvas.move(self.slider, 0, posDif)
-        self.canvas.update()
-        #get updated slider value
-        val = self.calcCurrentPosValue(event.y)
-        #print (f"curent value is {val}")
-        if val != self.lastVal:
-            for handler in self.handlers:
-                handler(val)
-        self.lastVal = val
-        return
+        buttonframe = tk.Frame(self)
+        container = tk.Frame(self)
+        buttonframe.pack(side="top", fill="x", expand=False)
+        container.pack(side="top", fill="both", expand=True)
 
-    def calcCurrentPosValue(self, yPos):
-        #get latest slider position
-        curPosY1 = self.canvas.coords(self.slider)[1] - self.objectYpos
-        return int(((curPosY1 / self.sliderRange) * (self.maxVal-self.minVal)) + self.minVal)
+        p1.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
+        p2.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
+        p3.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
 
-    def getSliderMovementValue(self, yPos):
-        #get current slider position
-        curPosY1 = self.canvas.coords(self.slider)[1] - self.objectYpos
-        curPosY2 = self.canvas.coords(self.slider)[3] - self.objectYpos
-        #get move value
-        posDif = yPos - self.lastYpos
-        self.lastYpos = yPos
-        #disable overrun      
-        if curPosY1+posDif < 0: posDif = 0 - curPosY1
-        if curPosY2+posDif > self.height: posDif = height - curPosY2
+        b1 = tk.Button(buttonframe, text="Page 1", command=p1.lift)
+        b2 = tk.Button(buttonframe, text="Page 2", command=p2.lift)
+        b3 = tk.Button(buttonframe, text="Page 3", command=p3.lift)
 
-        return posDif
+        b1.pack(side="left")
+        b2.pack(side="left")
+        b3.pack(side="left")
 
-def update(event):
-    print(event)
-# def motion(event):
-#    print("Mouse position: (%s %s)" % (event.x, event.y))
-#    return
+        p1.show()
 
-# master = Tk()
-# whatever_you_do = "Whatever you do will be insignificant, but it is very important that you do it.\n(Mahatma Gandhi)"
-# msg = Message(master, text = whatever_you_do)
-# msg.config(bg='lightgreen', font=('times', 24, 'italic'))
-# msg.bind('<Motion>',motion)
-# msg.pack()
-# mainloop()
-
-root = Tk()
-windowWidth = 480
-windowHeight = 320   
-root.geometry(f"{windowWidth}x{windowHeight}")
-#C = Canvas(root, bg="blue", height=250, width=300)
-C = Canvas(root, height=windowHeight, width=windowWidth)
-#C.place(x=5, y=7)
-#coord = 10, 50, 240, 210
-x = 10
-y = 50
-width = 50
-height = 200
-#rect = C.create_rectangle(x, y, x+wdith, y+height, fill="black")
-slider1 = SliderRectangle(C,x,y,width,height,0,127)
-slider1.OnUpdate(update)
-#arc = C.create_arc(coord, start=0, extent=150, fill="red")
-#arc.bind('<Motion>',motion)
-#C.tag_bind(rect, '<Motion>',motion) 
-C.pack()
-root.mainloop()
+if __name__ == "__main__":
+    root = tk.Tk()
+    main = MainView(root)
+    main.pack(side="top", fill="both", expand=True)
+    root.wm_geometry("400x400")
+    root.mainloop()

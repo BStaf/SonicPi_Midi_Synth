@@ -76,13 +76,13 @@ class SliderControl:
 class StandardMidiSliderControl(SliderControl):
 
     def __init__(self, canvas, xPos, yPos, startVal):
-        SliderControl.__init__(self, canvas, xPos, yPos, 45, 230, 0 , 127, startVal) 
+        SliderControl.__init__(self, canvas, xPos, yPos, 45, 260, 0 , 127, startVal) 
 
 #reverts to startVal when let go
 class SpringMidiSliderControl(SliderControl):
 
     def __init__(self, canvas, xPos, yPos, startVal):
-        SliderControl.__init__(self, canvas, xPos, yPos, 45, 230, 0 , 127, startVal)
+        SliderControl.__init__(self, canvas, xPos, yPos, 45, 260, 0 , 127, startVal)
         self.beginVal = self.startYPos+self.sliderHalfHeight
         canvas.tag_bind(self.slider, '<ButtonRelease-1>', self.btnUp) 
 
