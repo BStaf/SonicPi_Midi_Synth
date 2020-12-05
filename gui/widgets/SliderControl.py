@@ -1,4 +1,5 @@
 from tkinter import *
+from AppPalette import *
 
 class SliderControl:
     def __init__(self, canvas, xPos, yPos, width, height, minVal, maxVal, startVal):
@@ -9,7 +10,7 @@ class SliderControl:
         self.minVal = minVal
         self.maxVal = maxVal
         
-        sliderHeight = width/1.5
+        sliderHeight = width/1.3
         self.sliderHalfHeight = sliderHeight/2
         self.sliderRange = height-sliderHeight
 
@@ -19,9 +20,9 @@ class SliderControl:
         self.startYPos = self.sliderRange - ( (startVal / (self.maxVal-self.minVal)) * self.sliderRange ) + yPos
        
         #self.slider = canvas.create_rectangle(xPos, yPos, width, width, fill="yellow")
-        self.rect = canvas.create_rectangle(xPos, yPos, xPos+width, yPos+height, fill="#232628")
+        self.rect = canvas.create_rectangle(xPos, yPos, xPos+width, yPos+height, fill=AppPalette.Black)
         
-        self.slider = canvas.create_rectangle(xPos, self.startYPos, xPos+width, self.startYPos+sliderHeight, fill="#FFBE31")
+        self.slider = canvas.create_rectangle(xPos, self.startYPos, xPos+width, self.startYPos+sliderHeight, fill=AppPalette.Yellow)
         canvas.tag_bind(self.slider, '<B1-Motion>',self.motion) 
         canvas.tag_bind(self.slider, '<Button-1>', self.btnDown)
 
@@ -76,13 +77,13 @@ class SliderControl:
 class StandardMidiSliderControl(SliderControl):
 
     def __init__(self, canvas, xPos, yPos, startVal):
-        SliderControl.__init__(self, canvas, xPos, yPos, 45, 260, 0 , 127, startVal) 
+        SliderControl.__init__(self, canvas, xPos, yPos, 50, 230, 0 , 127, startVal) 
 
 #reverts to startVal when let go
 class SpringMidiSliderControl(SliderControl):
 
     def __init__(self, canvas, xPos, yPos, startVal):
-        SliderControl.__init__(self, canvas, xPos, yPos, 45, 260, 0 , 127, startVal)
+        SliderControl.__init__(self, canvas, xPos, yPos, 50, 230, 0 , 127, startVal)
         self.beginVal = self.startYPos+self.sliderHalfHeight
         canvas.tag_bind(self.slider, '<ButtonRelease-1>', self.btnUp) 
 
