@@ -11,7 +11,7 @@ ENV_Sustain = 0
 ENV_Decay = 0
 ENV_Attack_Level = 1
 ENV_Decay_Level = 1
-ENV_Curve = 1 (1,3,6,7)
+ENV_Curve = 1 #(1,3,6,7)
 
 PITCH_ADJ = 0
 MidiSynthQueue = Queue.new #queued midi events for synth
