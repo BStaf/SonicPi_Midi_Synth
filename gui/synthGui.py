@@ -9,28 +9,33 @@ from NextPage import *
 import tkinter.font as tkFont
 import mido
 import os
+import json
 
-#guiPicName = os.path.dirname(os.path.realpath(__file__)) + "/guiMain.png"
+instrumentJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/InstrumentData.Json"
+
 windowHeight = 320
 windowWidth = 480
 
-instrumentList = [
-    "piano", 
-    "prophet", 
-    "blade",
-    "tb303",
-    "mod_fm",
-    "hoover",
-    "zawa",
-    "pluck",
-    "dull_bell",
-    "pretty_bell",
-    "beep",
-    "sine",
-    "saw",
-    "pulse",
-    "subpulse"
-    ]
+# instrumentList = [
+#     "piano", 
+#     "prophet", 
+#     "blade",
+#     "tb303",
+#     "mod_fm",
+#     "hoover",
+#     "zawa",
+#     "pluck",
+#     "dull_bell",
+#     "pretty_bell",
+#     "beep",
+#     "sine",
+#     "saw",
+#     "pulse",
+#     "subpulse"
+#     ]
+
+def loadInstrumentData(josnFilePath):
+    return json.load(josnFilePath)
 
 class MidiOut:
     def __init__(self):
@@ -72,6 +77,7 @@ class MidiIn(Thread):
 def midiInHandler(control, value):
     print(f"{control}-{value}")
     
+instrumentData = loadInstrumentData(instrumentJsonPath)
 
 midiOut = MidiOut()
 midiIn = MidiIn()
@@ -82,7 +88,7 @@ root = Tk()
 root.geometry(f"{windowWidth}x{windowHeight}")
 
 #main = MainPage(instrumentList, midiOut, root, width=windowWidth, height=windowHeight)
-main = NextPage(instrumentList, midiOut, midiIn, root, width=windowWidth, height=windowHeight)
+main = NextPage(instrumentData.keys(), midiOut, midiIn, root, width=windowWidth, height=windowHeight)
 
 main.pack(fill="both", expand=True)
 

@@ -1,31 +1,39 @@
-import tkinter as tk
-from tkinter import ttk
+def getList(dict): 
+    return dict.keys() 
+      
+# Driver program 
+dict = {1:'Geeks', 2:'for', 3:'geeks', 4: {5: "stuff"}} 
+print(getList(dict)) 
 
-root = tk.Tk()
-container = ttk.Frame(root)
-canvas = tk.Canvas(container)
-scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
-scrollable_frame = ttk.Frame(canvas)
 
-scrollable_frame.bind(
-    "<Configure>",
-    lambda e: canvas.configure(
-        scrollregion=canvas.bbox("all")
-    )
-)
+# import tkinter as tk
+# from tkinter import ttk
 
-canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+# root = tk.Tk()
+# container = ttk.Frame(root)
+# canvas = tk.Canvas(container)
+# scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
+# scrollable_frame = ttk.Frame(canvas)
 
-canvas.configure(yscrollcommand=scrollbar.set)
+# scrollable_frame.bind(
+#     "<Configure>",
+#     lambda e: canvas.configure(
+#         scrollregion=canvas.bbox("all")
+#     )
+# )
 
-for i in range(50):
-    ttk.Label(scrollable_frame, text="Sample scrolling label").pack()
+# canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
 
-container.pack()
-canvas.pack(side="left", fill="both", expand=True)
-scrollbar.pack(side="right", fill="y")
+# canvas.configure(yscrollcommand=scrollbar.set)
 
-root.mainloop()
+# for i in range(50):
+#     ttk.Label(scrollable_frame, text="Sample scrolling label").pack()
+
+# container.pack()
+# canvas.pack(side="left", fill="both", expand=True)
+# scrollbar.pack(side="right", fill="y")
+
+# root.mainloop()
 
 
 

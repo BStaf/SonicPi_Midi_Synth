@@ -25,9 +25,13 @@ killList = []
   ns[i] = {node: nil, onStatus: 0}
 end
 
-InstrumentLookup = { 0 => :piano, 1 => :prophet, 2 => :blade, 3 => :tb303, 4 => :mod_fm,
-                  5 => :hoover, 6 => :zawa, 7 => :pluck, 8 => :dull_bell, 9 => :pretty_bell,
-                  10 => :beep, 11 => :sine, 12 => :saw, 13 => :pulse, 14 => :subpulse}
+InstrumentLookup = {0 => :piano, 1 => :pluck, 2 => :prophet, 3 => :blade, 4 => :dull_bell, 
+                  5 => :pretty_bell, 6 => :hollow, 7 => :hoover, 8 => :tb303, 9 => :beep, 
+                  10 => :sine, 11 => :saw 0, 12 => :pulse, 13 => :subpulse, 14 => :square, 
+                  15 => :tri, 16 => :dsaw, 17 => :dpulse, 18 => :dtri, 19 => :fm, 
+                  20 => :mod_fm, 21 => :mod_saw, 22 => :mod_dsaw, 23 => :mod_sine, 24 => :mod_beep, 
+                  25 => :mod_tri, 26 => :mod_pulse, 27 => :supersaw, 28 => :dark_ambience, 29 => :growl, 
+                  30 => :pnoise, 31 => :bnoise, 32 => :gnoise, 33 => :cnoise}
 
 CurrentInstrument = 0
 
