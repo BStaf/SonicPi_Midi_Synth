@@ -1,5 +1,6 @@
 from tkinter import *
 from AppPalette import *
+from widgets.SliderControl import *
 
 class LowerLabel(Label):
     def __init__(self, *args, **kwargs):
@@ -17,3 +18,19 @@ class MenuBtn:
 
         canvas.tag_bind(btnRect, '<Button-1>', callBack)
         btnLbl.bind("<Button-1>", callBack)
+
+class StandardMidiSliderControl(SliderControl):
+    def __init__(self, canvas, xPos, yPos, startVal):
+        SliderControl.__init__(self, canvas, xPos, yPos, 50, 230, 0 , 127, startVal) 
+
+#reverts to startVal when let go
+class SpringMidiSliderControl(StandardMidiSliderControl):
+    def __init__(self, canvas, xPos, yPos, startVal):
+        StandardMidiSliderControl.__init__(self, canvas, xPos, yPos, startVal)
+        self.beginVal = self._startYPos+self._sliderHalfHeight
+        canvas.tag_bind(self._slider, '<ButtonRelease-1>', self.btnUp) 
+
+    def btnUp(self, event):
+        self._updateSlider(self.beginVal)
+        self._updateSliderValue(self.beginVal)
+        return

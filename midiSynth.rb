@@ -1,19 +1,25 @@
 MidiBaseStr = "/midi:*:*:*"
 
+#Low Pass Filter vars
 RLPF_Res = 0.5
 RLPF_Cutoff = 100
+
++#Envelope vars
 ENV_Attack = 0
 ENV_Release = 1
+ENV_Sustain = 0
+ENV_Decay = 0
+ENV_Attack_Level = 1
+ENV_Decay_Level = 1
+ENV_Curve = 1 (1,3,6,7)
+
 PITCH_ADJ = 0
-
-MAX_NODES = 9
-
 MidiSynthQueue = Queue.new #queued midi events for synth
 MidiDrumQueue = Queue.new #queued midi events for drums
 
 ns = [] #array to store note playing references
 killList = []
-#FxNode = nil
+
 
 128.times do |i|
   ns[i] = {node: nil, onStatus: 0}
@@ -142,6 +148,13 @@ define :setSynth do
   use_synth InstrumentLookup[CurrentInstrument]
 end
 
+define :playNote do |note, vol|
+  #max duration of note set to 5 on next line. Can increase if you wish.
+  node = play note, amp: vol, attack: ENV_Attack , release: ENV_Release, decay: ENV_Decay, sustain: 50,
+  attack_level: ENV_Attack_Level, decay_level: ENV_Decay_Level, env_curve: ENV_Curve
+  return node
+end
+
 define :noteOn do |note, vol|
   nodeData = ns[note]
   if nodeData[:onStatus] == 0 #check if new start for the note
@@ -152,9 +165,8 @@ define :noteOn do |note, vol|
       #kill nodeData[:node]
     end
     setSynth
-    #max duration of note set to 5 on next line. Can increase if you wish.
-    node = play note, amp: (vol / 127.0), attack: ENV_Attack , release: 1, sustain: 50 #play note
-    #print "note played"
+    
+    node = playNote note, vol/127.0
     ns[note] = {node: node, onStatus: 1}
   end
 end

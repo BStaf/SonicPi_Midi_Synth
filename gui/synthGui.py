@@ -1,12 +1,18 @@
+from threading import Thread
+import time
+
 from tkinter import * 
 from AppPalette import *
 from MainPage import *
+from NextPage import *
 
 import tkinter.font as tkFont
 import mido
 import os
 
-guiPicName = os.path.dirname(os.path.realpath(__file__)) + "/guiMain.png"
+#guiPicName = os.path.dirname(os.path.realpath(__file__)) + "/guiMain.png"
+windowHeight = 320
+windowWidth = 480
 
 instrumentList = [
     "piano", 
@@ -30,29 +36,55 @@ class MidiOut:
     def __init__(self):
         #port = [x for x in mido.get_output_names() if "Midi Through" in x][0]
         #self.midiOut = mido.open_output(port)
+        self.channel = 15
         self.midiOut = mido.open_output(mido.get_output_names()[1])
 
     def sendProgramChange(self, index):
-        msg = mido.Message('program_change', program =index)
+        msg = mido.Message('program_change', channel=self.channel, program =index)
         self.midiOut.send(msg)
 
     def sendControlChange(self, cntrlId, value):
-        msg = mido.Message('control_change', channel=1, control=cntrlId, value=value)
+        msg = mido.Message('control_change', channel=self.channel, control=cntrlId, value=value)
         self.midiOut.send(msg)
 
-midiOut = MidiOut()
+class MidiIn(Thread):
+    def __init__(self):
+        Thread.__init__(self)
+        self.handlers = []
+        self.midiIn = mido.open_input(mido.get_input_names()[0])
 
-root = Tk()      
-#root.wm_attributes('-type', 'splash')
-windowHeight = 320
-windowWidth = 480
+    def run(self):
+        while True:
+            # Get the work from the queue and expand the tuple
+            for msg in self.midiIn:
+                self.processMidi(msg)
+
+    def processMidi(self, msg):
+        if msg.channel != 15 and msg.type == "control_change":
+            #send event
+            for handler in self.handlers:
+                handler(msg.control, msg.value)
+            
+    
+    def OnUpdate(self, handler):
+        self.handlers.append(handler)
+
+def midiInHandler(control, value):
+    print(f"{control}-{value}")
+    
+
+midiOut = MidiOut()
+midiIn = MidiIn()
+midiIn.daemon = True #set this thread as a Daemon Thread
+#midiIn.OnUpdate(midiInHandler)
+
+root = Tk() 
 root.geometry(f"{windowWidth}x{windowHeight}")
 
-#bigfont = tkFont.Font(family="Helvetica",size=17)
-#root.option_add("*Font", bigfont)
+#main = MainPage(instrumentList, midiOut, root, width=windowWidth, height=windowHeight)
+main = NextPage(instrumentList, midiOut, midiIn, root, width=windowWidth, height=windowHeight)
 
-main = MainPage(instrumentList, midiOut, root, width=windowWidth, height=windowHeight)
 main.pack(fill="both", expand=True)
 
+midiIn.start()
 mainloop() 
-

@@ -3,11 +3,12 @@ from tkinter import ttk
 from widgets.AppWidgets import *
 from AppPalette import *
 
-class MainPage(Frame):
-    def __init__(self, instrumentList, midiOut, *args, **kwargs):
+class NextPage(Frame):
+    def __init__(self, instrumentList, midiOut, midiIn, *args, **kwargs):
         Frame.__init__(self, *args, **kwargs)
         self.config(bg=AppPalette.Blue)
         self.midiOut = midiOut
+        midiIn.OnUpdate(self.midiInHandler)
         self.instrumentList = instrumentList
         canvasTop = Canvas(self, width=self['width'], height=50, bg=AppPalette.DarkBlue,highlightthickness=0) 
         canvasBottom = Canvas(self, width=self['width'], height=self['height']-50, bg=AppPalette.Blue,highlightthickness=0)  
@@ -17,6 +18,11 @@ class MainPage(Frame):
 
         canvasTop.pack(side="top", expand=YES)
         canvasBottom.pack(side="bottom", expand=YES)#3fill=BOTH, expand=YES)
+
+    def midiInHandler(self, control, value):
+        print(f"Next-{control}-{value}")
+        if control == 1:
+            self.sldr.setToValue(value)
 
     def btnCallback(self, event):
         print("called")
@@ -31,28 +37,27 @@ class MainPage(Frame):
         return
 
     def populateBottomCanvas(self, canvas):
-        cbox = ttk.Combobox(canvas, justify='center', values=self.instrumentList,width=15, height=7)
-        cbox.config(font='Helvetica 17')
-        cbox.current(0)
-        cbox.place(x=170, y=26)
-        cbox.bind("<<ComboboxSelected>>", self.instrumentComboBoxCallback)
+        self.sldr = StandardMidiSliderControl(canvas,20,26,0)
+        StandardMidiSliderControl(canvas,85,26,0)
+        StandardMidiSliderControl(canvas,150,26,0)
+        StandardMidiSliderControl(canvas,215,26,0)
+        StandardMidiSliderControl(canvas,280,26,0)
+        StandardMidiSliderControl(canvas,345,26,0)
+        StandardMidiSliderControl(canvas,410,26,0)
+        # ModulationSldr = StandardMidiSliderControl(canvas,90,26,0)
+        # MasterVolumeSldr = StandardMidiSliderControl(canvas,408,26,0.9*127)
 
-        PitchSldr = SpringMidiSliderControl(canvas,20,26,63)
-        ModulationSldr = StandardMidiSliderControl(canvas,90,26,0)
-        MasterVolumeSldr = StandardMidiSliderControl(canvas,408,26,0.9*127)
-
-        PitchSldr.OnUpdate(self.updatePitch)
-        ModulationSldr.OnUpdate(self.updateModulation)
-        MasterVolumeSldr.OnUpdate(self.updateMasterVolume)
+        # ModulationSldr.OnUpdate(self.updateModulation)
+        # MasterVolumeSldr.OnUpdate(self.updateMasterVolume)
         
-        lblPitch = LowerLabel(canvas, text='Pitch')
-        lblPitch.place(x = 43,y = 13, anchor="center")
-        lblMod = LowerLabel(canvas, text='Modulation')
-        lblMod.place(x = 115,y = 13, anchor="center")
-        lblInst = LowerLabel(canvas, text='Instrument')
-        lblInst.place(x = 275,y = 13, anchor="center")
-        lblVol = LowerLabel(canvas, text='Mstr Volume')
-        lblVol.place(x = 432,y = 13, anchor="center")
+        # lblPitch = LowerLabel(canvas, text='Pitch')
+        # lblPitch.place(x = 43,y = 13, anchor="center")
+        # lblMod = LowerLabel(canvas, text='Modulation')
+        # lblMod.place(x = 115,y = 13, anchor="center")
+        # lblInst = LowerLabel(canvas, text='Instrument')
+        # lblInst.place(x = 275,y = 13, anchor="center")
+        # lblVol = LowerLabel(canvas, text='Mstr Volume')
+        # lblVol.place(x = 432,y = 13, anchor="center")
         return
 
     def instrumentComboBoxCallback(self, eventObject):
