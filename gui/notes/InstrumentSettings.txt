@@ -1,0 +1,35 @@
+Instrument	attack	decay	release	attack_level	decay_level	env_curve	cutoff	pulse_width	sub_amp	sub_detune	detune	dpulse_width	divisor	depth	mod_phase	mod_range	mod_pulse_width	mod_pahse_offset	mod_invert_wave	mod_wave	res	detune1	detune2	noise	ring	room	reverb_time	norm	vibrato_rate	vibrato_depth	vibrato_delay	vibrato_onset	vel	hard	stereo_width	noise_amp	max_delay_time	pluck_decay	coef
+piano	0	0	1	1	1	1																											0.2	0.5	0				
+pluck	0	0	1	1	1	1																														0.8	0.125	30	0.3
+prophet	0	0	1	1	1	1	110														0.7																		
+blade	0	0	1	1	1	1	100																						6	0.15	0.5	0.1							
+dull_bell	0	0	1	1	1	1																																	
+pretty_bell	0	0	1	1	1	1																																	
+hollow	0	0	1	1	1	1	90														0.99			1				1											
+hoover	0.05	0	1	1	1	1	130														0.1																		
+tb303	0	0	1	1	1	1	100																																
+beep	0	0	1	1	1	1																																	
+sine	0	0	1	1	1	1																																	
+saw	0	0	1	1	1	1																																	
+pulse	0	0	1	1	1	1	100	0.5																															
+subpulse	0	0	1	1	1	1	100	0.5	1	-12																													
+square	0	0	1	1	1	1	100																																
+tri	0	0	1	1	1	1	100	0.5																															
+dsaw	0	0	1	1	1	1	100				0.1																												
+dpulse	0	0	1	1	1	1	100	0.5				0.5																											
+dtri	0	0	1	1	1	1	100				0.1																												
+fm	0	0	1	1	1	1	100						2	1																									
+mod_fm	0	0	1	1	1	1	100						2	1	0.25	5	0.5	0	0	1																			
+mod_saw	0	0	1	1	1	1	100								0.25	5	0.5			1																			
+mod_dsaw	0	0	1	1	1	1	100				0.1				0.25	5	0.5	0	0	1																			
+mod_sine	0	0	1	1	1	1	100								0.25	5	0.5			1																			
+mod_beep	0	0	1	1	1	1	100								0.25	5	0.5			1																			
+mod_tri	0	0	1	1	1	1	100								0.25	5	0.5			1																			
+mod_pulse	0	0	1	1	1	1	100	0.5							0.25	5	0.5	0	0	1																			
+supersaw	0	0	1	1	1	1	130														0.7																		
+dark_ambience	0	0	1	1	1	1	110														0.7	12	24	0	0.2	70	100												
+growl	0.1	0	1	1	1	1	130														0.7																		
+pnoise	0	0	1	1	1	1	110														0																		
+bnoise	0	0	1	1	1	1	110														0																		
+gnoise	0	0	1	1	1	1	110														0																		
+cnoise	0	0	1	1	1	1	110														0																		

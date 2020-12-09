@@ -1,0 +1,43 @@
+control	midi_in_control	midi_out_control
+master_volume	7	30
+modulation	1	31
+pitch		32
+attack	73	33
+decay	75	34
+release	72	35
+attack_level		36
+decay_level		37
+env_curve		38
+cutoff	74	39
+pulse_width		40
+sub_amp		41
+sub_detune		42
+detune	94	43
+dpulse_width		44
+divisor		45
+depth		46
+mod_phase		47
+mod_range		48
+mod_pulse_width		49
+mod_pahse_offset		50
+mod_invert_wave		51
+mod_wave		52
+res	71	53
+detune1		54
+detune2		55
+noise		56
+ring		57
+room		58
+reverb_time		59
+norm		60
+vibrato_rate		61
+vibrato_depth		62
+vibrato_delay		63
+vibrato_onset		64
+vel		65
+hard		66
+stereo_width		67
+noise_amp		68
+max_delay_time		69
+pluck_decay		70
+coef		71

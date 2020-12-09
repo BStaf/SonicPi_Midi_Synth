@@ -1,0 +1,37 @@
+attack	0-1
+decay	0-1
+sustain	0-1
+release	0-1
+attack_level	0-1
+decay_level	0-1
+sustain_level	0-1
+env_curve	1=linear	2=exponential	3=sine	4=welch	6=squared	7=cubed
+cutoff	0-130
+pulse_width 0-1
+sub_amp	sub_detune	0-1
+detune	dpulse_width	0-1
+divisor	depth	0-1
+mod_phase	0-1
+mod_range	0-1
+mod_pulse_width	mod_pahse_offset	0,1
+mod_invert_wave	0,1
+mod_wave	0,1,2,3
+res	0-1
+detune1	0-1
+detune2	0-1
+noise	1,2,3,4
+ring	0.1-50
+room	0-300
+reverb_time	>0	
+norm 	0,1
+vibrato_rate	6-8 or 0-20
+vibrato_depth	0-5
+vibrato_delay	>0
+vibrato_onset	>0
+vel	0-1
+hard	0-1
+stereo_width	0-1
+noise_amp	0-1
+max_delay_time	0.125 - 1
+pluck_decay	1-100
+coef	-1 - 1
