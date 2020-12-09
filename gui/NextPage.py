@@ -8,7 +8,7 @@ class NextPage(Frame):
         Frame.__init__(self, *args, **kwargs)
         self.config(bg=AppPalette.Blue)
         self.__curInstrument = "piano"
-        self.__sliders = {}
+        self._sliders = {}
         self.__pages = pages
         self.__midiMaster = midiMaster
         midiMaster.onUpdate(self.midiInHandler)
@@ -31,9 +31,10 @@ class NextPage(Frame):
         self.__populateBottomCanvas(self.__canvasBottom)
 
     def midiInHandler(self, controlName, value):
-        print(f"NextPage midiInHandler-{controlName}-{value}")
-        slider = self.__sliders[controlName]
-        slider.setToValue(value)
+        #print(f"NextPage midiInHandler-{controlName}-{value}")
+        slider = self._sliders.get(controlName, None)
+        if slider is not None:
+            slider.setToValue(value)
 
     def __btnCallback(self, event):
         self.__pages["mainPage"].show()
@@ -58,11 +59,11 @@ class NextPage(Frame):
             xPos = (i*75)+20
             slider = StandardMidiSliderControl(canvas,xPos,26,float(value)*100)
             slider.OnUpdate(self.__handleSliderChange)
-            self.__sliders[name] = slider
+            self._sliders[name] = slider
             i = i+1
 
     def __handleSliderChange(self, obj, event):
-        for key, value in self.__sliders.items():
+        for key, value in self._sliders.items():
             if value == obj:
                 #print (f"Found {key}, {event}")
                 self.__midiMaster.sendControlOutputForControlName(key, event)

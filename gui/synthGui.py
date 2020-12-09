@@ -41,8 +41,8 @@ class MidiIn(Thread):
         print(mido.get_input_names())
         self.handlers = []
         #port = [x for x in mido.get_input_names() if "loop" in x][0] 
-        #port = [x for x in mido.get_input_names() if "Arduino" in x][0] 
-        port = [x for x in mido.get_input_names() if "Midi Through" in x][0]
+        port = [x for x in mido.get_input_names() if "Arduino" in x][0] 
+        #port = [x for x in mido.get_input_names() if "Midi Through" in x][0]
         self.midiIn = mido.open_input(port)
 
     def run(self):
