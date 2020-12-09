@@ -40,8 +40,8 @@ class MidiIn(Thread):
         Thread.__init__(self)
         print(mido.get_input_names())
         self.handlers = []
-        #port = [x for x in mido.get_input_names() if "Arduino" in x][0] 
-        port = [x for x in mido.get_input_names() if "Midi Through" in x][0]
+        port = [x for x in mido.get_input_names() if "Arduino" in x][0] 
+        #port = [x for x in mido.get_input_names() if "Midi Through" in x][0]
         self.midiOut = mido.open_input(port)
         #self.midiIn = mido.open_input(mido.get_input_names()[0])
 
@@ -67,7 +67,7 @@ class MidiMaster:
         self.__midiIn = MidiIn()
         self.__midiIn.daemon = True #set this thread as a Daemon Thread
         self.__midiIn.OnUpdate(self.midiInHandler)
-        self.__midiIn.start()
+        #self.__midiIn.start()
 
         self.__midiControlData = midiControlData
 

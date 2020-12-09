@@ -1,27 +1,37 @@
 MidiBaseStr = "/midi:*:*:*"
 
+#Low Pass Filter vars
 RLPF_Res = 0.5
 RLPF_Cutoff = 100
+
++#Envelope vars
 ENV_Attack = 0
 ENV_Release = 1
+ENV_Sustain = 0
+ENV_Decay = 0
+ENV_Attack_Level = 1
+ENV_Decay_Level = 1
+ENV_Curve = 1 #(1,3,6,7)
+
 PITCH_ADJ = 0
-
-MAX_NODES = 9
-
 MidiSynthQueue = Queue.new #queued midi events for synth
 MidiDrumQueue = Queue.new #queued midi events for drums
 
 ns = [] #array to store note playing references
 killList = []
-#FxNode = nil
+
 
 128.times do |i|
   ns[i] = {node: nil, onStatus: 0}
 end
 
-InstrumentLookup = { 0 => :piano, 1 => :prophet, 2 => :blade, 3 => :tb303, 4 => :mod_fm,
-                  5 => :hoover, 6 => :zawa, 7 => :pluck, 8 => :dull_bell, 9 => :pretty_bell,
-                  10 => :beep, 11 => :sine, 12 => :saw, 13 => :pulse, 14 => :subpulse}
+InstrumentLookup = {0 => :piano, 1 => :pluck, 2 => :prophet, 3 => :blade, 4 => :dull_bell, 
+                  5 => :pretty_bell, 6 => :hollow, 7 => :hoover, 8 => :tb303, 9 => :beep, 
+                  10 => :sine, 11 => :saw, 12 => :pulse, 13 => :subpulse, 14 => :square, 
+                  15 => :tri, 16 => :dsaw, 17 => :dpulse, 18 => :dtri, 19 => :fm, 
+                  20 => :mod_fm, 21 => :mod_saw, 22 => :mod_dsaw, 23 => :mod_sine, 24 => :mod_beep, 
+                  25 => :mod_tri, 26 => :mod_pulse, 27 => :supersaw, 28 => :dark_ambience, 29 => :growl, 
+                  30 => :pnoise, 31 => :bnoise, 32 => :gnoise, 33 => :cnoise}
 
 CurrentInstrument = 0
 
@@ -62,7 +72,9 @@ in_thread(name: :read_midiControl) do
     use_real_time
     cntrlNum, value = sync MidiBaseStr + "/control_change"
     cmd = getMidiCntrlObjFromMidiInput cntrlNum, value, MidiBaseStr
-    setControlSettings cmd[:controlNum], cmd[:value]
+    if cmd[:channel] == "16"
+      setControlSettings cmd[:controlNum], cmd[:value]
+    end
   end
 end
 
@@ -83,20 +95,28 @@ define :scaleMidiAi do |rawVal, lowEu, highEu|
 end
 
 define :setControlSettings do |cntrlNum, cntrlValue|
-  if cntrlNum == 16
+  if cntrlNum == 53
     RLPF_Res = scaleMidiAi cntrlValue, 0, 0.9
-  elsif cntrlNum == 17
+  elsif cntrlNum == 39
     RLPF_Cutoff = scaleMidiAi cntrlValue, 50, 130
-  elsif cntrlNum == 18
+  elsif cntrlNum == 33
+  #envelope
     ENV_Attack = scaleMidiAi cntrlValue, 0, 1
-  elsif cntrlNum == 19
+  elsif cntrlNum == 35
     ENV_Release = scaleMidiAi cntrlValue, 0, 2
-  elsif cntrlNum == 20
+  elsif cntrlNum == 34
+    ENV_Decay = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 36
+    ENV_Attack_Level = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 37
+    ENV_Decay_Level = scaleMidiAi cntrlValue, 0, 1
+
+  elsif cntrlNum == 32
     PITCH_ADJ = (scaleMidiAi cntrlValue, 0, 12) - 6
     if PITCH_ADJ < 0.1 && PITCH_ADJ > -0.1
       PITCH_ADJ = 0
     end
-  elsif cntrlNum == 22
+  elsif cntrlNum == 7
     set_volume! (scaleMidiAi cntrlValue, 0, 1)
   end
   #control FxNode, res: RLPF_Res, cutoff: RLPF_Cutoff
@@ -142,6 +162,13 @@ define :setSynth do
   use_synth InstrumentLookup[CurrentInstrument]
 end
 
+define :playNote do |note, vol|
+  #max duration of note set to 5 on next line. Can increase if you wish.
+  node = play note, amp: vol, attack: ENV_Attack , release: ENV_Release, decay: ENV_Decay, sustain: 50,
+  attack_level: ENV_Attack_Level, decay_level: ENV_Decay_Level, env_curve: ENV_Curve
+  return node
+end
+
 define :noteOn do |note, vol|
   nodeData = ns[note]
   if nodeData[:onStatus] == 0 #check if new start for the note
@@ -152,9 +179,8 @@ define :noteOn do |note, vol|
       #kill nodeData[:node]
     end
     setSynth
-    #max duration of note set to 5 on next line. Can increase if you wish.
-    node = play note, amp: (vol / 127.0), attack: ENV_Attack , release: 1, sustain: 50 #play note
-    #print "note played"
+    
+    node = playNote note, vol/127.0
     ns[note] = {node: node, onStatus: 1}
   end
 end
