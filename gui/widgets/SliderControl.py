@@ -33,7 +33,7 @@ class SliderControl:
 
     def setToValue(self, value):
         pos = self.__calcPositionFromValue(value)
-        print(pos)
+        #print(pos)
         self._updateSlider(pos)
         #self._updateSliderValue(value)
 

@@ -31,9 +31,9 @@ class NextPage(Frame):
         self.__populateBottomCanvas(self.__canvasBottom)
 
     def midiInHandler(self, controlName, value):
-        print(f"Next-{controlName}-{value}")
-        if control == 1:
-            self.sldr.setToValue(value)
+        print(f"NextPage midiInHandler-{controlName}-{value}")
+        slider = self.__sliders[controlName]
+        slider.setToValue(value)
 
     def __btnCallback(self, event):
         self.__pages["mainPage"].show()

@@ -21,10 +21,10 @@ windowWidth = 480
 class MidiOut:
     def __init__(self):
         port = [x for x in mido.get_output_names() if "Midi Through" in x][0]
+        #port = [x for x in mido.get_output_names() if "loop" in x][0]
         self.midiOut = mido.open_output(port)
-        print(mido.get_output_names())
+        #print(mido.get_output_names())
         self.channel = 15
-        #self.midiOut = mido.open_output(mido.get_output_names()[2])
 
     def sendProgramChange(self, index):
         msg = mido.Message('program_change', channel=self.channel, program =index)
@@ -40,10 +40,10 @@ class MidiIn(Thread):
         Thread.__init__(self)
         print(mido.get_input_names())
         self.handlers = []
-        port = [x for x in mido.get_input_names() if "Arduino" in x][0] 
-        #port = [x for x in mido.get_input_names() if "Midi Through" in x][0]
-        self.midiOut = mido.open_input(port)
-        #self.midiIn = mido.open_input(mido.get_input_names()[0])
+        #port = [x for x in mido.get_input_names() if "loop" in x][0] 
+        #port = [x for x in mido.get_input_names() if "Arduino" in x][0] 
+        port = [x for x in mido.get_input_names() if "Midi Through" in x][0]
+        self.midiIn = mido.open_input(port)
 
     def run(self):
         while True:
@@ -53,6 +53,7 @@ class MidiIn(Thread):
 
     def processMidi(self, msg):
         if msg.channel != 15 and msg.type == "control_change":
+            #print (f"Raw midi in: {controlId}-{value}")
             #send event
             for handler in self.handlers:
                 handler(msg.control, msg.value)
@@ -82,13 +83,18 @@ class MidiMaster:
     def midiInHandler(self, controlId, value):
         #if controlId is in midiControlData send out event
         for key, dictVal in self.__midiControlData.items():
-            #print (f"{controlId}-{value}")
+            
             id = dictVal.get('midi_in_control', None)
             if id is not None and int(id) == controlId:
                 controlName = key
+                #send midi out to synth
+                outId = dictVal.get('midi_out_control', None)
+                self.midiOut.sendControlChange(int(outId), int(value))
+                scaledVal = value/127 * 100
                 #produce Event
+                #print (f"Send midi in event: {key}-{scaledVal}")
                 for handler in self.__handlers:
-                    handler(controlName, value)
+                    handler(controlName, scaledVal)
                 break
 
 class MainFrame(Frame):

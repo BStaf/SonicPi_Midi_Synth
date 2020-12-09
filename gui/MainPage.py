@@ -71,13 +71,13 @@ class MainPage(Frame):
         return
 
     def updatePitch(self, obj, event):
-        self.__midiMaster.midiOut.sendControlChange(20,event)
+        self.__midiMaster.sendControlOutputForControlName("pitch", event)
         return
 
     def updateModulation(self, obj, event):
-        self.__midiMaster.midiOut.sendControlChange(1,event)
+        self.__midiMaster.sendControlOutputForControlName("modulation", event)
         return
 
     def updateMasterVolume(self, obj, event):
-        self.__midiMaster.midiOut.sendControlChange(7,event)
+        self.__midiMaster.sendControlOutputForControlName("master_volume", event)
         return
