@@ -67,7 +67,7 @@ class MidiMaster:
         self.__midiIn = MidiIn()
         self.__midiIn.daemon = True #set this thread as a Daemon Thread
         self.__midiIn.OnUpdate(self.midiInHandler)
-        #self.__midiIn.start()
+        self.__midiIn.start()
 
         self.__midiControlData = midiControlData
 
