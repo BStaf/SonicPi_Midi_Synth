@@ -1,27 +1,19 @@
 from threading import Thread
 import time
 
-from tkinter import * 
-from AppPalette import *
-from MainPage import *
-from NextPage import *
-
-import tkinter.font as tkFont
 import mido
 import os
 import json
 
-instrumentJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/InstrumentData.Json"
+
 midiControlJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/ControlData.Json"
 
-windowHeight = 320
-windowWidth = 480
 
 
 class MidiOut:
     def __init__(self):
-        port = [x for x in mido.get_output_names() if "Midi Through" in x][0]
-        #port = [x for x in mido.get_output_names() if "loop" in x][0]
+        #port = [x for x in mido.get_output_names() if "Midi Through" in x][0]
+        port = [x for x in mido.get_output_names() if "loop" in x][0]
         self.midiOut = mido.open_output(port)
         #print(mido.get_output_names())
         self.channel = 15
@@ -40,20 +32,21 @@ class MidiIn(Thread):
         Thread.__init__(self)
         print(mido.get_input_names())
         self.handlers = []
-        #port = [x for x in mido.get_input_names() if "loop" in x][0] 
+        port = [x for x in mido.get_input_names() if "loop" in x][0] 
         #port = [x for x in mido.get_input_names() if "Arduino" in x][0] 
-        port = [x for x in mido.get_input_names() if "Midi Through" in x][0]
+        #port = [x for x in mido.get_input_names() if "Midi Through" in x][0]
         self.midiIn = mido.open_input(port)
 
     def run(self):
         while True:
             # Get the work from the queue and expand the tuple
+            print("start raeding midi")
             for msg in self.midiIn:
                 self.processMidi(msg)
 
     def processMidi(self, msg):
         if msg.channel != 15 and msg.type == "control_change":
-            
+            print (f"Raw midi in: {msg.control}-{msg.value}")
             #send event
             for handler in self.handlers:
                 handler(msg.control, msg.value)
@@ -97,39 +90,12 @@ class MidiMaster:
                     handler(controlName, scaledVal)
                 break
 
-class MainFrame(Frame):
-    def __init__(self, *args, **kwargs):
-        Frame.__init__(self, *args, **kwargs)
-
-        pages = {}
-
-        pages["instConfigPage"] = NextPage(pages, instrumentData, midiMaster, root, width=windowWidth, height=windowHeight)
-        pages["mainPage"] = MainPage(pages, list(instrumentData.keys()), midiMaster, root, width=windowWidth, height=windowHeight)
-
-        container = Frame(self)
-        container.pack(fill="both", expand=True)
-
-        for key, value in pages.items():
-             value.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
-        
-        pages["mainPage"].show()
-   
-with open(instrumentJsonPath, 'r') as reader:
-    instrumentData = json.load(reader)
 
 with open(midiControlJsonPath, 'r') as reader:
     midiControlData = json.load(reader)
 
 midiMaster = MidiMaster(midiControlData)
 
-root = Tk() 
-root.wm_attributes('-type', 'splash')
-root.geometry(f"{windowWidth}x{windowHeight}")
-bigfont = tkFont.Font(family="Helvetica",size=17)
-root.option_add("*Font", bigfont)
-
-
-main = MainFrame(root)
-main.pack(side="top", fill="both", expand=True)
-
-mainloop() 
+while True:
+    #print('tick')
+    time.sleep(0.5)
