@@ -21,7 +21,7 @@ class MenuBtn:
 
 class StandardMidiSliderControl(SliderControl):
     def __init__(self, canvas, xPos, yPos, startVal):
-        SliderControl.__init__(self, canvas, xPos, yPos, 50, 230, 0 , 127, startVal) 
+        SliderControl.__init__(self, canvas, xPos, yPos, 50, 230, 0 , 100, startVal) 
 
 #reverts to startVal when let go
 class SpringMidiSliderControl(StandardMidiSliderControl):

@@ -2,11 +2,9 @@
     "piano": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "vel": "0.2",
         "hard": "0.5",
@@ -15,11 +13,9 @@
     "pluck": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "noise_amp": "0.8",
         "max_delay_time": "0.125",
@@ -29,11 +25,9 @@
     "prophet": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "110",
         "res": "0.7"
@@ -41,11 +35,9 @@
     "blade": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "vibrato_rate": "6",
@@ -56,31 +48,25 @@
     "dull_bell": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1"
     },
     "pretty_bell": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1"
     },
     "hollow": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "90",
         "res": "0.99",
@@ -90,11 +76,9 @@
     "hoover": {
         "attack": "0.05",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "130",
         "res": "0.1"
@@ -102,51 +86,42 @@
     "tb303": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100"
     },
     "beep": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1"
     },
     "sine": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1"
     },
-    "saw 0": {
+    "saw": {
         "attack": "0",
         "decay": "0",
-        "sustain": "1",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1"
+        "env_curve": "1"
     },
     "pulse": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "pulse_width": "0.5"
@@ -154,11 +129,9 @@
     "subpulse": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "pulse_width": "0.5",
@@ -168,22 +141,18 @@
     "square": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100"
     },
     "tri": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "pulse_width": "0.5"
@@ -191,11 +160,9 @@
     "dsaw": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "detune": "0.1"
@@ -203,11 +170,9 @@
     "dpulse": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "pulse_width": "0.5",
@@ -216,11 +181,9 @@
     "dtri": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "detune": "0.1"
@@ -228,11 +191,9 @@
     "fm": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "divisor": "2",
@@ -241,11 +202,9 @@
     "mod_fm": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "divisor": "2",
@@ -260,11 +219,9 @@
     "mod_saw": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "mod_phase": "0.25",
@@ -275,11 +232,9 @@
     "mod_dsaw": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "detune": "0.1",
@@ -293,11 +248,9 @@
     "mod_sine": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "mod_phase": "0.25",
@@ -308,11 +261,9 @@
     "mod_beep": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "mod_phase": "0.25",
@@ -323,11 +274,9 @@
     "mod_tri": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "mod_phase": "0.25",
@@ -338,11 +287,9 @@
     "mod_pulse": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "100",
         "pulse_width": "0.5",
@@ -356,11 +303,9 @@
     "supersaw": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "130",
         "res": "0.7"
@@ -368,11 +313,9 @@
     "dark_ambience": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "110",
         "res": "0.7",
@@ -386,11 +329,9 @@
     "growl": {
         "attack": "0.1",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "130",
         "res": "0.7"
@@ -398,11 +339,9 @@
     "pnoise": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "110",
         "res": "0"
@@ -410,11 +349,9 @@
     "bnoise": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "110",
         "res": "0"
@@ -422,11 +359,9 @@
     "gnoise": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "110",
         "res": "0"
@@ -434,11 +369,9 @@
     "cnoise": {
         "attack": "0",
         "decay": "0",
-        "sustain": "0",
         "release": "1",
         "attack_level": "1",
         "decay_level": "1",
-        "sustain_level": "1",
         "env_curve": "1",
         "cutoff": "110",
         "res": "0"

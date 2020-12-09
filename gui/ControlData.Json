@@ -1,0 +1,136 @@
+{
+    "master_volume": {
+        "midi_in_control": "7",
+        "midi_out_control": "30"
+    },
+    "modulation": {
+        "midi_in_control": "1",
+        "midi_out_control": "31"
+    },
+    "pitch": {
+        "midi_out_control": "32"
+    },
+    "attack": {
+        "midi_in_control": "73",
+        "midi_out_control": "33"
+    },
+    "decay": {
+        "midi_in_control": "75",
+        "midi_out_control": "34"
+    },
+    "release": {
+        "midi_in_control": "72",
+        "midi_out_control": "35"
+    },
+    "attack_level": {
+        "midi_out_control": "36"
+    },
+    "decay_level": {
+        "midi_out_control": "37"
+    },
+    "env_curve": {
+        "midi_out_control": "38"
+    },
+    "cutoff": {
+        "midi_in_control": "74",
+        "midi_out_control": "39"
+    },
+    "pulse_width": {
+        "midi_out_control": "40"
+    },
+    "sub_amp": {
+        "midi_out_control": "41"
+    },
+    "sub_detune": {
+        "midi_out_control": "42"
+    },
+    "detune": {
+        "midi_in_control": "94",
+        "midi_out_control": "43"
+    },
+    "dpulse_width": {
+        "midi_out_control": "44"
+    },
+    "divisor": {
+        "midi_out_control": "45"
+    },
+    "depth": {
+        "midi_out_control": "46"
+    },
+    "mod_phase": {
+        "midi_out_control": "47"
+    },
+    "mod_range": {
+        "midi_out_control": "48"
+    },
+    "mod_pulse_width": {
+        "midi_out_control": "49"
+    },
+    "mod_pahse_offset": {
+        "midi_out_control": "50"
+    },
+    "mod_invert_wave": {
+        "midi_out_control": "51"
+    },
+    "mod_wave": {
+        "midi_out_control": "52"
+    },
+    "res": {
+        "midi_in_control": "71",
+        "midi_out_control": "53"
+    },
+    "detune1": {
+        "midi_out_control": "54"
+    },
+    "detune2": {
+        "midi_out_control": "55"
+    },
+    "noise": {
+        "midi_out_control": "56"
+    },
+    "ring": {
+        "midi_out_control": "57"
+    },
+    "room": {
+        "midi_out_control": "58"
+    },
+    "reverb_time": {
+        "midi_out_control": "59"
+    },
+    "norm": {
+        "midi_out_control": "60"
+    },
+    "vibrato_rate": {
+        "midi_out_control": "61"
+    },
+    "vibrato_depth": {
+        "midi_out_control": "62"
+    },
+    "vibrato_delay": {
+        "midi_out_control": "63"
+    },
+    "vibrato_onset": {
+        "midi_out_control": "64"
+    },
+    "vel": {
+        "midi_out_control": "65"
+    },
+    "hard": {
+        "midi_out_control": "66"
+    },
+    "stereo_width": {
+        "midi_out_control": "67"
+    },
+    "noise_amp": {
+        "midi_out_control": "68"
+    },
+    "max_delay_time": {
+        "midi_out_control": "69"
+    },
+    "pluck_decay": {
+        "midi_out_control": "70"
+    },
+    "coef": {
+        "midi_out_control": "71"
+    }
+}

@@ -13,7 +13,7 @@ class SliderControl:
         
         sliderHeight = width/1.3
         self._sliderHalfHeight = sliderHeight/2
-        print(f"{sliderHeight}-{self._sliderHalfHeight+sliderHeight}-{yPos}-{yPos+self._sliderHalfHeight}")
+        #print(f"{sliderHeight}-{self._sliderHalfHeight+sliderHeight}-{yPos}-{yPos+self._sliderHalfHeight}")
         self._sliderRange = height-sliderHeight
 
         #self.lastYpos=0
@@ -55,7 +55,7 @@ class SliderControl:
         #print (f"curent value is {val}")
         if val != self._lastVal:
             for handler in self.__handlers:
-                handler(val)
+                handler(self, val)
         self._lastVal = val
         return
 

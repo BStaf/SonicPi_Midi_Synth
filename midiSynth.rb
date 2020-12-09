@@ -27,7 +27,7 @@ end
 
 InstrumentLookup = {0 => :piano, 1 => :pluck, 2 => :prophet, 3 => :blade, 4 => :dull_bell, 
                   5 => :pretty_bell, 6 => :hollow, 7 => :hoover, 8 => :tb303, 9 => :beep, 
-                  10 => :sine, 11 => :saw 0, 12 => :pulse, 13 => :subpulse, 14 => :square, 
+                  10 => :sine, 11 => :saw, 12 => :pulse, 13 => :subpulse, 14 => :square, 
                   15 => :tri, 16 => :dsaw, 17 => :dpulse, 18 => :dtri, 19 => :fm, 
                   20 => :mod_fm, 21 => :mod_saw, 22 => :mod_dsaw, 23 => :mod_sine, 24 => :mod_beep, 
                   25 => :mod_tri, 26 => :mod_pulse, 27 => :supersaw, 28 => :dark_ambience, 29 => :growl, 
@@ -72,7 +72,9 @@ in_thread(name: :read_midiControl) do
     use_real_time
     cntrlNum, value = sync MidiBaseStr + "/control_change"
     cmd = getMidiCntrlObjFromMidiInput cntrlNum, value, MidiBaseStr
-    setControlSettings cmd[:controlNum], cmd[:value]
+    if cmd[:channel] == "16"
+      setControlSettings cmd[:controlNum], cmd[:value]
+    end
   end
 end
 
@@ -93,20 +95,28 @@ define :scaleMidiAi do |rawVal, lowEu, highEu|
 end
 
 define :setControlSettings do |cntrlNum, cntrlValue|
-  if cntrlNum == 16
+  if cntrlNum == 53
     RLPF_Res = scaleMidiAi cntrlValue, 0, 0.9
-  elsif cntrlNum == 17
+  elsif cntrlNum == 39
     RLPF_Cutoff = scaleMidiAi cntrlValue, 50, 130
-  elsif cntrlNum == 18
+  elsif cntrlNum == 33
+  #envelope
     ENV_Attack = scaleMidiAi cntrlValue, 0, 1
-  elsif cntrlNum == 19
+  elsif cntrlNum == 35
     ENV_Release = scaleMidiAi cntrlValue, 0, 2
-  elsif cntrlNum == 20
+  elsif cntrlNum == 34
+    ENV_Decay = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 36
+    ENV_Attack_Level = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 37
+    ENV_Decay_Level = scaleMidiAi cntrlValue, 0, 1
+
+  elsif cntrlNum == 32
     PITCH_ADJ = (scaleMidiAi cntrlValue, 0, 12) - 6
     if PITCH_ADJ < 0.1 && PITCH_ADJ > -0.1
       PITCH_ADJ = 0
     end
-  elsif cntrlNum == 22
+  elsif cntrlNum == 7
     set_volume! (scaleMidiAi cntrlValue, 0, 1)
   end
   #control FxNode, res: RLPF_Res, cutoff: RLPF_Cutoff
