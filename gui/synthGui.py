@@ -13,10 +13,10 @@ import copy
 instrumentJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/InstrumentData.Json"
 midiControlJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/ControlData.Json"
 
-#midiInSubstring = "Arduino"
-midiInSubstring = "loop"
-#midiOutSubstring = "Midi Through"
-midiOutSubstring = "loop"
+midiInSubstring = "Arduino"
+#midiInSubstring = "loop"
+midiOutSubstring = "Midi Through"
+#midiOutSubstring = "loop"
 
 windowHeight = 320
 windowWidth = 480
@@ -90,7 +90,7 @@ midiMaster = MidiMaster(midiControlData, midiInSubstring, midiOutSubstring)
 instruments = Instruments(instrumentData, "piano", midiMaster)
 
 root = Tk() 
-#root.wm_attributes('-type', 'splash')
+root.wm_attributes('-type', 'splash')
 root.geometry(f"{windowWidth}x{windowHeight}")
 
 main = MainFrame(root)
