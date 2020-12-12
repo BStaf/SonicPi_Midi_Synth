@@ -128,16 +128,15 @@ end
 #                            Play Synth                                  #
 ##########################################################################
 #Midi controls thread
-#with_fx :rlpf do |rlpf|
-  #with_fx :pitch_shift do |pitchShift|#PITCH_ADJ
+with_fx :rlpf do |rlpf|
+  with_fx :pitch_shift do |pitchShift|#PITCH_ADJ
     in_thread(name: :play_synth) do
-      #FxNode = fxnode
       loop do
         use_real_time
         #sync :PlaySynthSync
         begin
-          #control pitchShift, pitch: PITCH_ADJ
-          #control rlpf, res: RLPF_Res, cutoff: RLPF_Cutoff
+          control pitchShift, pitch: PITCH_ADJ
+          control rlpf, res: RLPF_Res, cutoff: RLPF_Cutoff
           while MidiSynthQueue.length > 0 do
             synth_doCommand MidiSynthQueue.deq
           end
@@ -147,8 +146,8 @@ end
         sleep 0.05
       end
     end
-  #end
-#end
+  end
+end
 
 define :synth_doCommand do |cmd|
   note = cmd[:note]
