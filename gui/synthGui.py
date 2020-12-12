@@ -1,101 +1,41 @@
-from threading import Thread
-import time
-
 from tkinter import * 
+from MidiHelpers import *
 from AppPalette import *
 from MainPage import *
 from NextPage import *
+from InstrumentPage import *
 
 import tkinter.font as tkFont
-import mido
 import os
 import json
 
 instrumentJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/InstrumentData.Json"
 midiControlJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/ControlData.Json"
 
+midiInSubstring = "Arduino"
+#midiInSubstring = "loop"
+midiOutSubstring = "Midi Through"
+#midiOutSubstring = "loop"
+
 windowHeight = 320
 windowWidth = 480
 
+class Instruments:
+    def __init__(self, instrumentData, firstInstrument, midiMaster):
+        self.instrumentData = instrumentData
+        self.currentInstrument = firstInstrument
+        self.__midiMaster = midiMaster
 
-class MidiOut:
-    def __init__(self):
-        port = [x for x in mido.get_output_names() if "Midi Through" in x][0]
-        #port = [x for x in mido.get_output_names() if "loop" in x][0]
-        self.midiOut = mido.open_output(port)
-        #print(mido.get_output_names())
-        self.channel = 15
+    def getInstrumentList(self):
+        return list(self.instrumentData.keys())
 
-    def sendProgramChange(self, index):
-        msg = mido.Message('program_change', channel=self.channel, program =index)
-        self.midiOut.send(msg)
+    def getInstrumentData(self):
+        return self.instrumentData[self.currentInstrument].items()
 
-    def sendControlChange(self, cntrlId, value):
-        #print(f"midi out = {cntrlId} - {value}")
-        msg = mido.Message('control_change', channel=self.channel, control=cntrlId, value=value)
-        self.midiOut.send(msg)
-    
-class MidiIn(Thread):
-    def __init__(self):
-        Thread.__init__(self)
-        print(mido.get_input_names())
-        self.handlers = []
-        #port = [x for x in mido.get_input_names() if "loop" in x][0] 
-        port = [x for x in mido.get_input_names() if "Arduino" in x][0] 
-        #port = [x for x in mido.get_input_names() if "Midi Through" in x][0]
-        self.midiIn = mido.open_input(port)
-
-    def run(self):
-        while True:
-            # Get the work from the queue and expand the tuple
-            for msg in self.midiIn:
-                self.processMidi(msg)
-
-    def processMidi(self, msg):
-        if msg.channel != 15 and msg.type == "control_change":
-            
-            #send event
-            for handler in self.handlers:
-                handler(msg.control, msg.value)
-
-    def OnUpdate(self, handler):
-        self.handlers.append(handler)
-            
-class MidiMaster:
-    def __init__(self, midiControlData):
-        self.__handlers = []
-        self.midiOut = MidiOut()
-        self.__midiIn = MidiIn()
-        self.__midiIn.daemon = True #set this thread as a Daemon Thread
-        self.__midiIn.OnUpdate(self.midiInHandler)
-        self.__midiIn.start()
-
-        self.__midiControlData = midiControlData
-
-    def onUpdate(self, handler):
-        self.__handlers.append(handler)
-
-    def sendControlOutputForControlName(self,controlName, value):
-        controlId = int(self.__midiControlData[controlName]["midi_out_control"])
-        midiVal = value/100 * 127
-        self.midiOut.sendControlChange(int(controlId), int(midiVal))
-
-    def midiInHandler(self, controlId, value):
-        #if controlId is in midiControlData send out event
-        for key, dictVal in self.__midiControlData.items():
-            
-            id = dictVal.get('midi_in_control', None)
-            if id is not None and int(id) == controlId:
-                controlName = key
-                #send midi out to synth
-                outId = dictVal.get('midi_out_control', None)
-                self.midiOut.sendControlChange(int(outId), int(value))
-                scaledVal = value/127 * 100
-                #produce Event
-                #print (f"Send midi in event: {key}-{scaledVal}")
-                for handler in self.__handlers:
-                    handler(controlName, scaledVal)
-                break
+    def setInstrument(self, instrumentName):
+        self.currentInstrument = instrumentName
+        index = self.getInstrumentList().index(self.currentInstrument)
+        self.__midiMaster.midiOut.sendProgramChange(index)
 
 class MainFrame(Frame):
     def __init__(self, *args, **kwargs):
@@ -103,8 +43,9 @@ class MainFrame(Frame):
 
         pages = {}
 
-        pages["instConfigPage"] = NextPage(pages, instrumentData, midiMaster, root, width=windowWidth, height=windowHeight)
-        pages["mainPage"] = MainPage(pages, list(instrumentData.keys()), midiMaster, root, width=windowWidth, height=windowHeight)
+        pages["instConfigPage"] = NextPage(pages, instruments, midiMaster, root, width=windowWidth, height=windowHeight)
+        pages["mainPage"] = MainPage(pages, instruments, midiMaster, root, width=windowWidth, height=windowHeight)
+        pages["instSelectPage"] = InstrumentPage(pages, instruments, root, width=windowWidth, height=windowHeight)
 
         container = Frame(self)
         container.pack(fill="both", expand=True)
@@ -120,14 +61,12 @@ with open(instrumentJsonPath, 'r') as reader:
 with open(midiControlJsonPath, 'r') as reader:
     midiControlData = json.load(reader)
 
-midiMaster = MidiMaster(midiControlData)
+midiMaster = MidiMaster(midiControlData, midiInSubstring, midiOutSubstring)
+instruments = Instruments(instrumentData, "piano", midiMaster)
 
 root = Tk() 
 root.wm_attributes('-type', 'splash')
 root.geometry(f"{windowWidth}x{windowHeight}")
-bigfont = tkFont.Font(family="Helvetica",size=17)
-root.option_add("*Font", bigfont)
-
 
 main = MainFrame(root)
 main.pack(side="top", fill="both", expand=True)

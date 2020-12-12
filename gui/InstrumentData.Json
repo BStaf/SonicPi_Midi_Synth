@@ -310,7 +310,7 @@
         "cutoff": "130",
         "res": "0.7"
     },
-    "dark_ambience": {
+    "ambience": {
         "attack": "0",
         "decay": "0",
         "release": "1",
