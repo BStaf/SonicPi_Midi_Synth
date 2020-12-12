@@ -53,7 +53,7 @@ class MainFrame(Frame):
         for key, value in pages.items():
              value.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
         
-        pages["instSelectPage"].show()
+        pages["mainPage"].show()
    
 with open(instrumentJsonPath, 'r') as reader:
     instrumentData = json.load(reader)
@@ -67,9 +67,6 @@ instruments = Instruments(instrumentData, "piano", midiMaster)
 root = Tk() 
 root.wm_attributes('-type', 'splash')
 root.geometry(f"{windowWidth}x{windowHeight}")
-#bigfont = tkFont.Font(family="Helvetica",size=17)
-#root.option_add("*Font", bigfont)
-
 
 main = MainFrame(root)
 main.pack(side="top", fill="both", expand=True)
