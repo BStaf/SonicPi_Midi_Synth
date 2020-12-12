@@ -10,8 +10,10 @@ class InstSettingsPage(Frame):
         self.__instruments = instruments
         self._sliders = {}
         self.__pages = pages
+
         self.__midiMaster = midiMaster
-        midiMaster.onUpdate(self.midiInHandler)
+        self.__midiMaster.onUpdate(self.midiInHandler)
+        
         self.__canvasTop = Canvas(self, width=self['width'], height=50, bg=AppPalette.DarkBlue,highlightthickness=0) 
         self.__canvasBottom = Canvas(self, width=self['width'], height=self['height']-50, bg=AppPalette.Blue,highlightthickness=0)  
 

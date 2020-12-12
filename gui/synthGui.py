@@ -13,10 +13,10 @@ import copy
 instrumentJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/InstrumentData.Json"
 midiControlJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/ControlData.Json"
 
-midiInSubstring = "Arduino"
-#midiInSubstring = "loop"
-midiOutSubstring = "Midi Through"
-#midiOutSubstring = "loop"
+#midiInSubstring = "Arduino"
+midiInSubstring = "loop"
+#midiOutSubstring = "Midi Through"
+midiOutSubstring = "loop"
 
 windowHeight = 320
 windowWidth = 480
@@ -26,6 +26,7 @@ class Instruments:
         self.instrumentData = instrumentData
         self.currentInstrument = firstInstrument
         self.__midiMaster = midiMaster
+        self.__midiMaster.onUpdate(self.midiInHandler)
         self.__curInstSettings = {}
         self.__loadCurrentSettings()
 
@@ -52,9 +53,12 @@ class Instruments:
         for key, value in self.__curInstSettings.items():
             if i > 4:
                 break
-            print(f"set {key} - {value}")
+            #print(f"set {key} - {value}")
             self.setInstrumentSetting(key,float(value)*100)
             i = i+1
+
+    def midiInHandler(self, controlName, value):
+        self.__curInstSettings[controlName] = float(value)/100
 
 
 
@@ -86,7 +90,7 @@ midiMaster = MidiMaster(midiControlData, midiInSubstring, midiOutSubstring)
 instruments = Instruments(instrumentData, "piano", midiMaster)
 
 root = Tk() 
-root.wm_attributes('-type', 'splash')
+#root.wm_attributes('-type', 'splash')
 root.geometry(f"{windowWidth}x{windowHeight}")
 
 main = MainFrame(root)
