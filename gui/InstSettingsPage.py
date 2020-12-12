@@ -24,12 +24,14 @@ class InstSettingsPage(Frame):
         self.__canvasBottom.pack(side="bottom", expand=YES)#3fill=BOTH, expand=YES)
 
     def show(self):
-        self.__populateBottomCanvas(self.__canvasBottom)
+        self.__updateAllSliders()
+        #self.__populateBottomCanvas(self.__canvasBottom)
         self.lift()
 
     def midiInHandler(self, controlName, value):
         #print(f"NextPage midiInHandler-{controlName}-{value}")
         slider = self._sliders.get(controlName, None)
+
         if slider is not None:
             slider.setToValue(value)
 
@@ -58,6 +60,16 @@ class InstSettingsPage(Frame):
             slider.OnUpdate(self.__handleSliderChange)
             self._sliders[name] = slider
             i = i+1
+
+    def __updateAllSliders(self):
+        i = 0
+        for name, value in self.__instruments.getCurentSettings():
+            if i > 4:
+                break
+            slider = self._sliders.get(name, None)
+
+            if slider is not None:
+                slider.setToValue(float(value)*100)
 
     def __handleSliderChange(self, obj, event):
         for key, value in self._sliders.items():
