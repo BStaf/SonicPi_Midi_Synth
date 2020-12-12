@@ -4,15 +4,14 @@ from widgets.AppWidgets import *
 from AppPalette import *
 
 class NextPage(Frame):
-    def __init__(self, pages, instrumentData, midiMaster, *args, **kwargs):
+    def __init__(self, pages, instruments, midiMaster, *args, **kwargs):
         Frame.__init__(self, *args, **kwargs)
         self.config(bg=AppPalette.Blue)
-        self.__curInstrument = "piano"
+        self.__instruments = instruments
         self._sliders = {}
         self.__pages = pages
         self.__midiMaster = midiMaster
         midiMaster.onUpdate(self.midiInHandler)
-        self.__instrumentData = instrumentData
         self.__canvasTop = Canvas(self, width=self['width'], height=50, bg=AppPalette.DarkBlue,highlightthickness=0) 
         self.__canvasBottom = Canvas(self, width=self['width'], height=self['height']-50, bg=AppPalette.Blue,highlightthickness=0)  
 
@@ -22,13 +21,9 @@ class NextPage(Frame):
         self.__canvasTop.pack(side="top", expand=YES)
         self.__canvasBottom.pack(side="bottom", expand=YES)#3fill=BOTH, expand=YES)
 
-    def show(self, instrument):
-        self.setInstrument(instrument)
-        self.lift()
-
-    def setInstrument(self, instrument):
-        self.__curInstrument = instrument
+    def show(self):
         self.__populateBottomCanvas(self.__canvasBottom)
+        self.lift()
 
     def midiInHandler(self, controlName, value):
         #print(f"NextPage midiInHandler-{controlName}-{value}")
@@ -51,7 +46,7 @@ class NextPage(Frame):
         self.__canvasBottom.delete("all")
         #draw new sliders
         i = 0
-        for name, value in self.__instrumentData[self.__curInstrument].items():
+        for name, value in self.__instruments.getInstrumentData():
             if i > 4:
                 break
             lbl = LowerLabel(canvas, text=name)

@@ -9,15 +9,39 @@ class LowerLabel(Label):
         #lblPitch.place(x = 43,y = 67, anchor="center")
         self.config(font='Times 10 bold')
 
-class MenuBtn:
-    def __init__(self, canvas, x, y, width, height, text, callBack):
+class Btn:
+    def __init__(self, canvas, x, y, width, height, text, fontSize, callBack):
         btnRect = canvas.create_rectangle(x, y, x+width, y+height, fill=AppPalette.Black)
-        btnLbl = Label(canvas, text=text)
-        btnLbl.config(fg=AppPalette.White, bg=AppPalette.Black, font='Helvetica 12 bold')
-        btnLbl.place(x=x+(width/2),y=y+(height/2), anchor="center")
+        self._btnLbl = Label(canvas, text=text)
+        self._btnLbl.config(fg=AppPalette.White, bg=AppPalette.Black, font=f"Helvetica {fontSize} bold")
+        self._btnLbl.place(x=x+(width/2),y=y+(height/2), anchor="center")
 
-        canvas.tag_bind(btnRect, '<Button-1>', callBack)
-        btnLbl.bind("<Button-1>", callBack)
+        self._callBack = callBack
+    
+        canvas.tag_bind(btnRect, '<Button-1>', self._btnCallback)
+        self._btnLbl.bind("<Button-1>", self._btnCallback)
+
+    def _btnCallback(self, event):
+        self._callBack(event)
+
+    def changeLable(self, text):
+        self._btnLbl.config(text = text)
+
+
+class MenuBtn(Btn):
+    def __init__(self, canvas, x, y, width, height, text, callBack):
+        Btn.__init__(self,canvas, x, y, width, height, text, 12, callBack)
+    
+
+class InstrumentSelectBtn(Btn):
+    def __init__(self, canvas, x, y, width, height, text, callBack):
+        Btn.__init__(self,canvas, x, y, width, height, text, 9, callBack)
+        self._callBack = callBack
+        self._text = text
+
+    def _btnCallback(self, event):
+        self._callBack(event, self._text)
+
 
 class StandardMidiSliderControl(SliderControl):
     def __init__(self, canvas, xPos, yPos, startVal):
