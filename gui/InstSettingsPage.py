@@ -3,7 +3,7 @@ from tkinter import ttk
 from widgets.AppWidgets import *
 from AppPalette import *
 
-class NextPage(Frame):
+class InstSettingsPage(Frame):
     def __init__(self, pages, instruments, midiMaster, *args, **kwargs):
         Frame.__init__(self, *args, **kwargs)
         self.config(bg=AppPalette.Blue)
@@ -46,7 +46,7 @@ class NextPage(Frame):
         self.__canvasBottom.delete("all")
         #draw new sliders
         i = 0
-        for name, value in self.__instruments.getInstrumentData():
+        for name, value in self.__instruments.getCurentSettings():
             if i > 4:
                 break
             lbl = LowerLabel(canvas, text=name)
@@ -61,4 +61,5 @@ class NextPage(Frame):
         for key, value in self._sliders.items():
             if value == obj:
                 #print (f"Found {key}, {event}")
-                self.__midiMaster.sendControlOutputForControlName(key, event)
+                self.__instruments.setInstrumentSetting(key, event)
+                #self.__midiMaster.sendControlOutputForControlName(key, event)

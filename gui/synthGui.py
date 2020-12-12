@@ -2,12 +2,13 @@ from tkinter import *
 from MidiHelpers import *
 from AppPalette import *
 from MainPage import *
-from NextPage import *
+from InstSettingsPage import *
 from InstrumentPage import *
 
 import tkinter.font as tkFont
 import os
 import json
+import copy
 
 instrumentJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/InstrumentData.Json"
 midiControlJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/ControlData.Json"
@@ -25,17 +26,37 @@ class Instruments:
         self.instrumentData = instrumentData
         self.currentInstrument = firstInstrument
         self.__midiMaster = midiMaster
+        self.__curInstSettings = {}
+        self.__loadCurrentSettings()
 
     def getInstrumentList(self):
         return list(self.instrumentData.keys())
 
-    def getInstrumentData(self):
-        return self.instrumentData[self.currentInstrument].items()
+    def getCurentSettings(self):
+        return self.__curInstSettings.items()
 
     def setInstrument(self, instrumentName):
         self.currentInstrument = instrumentName
         index = self.getInstrumentList().index(self.currentInstrument)
         self.__midiMaster.midiOut.sendProgramChange(index)
+        self.__loadCurrentSettings()
+
+    def setInstrumentSetting(self, settingName, value):
+      #  val = value / 100.0
+        self.__curInstSettings[settingName] = float(value)/100
+        self.__midiMaster.sendControlOutputForControlName(settingName, value)
+        
+    def __loadCurrentSettings(self):
+        self.__curInstSettings = copy.deepcopy(self.instrumentData[self.currentInstrument])
+        i = 0
+        for key, value in self.__curInstSettings.items():
+            if i > 4:
+                break
+            print(f"set {key} - {value}")
+            self.setInstrumentSetting(key,float(value)*100)
+            i = i+1
+
+
 
 class MainFrame(Frame):
     def __init__(self, *args, **kwargs):
@@ -43,7 +64,7 @@ class MainFrame(Frame):
 
         pages = {}
 
-        pages["instConfigPage"] = NextPage(pages, instruments, midiMaster, root, width=windowWidth, height=windowHeight)
+        pages["instConfigPage"] = InstSettingsPage(pages, instruments, midiMaster, root, width=windowWidth, height=windowHeight)
         pages["mainPage"] = MainPage(pages, instruments, midiMaster, root, width=windowWidth, height=windowHeight)
         pages["instSelectPage"] = InstrumentPage(pages, instruments, root, width=windowWidth, height=windowHeight)
 
