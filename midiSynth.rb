@@ -174,7 +174,7 @@ define :endRepeatNoteLastNode do |node|
   control node,amp: 0, amp_slide: 0.01
   killListNode  = (killList.select {|n| n[:node] == node}).first
   if killListNode != nil
-    killListNode[:relaseVal] = 0.01
+    killListNode[:releaseVal] = 0.01
   else
     print "failed to find kill node for repeat press"
   end
@@ -203,7 +203,7 @@ define :noteOff do |note|
     node = nodeData[:node]
     if node
       control node,amp: 0, amp_slide: ENV_Release #fade note out in 0.02 seconds
-      killList << {node: node, timestamp: Time.now, relaseVal: ENV_Release}
+      killList << {node: node, timestamp: Time.now, releaseVal: ENV_Release}
     end
     cue :Cleanup
   end
@@ -290,7 +290,7 @@ in_thread do
       sync :Cleanup
 
       if killList.length > MAX_NODES
-        expiredNode  = (killList.select {|n| (Time.now - n[:timestamp]) > ENV_Release}).first
+        expiredNode  = (killList.select {|n| (Time.now - n[:timestamp]) > n[:releaseVal]}).first
         if expiredNode != nil      
             kill expiredNode[:node]
             killList.delete(expiredNode)
