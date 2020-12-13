@@ -143,7 +143,7 @@ with_fx :rlpf do |rlpf|
         rescue
           print "synth failed"
         end
-        sleep 0.05
+        sleep 0.03
       end
     end
   end
