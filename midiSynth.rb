@@ -131,7 +131,6 @@ end
 with_fx :rlpf do |rlpf|
   with_fx :pitch_shift do |pitchShift|#PITCH_ADJ
     in_thread(name: :play_synth) do
-      #FxNode = fxnode
       loop do
         use_real_time
         #sync :PlaySynthSync
@@ -144,7 +143,7 @@ with_fx :rlpf do |rlpf|
         rescue
           print "synth failed"
         end
-        sleep 0.05
+        sleep 0.03
       end
     end
   end
@@ -171,14 +170,23 @@ define :playNote do |note, vol|
   return node
 end
 
+define :endRepeatNoteLastNode do |node|
+  control node,amp: 0, amp_slide: 0.01
+  killListNode  = (killList.select {|n| n[:node] == node}).first
+  if killListNode != nil
+    killListNode[:releaseVal] = 0.01
+  else
+    print "failed to find kill node for repeat press"
+  end
+end
+
 define :noteOn do |note, vol|
   nodeData = ns[note]
   if nodeData[:onStatus] == 0 #check if new start for the note
     #print "set on"
     if nodeData[:node] #kill node for this note as it will bw replaced
-      control nodeData[:node],amp: 0, amp_slide: 0.01
+      endRepeatNoteLastNode nodeData[:node]
       cue :Cleanup
-      #kill nodeData[:node]
     end
     setSynth
     
@@ -195,7 +203,7 @@ define :noteOff do |note|
     node = nodeData[:node]
     if node
       control node,amp: 0, amp_slide: ENV_Release #fade note out in 0.02 seconds
-      killList << {node: node, timestamp: Time.now}
+      killList << {node: node, timestamp: Time.now, releaseVal: ENV_Release}
     end
     cue :Cleanup
   end
@@ -280,12 +288,14 @@ in_thread do
     use_real_time
     begin
       sync :Cleanup
-      item = killList.first
-      if item != nil
-        timeDiff = Time.now - item[:timestamp]
-        if killList.length > MAX_NODES || timeDiff > ENV_Release
-          #print "kill"
-          kill item[:node]
+
+      if killList.length > MAX_NODES
+        expiredNode  = (killList.select {|n| (Time.now - n[:timestamp]) > n[:releaseVal]}).first
+        if expiredNode != nil      
+            kill expiredNode[:node]
+            killList.delete(expiredNode)
+        else
+          kill killList.first[:node]
           killList.shift
         end
       end

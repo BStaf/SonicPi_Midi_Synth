@@ -39,7 +39,7 @@ class MainPage(Frame):
         titleLbl = Label(canvas, text="SP1X")
         titleLbl.config(fg=AppPalette.White, bg=AppPalette.DarkBlue, font='Helvetica 28 bold')
         titleLbl.place(x=275, y=25,  anchor="center")
-        MenuBtn(canvas, 20, 10, 120, 30, "Next", self.btnCallbackInstConfig)
+        MenuBtn(canvas, 20, 10, 120, 30, "Settings", self.btnCallbackInstConfig)
         MenuBtn(canvas, 408, 10, 50, 30, "X", self.shutdownCallback)
         return
 

@@ -58,7 +58,7 @@ class MidiMaster:
 
     def sendControlOutputForControlName(self,controlName, value):
         controlId = int(self.__midiControlData[controlName]["midi_out_control"])
-        midiVal = value/100 * 127
+        midiVal = int(value)/100 * 127
         self.midiOut.sendControlChange(int(controlId), int(midiVal))
 
     def midiInHandler(self, controlId, value):
@@ -71,7 +71,7 @@ class MidiMaster:
                 #send midi out to synth
                 outId = dictVal.get('midi_out_control', None)
                 self.midiOut.sendControlChange(int(outId), int(value))
-                scaledVal = value/127 * 100
+                scaledVal = int(value)/127 * 100
                 #produce Event
                 #print (f"Send midi in event: {key}-{scaledVal}")
                 for handler in self.__handlers:

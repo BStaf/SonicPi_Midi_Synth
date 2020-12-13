@@ -3,15 +3,17 @@ from tkinter import ttk
 from widgets.AppWidgets import *
 from AppPalette import *
 
-class NextPage(Frame):
+class InstSettingsPage(Frame):
     def __init__(self, pages, instruments, midiMaster, *args, **kwargs):
         Frame.__init__(self, *args, **kwargs)
         self.config(bg=AppPalette.Blue)
         self.__instruments = instruments
         self._sliders = {}
         self.__pages = pages
+
         self.__midiMaster = midiMaster
-        midiMaster.onUpdate(self.midiInHandler)
+        self.__midiMaster.onUpdate(self.midiInHandler)
+        
         self.__canvasTop = Canvas(self, width=self['width'], height=50, bg=AppPalette.DarkBlue,highlightthickness=0) 
         self.__canvasBottom = Canvas(self, width=self['width'], height=self['height']-50, bg=AppPalette.Blue,highlightthickness=0)  
 
@@ -22,12 +24,14 @@ class NextPage(Frame):
         self.__canvasBottom.pack(side="bottom", expand=YES)#3fill=BOTH, expand=YES)
 
     def show(self):
-        self.__populateBottomCanvas(self.__canvasBottom)
+        self.__updateAllSliders()
+        #self.__populateBottomCanvas(self.__canvasBottom)
         self.lift()
 
     def midiInHandler(self, controlName, value):
         #print(f"NextPage midiInHandler-{controlName}-{value}")
         slider = self._sliders.get(controlName, None)
+
         if slider is not None:
             slider.setToValue(value)
 
@@ -46,7 +50,7 @@ class NextPage(Frame):
         self.__canvasBottom.delete("all")
         #draw new sliders
         i = 0
-        for name, value in self.__instruments.getInstrumentData():
+        for name, value in self.__instruments.getCurentSettings():
             if i > 4:
                 break
             lbl = LowerLabel(canvas, text=name)
@@ -57,8 +61,19 @@ class NextPage(Frame):
             self._sliders[name] = slider
             i = i+1
 
+    def __updateAllSliders(self):
+        i = 0
+        for name, value in self.__instruments.getCurentSettings():
+            if i > 4:
+                break
+            slider = self._sliders.get(name, None)
+
+            if slider is not None:
+                slider.setToValue(float(value)*100)
+
     def __handleSliderChange(self, obj, event):
         for key, value in self._sliders.items():
             if value == obj:
                 #print (f"Found {key}, {event}")
-                self.__midiMaster.sendControlOutputForControlName(key, event)
+                self.__instruments.setInstrumentSetting(key, event)
+                #self.__midiMaster.sendControlOutputForControlName(key, event)
