@@ -45,8 +45,8 @@ class MainPage(Frame):
 
     def populateBottomCanvas(self, canvas):
         PitchSldr = SpringMidiSliderControl(canvas, 20,26,50)
-        ModulationSldr = StandardMidiSliderControl(canvas, 90,26,0)
-        MasterVolumeSldr = StandardMidiSliderControl(canvas, 408,26,90)
+        ModulationSldr = StandardMidiSliderControl(canvas, 90, 26, 0, 100, 0)
+        MasterVolumeSldr = StandardMidiSliderControl(canvas, 408, 26, 0, 100, 90)
 
         PitchSldr.OnUpdate(self.updatePitch)
         ModulationSldr.OnUpdate(self.updateModulation)

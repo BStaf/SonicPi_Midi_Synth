@@ -1,0 +1,197 @@
+{
+    "attack": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "decay": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "release": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "attack_level": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "decay_level": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "env_curve": {
+        "type": "selection",
+        "selections": "1,2,3,4,6,7",
+        "descriptions": "1=linear,2=exponential,3=sine,4=welch,6=squared,7=cubed"
+    },
+    "cutoff": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "130"
+    },
+    "pulse_width": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "sub_amp": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "2"
+    },
+    "sub_detune": {
+        "type": "range",
+        "start_value": "-24",
+        "stop_value": "24"
+    },
+    "detune": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "5"
+    },
+    "dpulse_width": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "divisor": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "20"
+    },
+    "depth": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "20"
+    },
+    "mod_phase": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "5"
+    },
+    "mod_range": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "12"
+    },
+    "mod_pulse_width": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "mod_phase_offset": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "mod_invert_wave": {
+        "type": "selection",
+        "selections": "0,1",
+        "descriptions": "0=normal,1=inverted"
+    },
+    "mod_wave": {
+        "type": "selection",
+        "selections": "0,1,2,3",
+        "descriptions": "0=saw wave,1=pulse,2=tri wave,3=sine wave"
+    },
+    "res": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "0.9"
+    },
+    "detune1": {
+        "type": "range",
+        "start_value": "-24",
+        "stop_value": "24"
+    },
+    "detune2": {
+        "type": "range",
+        "start_value": "-24",
+        "stop_value": "24"
+    },
+    "noise": {
+        "type": "selection",
+        "selections": "1,2,3,4",
+        "descriptions": "1=brown,2=white,3=clip,4=grey"
+    },
+    "ring": {
+        "type": "range",
+        "start_value": "0.1",
+        "stop_value": "50"
+    },
+    "room": {
+        "type": "range",
+        "start_value": "0.1",
+        "stop_value": "300"
+    },
+    "reverb_time": {
+        "type": "range",
+        "start_value": "0.1",
+        "stop_value": "200"
+    },
+    "norm ": {
+        "type": "selection",
+        "selections": "0,1",
+        "descriptions": "0=disable,1=enable"
+    },
+    "vibrato_rate": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "20"
+    },
+    "vibrato_depth": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "5"
+    },
+    "vibrato_delay": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "2"
+    },
+    "vibrato_onset": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "2"
+    },
+    "vel": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "hard": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "stereo_width": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "noise_amp": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "max_delay_time": {
+        "type": "range",
+        "start_value": "0.125",
+        "stop_value": "1"
+    },
+    "pluck_decay": {
+        "type": "range",
+        "start_value": "1",
+        "stop_value": "100"
+    },
+    "coef": {
+        "type": "range",
+        "start_value": "-1",
+        "stop_value": "1"
+    }
+}
