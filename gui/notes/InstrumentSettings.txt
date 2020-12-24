@@ -1,4 +1,4 @@
-Instrument	attack	decay	release	attack_level	decay_level	env_curve	cutoff	pulse_width	sub_amp	sub_detune	detune	dpulse_width	divisor	depth	mod_phase	mod_range	mod_pulse_width	mod_pahse_offset	mod_invert_wave	mod_wave	res	detune1	detune2	noise	ring	room	reverb_time	norm	vibrato_rate	vibrato_depth	vibrato_delay	vibrato_onset	vel	hard	stereo_width	noise_amp	max_delay_time	pluck_decay	coef
+Instrument	attack	decay	release	attack_level	decay_level	env_curve	cutoff	pulse_width	sub_amp	sub_detune	detune	dpulse_width	divisor	depth	mod_phase	mod_range	mod_pulse_width	mod_phase_offset	mod_invert_wave	mod_wave	res	detune1	detune2	noise	ring	room	reverb_time	norm	vibrato_rate	vibrato_depth	vibrato_delay	vibrato_onset	vel	hard	stereo_width	noise_amp	max_delay_time	pluck_decay	coef
 piano	0	0	1	1	1	1																											0.2	0.5	0				
 pluck	0	0	1	1	1	1																														0.8	0.125	30	0.3
 prophet	0	0	1	1	1	1	110														0.7																		

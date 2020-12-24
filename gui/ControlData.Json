@@ -66,7 +66,7 @@
     "mod_pulse_width": {
         "midi_out_control": "49"
     },
-    "mod_pahse_offset": {
+    "mod_phase_offset": {
         "midi_out_control": "50"
     },
     "mod_invert_wave": {
