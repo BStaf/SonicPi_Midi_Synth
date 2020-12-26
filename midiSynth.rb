@@ -129,8 +129,17 @@ end
 ##########################################################################
 #Midi controls thread
 with_fx :rlpf do |rlpf|
-  with_fx :pitch_shift do |pitchShift|#PITCH_ADJ
-    in_thread(name: :play_synth) do
+with_fx :reverb do |reverb|
+with_fx :echo do |echo|
+with_fx :compressor do |compressor|
+with_fx :whammy do |whammy|
+with_fx :rhpf do |rhpf|
+with_fx :distortion do |distortion|
+with_fx :octaver do |octaver|
+with_fx :flanger do |flanger|
+with_fx :pitch_shift do |pitchShift|#PITCH_ADJ
+  in_thread(name: :play_synth) do
+    begin
       loop do
         use_real_time
         #sync :PlaySynthSync
@@ -143,10 +152,21 @@ with_fx :rlpf do |rlpf|
         rescue
           print "synth failed"
         end
-        sleep 0.03
+        sleep 0.05
       end
+    rescue
+      print "synth thread failed"
     end
   end
+end
+end
+end
+end
+end
+end
+end
+end
+end
 end
 
 define :synth_doCommand do |cmd|

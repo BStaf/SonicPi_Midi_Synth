@@ -1,0 +1,9 @@
+name	mix 0_1	room 0_1	damp 0_1	Phase 0.1_10	Decay 0.1_10	max_phase 0.1_10	Threshold 0_10	clamp_time 0_10	slope_above 0_10	slope_below 0_10	relax_time 0_10	Transpose 0_24	max_delay_time 0_10	deltime  0_2	grainsize 0_2	cutoff 0_100	resonance 0_1	distort 0_0.99	Phase 0.1_10	pulse_width 0_1	delay 0_10	depth 0_10	decay 0_10	feedback 0_10
+reverb 	0.4	0.6	0.5																					
+echo	1			0.25	2	2																		
+compressor	1						0.2	0.01	0.5	1	0.01													
+whammy 	1											12	1	0.05	0.075									
+rhpf 	1															100	0.5							
+distortion 	1																	0.5						
+octaver 	1																							
+flanger	1																		4	0.5	5	5	2	0
