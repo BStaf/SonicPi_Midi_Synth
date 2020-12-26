@@ -32,6 +32,9 @@ class MainPage(Frame):
     def btnCallBackInstSelect(self, event):
         self.__pages["instSelectPage"].show()
 
+    def btnCallBackfxSelect(self, event):
+        self.__pages["fxSelectPage"].show()
+
     def shutdownCallback(self, event):
         call("sudo shutdown -h now", shell=True)
 
@@ -60,6 +63,8 @@ class MainPage(Frame):
         lblInst.place(x = 275,y = 13, anchor="center")
         lblVol = LowerLabel(canvas, text='Mstr Volume')
         lblVol.place(x = 432,y = 13, anchor="center")
+
+        MenuBtn(canvas, 184, 66, 180, 30, "Fx Settings", self.btnCallBackfxSelect)
         return
         
     def updatePitch(self, obj, event):

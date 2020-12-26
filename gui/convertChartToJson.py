@@ -1,8 +1,8 @@
 import os
 import json 
 
-readFilePath = os.path.dirname(os.path.realpath(__file__)) +"/notes/InstrumentSettings.txt"
-outFilePath = os.path.dirname(os.path.realpath(__file__)) +"/InstrumentData.Json"
+readFilePath = os.path.dirname(os.path.realpath(__file__)) +"/notes/FxSettings.txt"
+outFilePath = os.path.dirname(os.path.realpath(__file__)) +"/FxData.Json"
 headers = []
 dataDict = {}
 

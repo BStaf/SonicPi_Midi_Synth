@@ -1,0 +1,49 @@
+{
+    "reverb ": {
+        "mix": "0",
+        "room": "0.6",
+        "damp": "0.5"
+    },
+    "echo": {
+        "mix": "0",
+        "Phase": "0.25",
+        "Decay": "2",
+        "max_phase": "2"
+    },
+    "compressor": {
+        "mix": "0",
+        "threshold": "0.2",
+        "clamp_time": "0.01",
+        "slope_above": "0.5",
+        "slope_below": "1",
+        "relax_time": "0.01"
+    },
+    "whammy ": {
+        "mix": "0",
+        "Transpose": "12",
+        "max_delay_time": "1",
+        "deltime": "0.05",
+        "grainsize": "0.075"
+    },
+    "rhpf ": {
+        "mix": "0",
+        "cutoff": "100",
+        "resonance": "0.5"
+    },
+    "distortion ": {
+        "mix": "0",
+        "distort": "0.5"
+    },
+    "octaver ": {
+        "mix": "0"
+    },
+    "flanger": {
+        "mix": "0",
+        "Phase": "4",
+        "pulse_width": "0.5",
+        "delay": "5",
+        "depth": "5",
+        "decay": "2",
+        "feedback": "0"
+    }
+}

@@ -101,7 +101,10 @@ class InstSettingsPage(Frame):
 
         #draw sliders
         i = 0
+        print("slides for")
+        print(self.__instruments.getCurentSettings())
         for name, value in self.__instruments.getCurentSettings():
+            print(f"{name}-{value}")
             if i < 5:
                 lbl = LowerLabel(canvas, text=name)
                 lbl.place(x = (i*sliderSpacing)+sliderStartXPos+25,y = 13, anchor="center")
@@ -114,7 +117,7 @@ class InstSettingsPage(Frame):
             slider.OnUpdate(self.__handleSliderChange)
             self._sliders[name] = slider          
             i = i+1
-
+        print("done")
         canvas.create_rectangle(0, 0, 50, 300, fill=AppPalette.Blue, outline="")
         canvas.create_rectangle(430, 0, 430+50, 300, fill=AppPalette.Blue, outline="")
         MenuBtn(canvas, 10, 66, 30, 150, "<", self.__settingsShiftRightCallback)

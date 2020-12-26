@@ -1,0 +1,117 @@
+{
+    "mix": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "room": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "damp": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "Phase": {
+        "type": "range",
+        "start_value": "0.1",
+        "stop_value": "10"
+    },
+    "Decay": {
+        "type": "range",
+        "start_value": "0.1",
+        "stop_value": "10"
+    },
+    "max_phase": {
+        "type": "range",
+        "start_value": "0.1",
+        "stop_value": "10"
+    },
+    "threshold": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "clamp_time": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "slope_above": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "slope_below": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "relax_time": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "transpose": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "24"
+    },
+    "max_delay_time": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "deltime": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "2"
+    },
+    "grainsize": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "2"
+    },
+    "cutoff": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "100"
+    },
+    "resonance": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "distort": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "0.99"
+    },
+    "pulse_width": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "delay": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "depth": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "decay": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "feedback": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    }
+}
