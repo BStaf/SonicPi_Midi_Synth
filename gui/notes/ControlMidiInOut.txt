@@ -19,7 +19,7 @@ depth		46
 mod_phase		47
 mod_range		48
 mod_pulse_width		49
-mod_pahse_offset		50
+mod_phase_offset		50
 mod_invert_wave		51
 mod_wave		52
 res	71	53

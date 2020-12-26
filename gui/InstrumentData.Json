@@ -212,7 +212,7 @@
         "mod_phase": "0.25",
         "mod_range": "5",
         "mod_pulse_width": "0.5",
-        "mod_pahse_offset": "0",
+        "mod_phase_offset": "0",
         "mod_invert_wave": "0",
         "mod_wave": "1"
     },
@@ -241,7 +241,7 @@
         "mod_phase": "0.25",
         "mod_range": "5",
         "mod_pulse_width": "0.5",
-        "mod_pahse_offset": "0",
+        "mod_phase_offset": "0",
         "mod_invert_wave": "0",
         "mod_wave": "1"
     },
@@ -296,7 +296,7 @@
         "mod_phase": "0.25",
         "mod_range": "5",
         "mod_pulse_width": "0.5",
-        "mod_pahse_offset": "0",
+        "mod_phase_offset": "0",
         "mod_invert_wave": "0",
         "mod_wave": "1"
     },

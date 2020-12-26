@@ -13,6 +13,34 @@ ENV_Attack_Level = 1
 ENV_Decay_Level = 1
 ENV_Curve = 1 #(1,3,6,7)
 
+ENV_Coef = 0.3
+ENV_Depth = 1
+ENV_Detune = 0.1
+ENV_Detune1 = 12
+ENV_Detune2 = 24
+ENV_Divisor = 2
+ENV_Dpulse_Width = 0.5
+ENV_Hard = 0.5
+ENV_Max_Delay_Time = 0.125
+ENV_Mod_Phase = 0.25
+ENV_Mod_Phase_Offset = 0
+ENV_Mod_Pulse_Width = 0.5
+ENV_Mod_Range = 5
+ENV_Noise_Amp = 0.8
+ENV_Pluck_Decay = 30
+ENV_Pulse_Width = 0.5
+ENV_Reverb_Time = 100
+ENV_Ring = 0.2
+ENV_Room = 70
+ENV_Stereo_Width = 0
+ENV_Sub_Amp = 1
+ENV_Sub_Detune = -12
+ENV_Vel = 0.2
+ENV_Vibrato_Delay = 0.5
+ENV_Vibrato_Depth = 0.15
+ENV_Vibrato_Onset = 0.1
+ENV_Vibrato_Rate = 6
+
 PITCH_ADJ = 0
 
 MAX_NODES = 9
@@ -101,17 +129,71 @@ define :setControlSettings do |cntrlNum, cntrlValue|
     RLPF_Res = scaleMidiAi cntrlValue, 0, 0.9
   elsif cntrlNum == 39
     RLPF_Cutoff = scaleMidiAi cntrlValue, 50, 130
+
   elsif cntrlNum == 33
-  #envelope
     ENV_Attack = scaleMidiAi cntrlValue, 0, 1
-  elsif cntrlNum == 35
-    ENV_Release = scaleMidiAi cntrlValue, 0, 2
   elsif cntrlNum == 34
-    ENV_Decay = scaleMidiAi cntrlValue, 0, 1
+      ENV_Decay = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 35
+      ENV_Release = scaleMidiAi cntrlValue, 0, 1
   elsif cntrlNum == 36
-    ENV_Attack_Level = scaleMidiAi cntrlValue, 0, 1
+      ENV_Attack_Level = scaleMidiAi cntrlValue, 0, 1
   elsif cntrlNum == 37
-    ENV_Decay_Level = scaleMidiAi cntrlValue, 0, 1
+      ENV_Decay_Level = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 40
+      ENV_Pulse_Width = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 41
+      ENV_Sub_Amp = scaleMidiAi cntrlValue, 0, 2
+  elsif cntrlNum == 42
+      ENV_Sub_Detune = scaleMidiAi cntrlValue, -24, 24
+  elsif cntrlNum == 43
+      ENV_Detune = scaleMidiAi cntrlValue, 0, 5
+  elsif cntrlNum == 44
+      ENV_Dpulse_Width = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 45
+      ENV_Divisor = scaleMidiAi cntrlValue, 0, 20
+  elsif cntrlNum == 46
+      ENV_Depth = scaleMidiAi cntrlValue, 0, 20
+  elsif cntrlNum == 47
+      ENV_Mod_Phase = scaleMidiAi cntrlValue, 0, 5
+  elsif cntrlNum == 48
+      ENV_Mod_Range = scaleMidiAi cntrlValue, 0, 12
+  elsif cntrlNum == 49
+      ENV_Mod_Pulse_Width = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 50
+      ENV_Mod_Phase_Offset = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 54
+      ENV_Detune1 = scaleMidiAi cntrlValue, -24, 24
+  elsif cntrlNum == 55
+      ENV_Detune2 = scaleMidiAi cntrlValue, -24, 24
+  elsif cntrlNum == 57
+      ENV_Ring = scaleMidiAi cntrlValue, 0.1, 50
+  elsif cntrlNum == 58
+      ENV_Room = scaleMidiAi cntrlValue, 0.1, 300
+  elsif cntrlNum == 59
+      ENV_Reverb_Time = scaleMidiAi cntrlValue, 0.1, 200
+  elsif cntrlNum == 61
+      ENV_Vibrato_Rate = scaleMidiAi cntrlValue, 0, 20
+  elsif cntrlNum == 62
+      ENV_Vibrato_Depth = scaleMidiAi cntrlValue, 0, 5
+  elsif cntrlNum == 63
+      ENV_Vibrato_Delay = scaleMidiAi cntrlValue, 0, 2
+  elsif cntrlNum == 64
+      ENV_Vibrato_Onset = scaleMidiAi cntrlValue, 0, 2
+  elsif cntrlNum == 65
+      ENV_Vel = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 66
+      ENV_Hard = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 67
+      ENV_Stereo_Width = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 68
+      ENV_Noise_Amp = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 69
+      ENV_Max_Delay_Time = scaleMidiAi cntrlValue, 0.125, 1
+  elsif cntrlNum == 70
+      ENV_Pluck_Decay = scaleMidiAi cntrlValue, 1, 100
+  elsif cntrlNum == 71
+      ENV_Coef = scaleMidiAi cntrlValue, -1, 1
 
   elsif cntrlNum == 32
     PITCH_ADJ = (scaleMidiAi cntrlValue, 0, 12) - 6
@@ -129,44 +211,44 @@ end
 ##########################################################################
 #Midi controls thread
 with_fx :rlpf do |rlpf|
-with_fx :reverb do |reverb|
-with_fx :echo do |echo|
-with_fx :compressor do |compressor|
-with_fx :whammy do |whammy|
-with_fx :rhpf do |rhpf|
-with_fx :distortion do |distortion|
-with_fx :octaver do |octaver|
-with_fx :flanger do |flanger|
-with_fx :pitch_shift do |pitchShift|#PITCH_ADJ
-  in_thread(name: :play_synth) do
-    begin
-      loop do
-        use_real_time
-        #sync :PlaySynthSync
-        begin
-          control pitchShift, pitch: PITCH_ADJ
-          control rlpf, res: RLPF_Res, cutoff: RLPF_Cutoff
-          while MidiSynthQueue.length > 0 do
-            synth_doCommand MidiSynthQueue.deq
+  with_fx :reverb do |reverb|
+  with_fx :echo do |echo|
+  with_fx :compressor do |compressor|
+  with_fx :whammy do |whammy|
+  with_fx :rhpf do |rhpf|
+  with_fx :distortion do |distortion|
+  with_fx :octaver do |octaver|
+  with_fx :flanger do |flanger|
+  with_fx :pitch_shift do |pitchShift|#PITCH_ADJ
+    in_thread(name: :play_synth) do
+      begin
+        loop do
+          use_real_time
+          #sync :PlaySynthSync
+          begin
+            control pitchShift, pitch: PITCH_ADJ
+            control rlpf, res: RLPF_Res, cutoff: RLPF_Cutoff
+            while MidiSynthQueue.length > 0 do
+              synth_doCommand MidiSynthQueue.deq
+            end
+          rescue
+            print "synth failed"
           end
-        rescue
-          print "synth failed"
+          sleep 0.05
         end
-        sleep 0.05
+      rescue
+        print "synth thread failed"
       end
-    rescue
-      print "synth thread failed"
     end
   end
-end
-end
-end
-end
-end
-end
-end
-end
-end
+  end
+  end
+  end
+  end
+  end
+  end
+  end
+  end
 end
 
 define :synth_doCommand do |cmd|
@@ -186,7 +268,15 @@ end
 define :playNote do |note, vol|
   #max duration of note set to 5 on next line. Can increase if you wish.
   node = play note, amp: vol, attack: ENV_Attack , release: ENV_Release, decay: ENV_Decay, sustain: 50,
-  attack_level: ENV_Attack_Level, decay_level: ENV_Decay_Level, env_curve: ENV_Curve
+  attack_level: ENV_Attack_Level, decay_level: ENV_Decay_Level, env_curve: ENV_Curve, coef: ENV_Coef, 
+  depth: ENV_Depth, detune: ENV_Detune, detune1: ENV_Detune1, detune2: ENV_Detune2, divisor: ENV_Divisor, 
+  dpulse_width: ENV_Dpulse_Width, hard: ENV_Hard, max_delay_time: ENV_Max_Delay_Time, mod_phase: ENV_Mod_Phase, 
+  mod_phase_offset: ENV_Mod_Phase_Offset, mod_pulse_width: ENV_Mod_Pulse_Width, mod_range: ENV_Mod_Range, 
+  noise_amp: ENV_Noise_Amp, pluck_decay: ENV_Pluck_Decay, pulse_width: ENV_Pulse_Width, 
+  reverb_time: ENV_Reverb_Time, ring: ENV_Ring, room: ENV_Room, stereo_width: ENV_Stereo_Width, 
+  sub_amp: ENV_Sub_Amp, sub_detune: ENV_Sub_Detune, vel: ENV_Vel, vibrato_delay: ENV_Vibrato_Delay, 
+  vibrato_depth: ENV_Vibrato_Depth, vibrato_onset: ENV_Vibrato_Onset, vibrato_rate: ENV_Vibrato_Rate
+
   return node
 end
 

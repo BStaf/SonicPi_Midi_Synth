@@ -1,7 +1,7 @@
 from tkinter import *
 from AppPalette import *
 
-class SliderControl:
+class SliderControl():
     def __init__(self, canvas, xPos, yPos, width, height, minVal, maxVal, startVal):
         self.__handlers = []
         self.__canvas = canvas
@@ -21,7 +21,7 @@ class SliderControl:
 
         self._startYPos = self._sliderRange - ( (startVal / (self._maxVal-self._minVal)) * self._sliderRange ) + yPos
        
-        canvas.create_rectangle(xPos, yPos, xPos+width, yPos+height, fill=AppPalette.Black)
+        self.__sliderFrame = canvas.create_rectangle(xPos, yPos, xPos+width, yPos+height, fill=AppPalette.Black)
         
         self._slider = canvas.create_rectangle(xPos, self._startYPos, xPos+width, self._startYPos+sliderHeight, fill=AppPalette.Yellow)
         canvas.tag_bind(self._slider, '<B1-Motion>',self.__motion) 
@@ -33,9 +33,12 @@ class SliderControl:
 
     def setToValue(self, value):
         pos = self.__calcPositionFromValue(value)
-        #print(pos)
         self._updateSlider(pos)
         #self._updateSliderValue(value)
+
+    def moveHorizontally(self, xDiff):
+        self.__canvas.move(self.__sliderFrame, xDiff, 0)
+        self.__canvas.move(self._slider, xDiff, 0)
 
     def __motion(self, event):       
         self._updateSlider(event.y)
@@ -63,12 +66,11 @@ class SliderControl:
         #get latest slider position
         curPosY1 = self.__canvas.coords(self._slider)[1] - self._objectYpos
         percent = 1 - (curPosY1 / self._sliderRange)
-        return int((percent * (self._maxVal-self._minVal)) + self._minVal)
+        return float((percent * (self._maxVal-self._minVal)) + self._minVal)
 
     def __calcPositionFromValue(self,value):
-        percent = 1 - (value / (self._maxVal - self._minVal)) 
+        percent = 1 - ((value - self._minVal) / (self._maxVal - self._minVal)) 
         return percent * self._sliderRange + (self._sliderHalfHeight + self.__yPos)
-
 
     def __getSliderMovementDifference(self, yPos):
         #get current slider position

@@ -44,13 +44,13 @@ class InstrumentSelectBtn(Btn):
 
 
 class StandardMidiSliderControl(SliderControl):
-    def __init__(self, canvas, xPos, yPos, startVal):
-        SliderControl.__init__(self, canvas, xPos, yPos, 50, 230, 0 , 100, startVal) 
+    def __init__(self, canvas, xPos, yPos, minVal, maxVal, startVal):
+        SliderControl.__init__(self, canvas, xPos, yPos, 50, 230, minVal, maxVal, startVal) 
 
 #reverts to startVal when let go
 class SpringMidiSliderControl(StandardMidiSliderControl):
     def __init__(self, canvas, xPos, yPos, startVal):
-        StandardMidiSliderControl.__init__(self, canvas, xPos, yPos, startVal)
+        StandardMidiSliderControl.__init__(self, canvas, xPos, yPos, 0, 100, startVal)
         self.beginVal = self._startYPos+self._sliderHalfHeight
         canvas.tag_bind(self._slider, '<ButtonRelease-1>', self.btnUp) 
 
