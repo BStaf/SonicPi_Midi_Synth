@@ -41,6 +41,38 @@ ENV_Vibrato_Depth = 0.15
 ENV_Vibrato_Onset = 0.1
 ENV_Vibrato_Rate = 6
 
+ENV_reverb_mix = 0
+ENV_echo_mix = 0
+ENV_compressor_mix = 0
+ENV_whammy_mix = 0
+ENV_rlpf_mix = 0
+ENV_distortion_mix = 0
+ENV_octaver_mix = 0
+ENV_flanger_mix = 0
+ENV_reverb_room = 0
+ENV_reverb_damp = 0
+ENV_echo_phase = 0
+ENV_echo_decay = 0
+ENV_echo_max_phase = 0
+ENV_compressor_threshold = 0
+ENV_compressor_clamp_time = 0
+ENV_compressor_slope_above = 0
+ENV_compressor_slope_below = 0
+ENV_compressor_relax_time = 0
+ENV_whammy_transpose = 0
+ENV_whammy_max_delay_time = 0
+ENV_whammy_deltime = 0
+ENV_whammy_grainsize = 0
+ENV_rlpf_cutoff = 0
+ENV_rlpf_res = 0
+ENV_distortion_distort = 0
+ENV_flanger_phase = 0
+ENV_flanger_pulse_flanger_width = 0
+ENV_flanger_delay = 0
+ENV_flanger_depth = 0
+ENV_flanger_decay = 0
+ENV_flanger_feedback = 0
+
 PITCH_ADJ = 0
 
 MAX_NODES = 9
@@ -49,7 +81,6 @@ MidiDrumQueue = Queue.new #queued midi events for drums
 
 ns = [] #array to store note playing references
 killList = []
-
 
 128.times do |i|
   ns[i] = {node: nil, onStatus: 0}
@@ -215,7 +246,7 @@ with_fx :rlpf do |rlpf|
   with_fx :echo do |echo|
   with_fx :compressor do |compressor|
   with_fx :whammy do |whammy|
-  with_fx :rhpf do |rhpf|
+ # with_fx :rhpf do |rhpf|
   with_fx :distortion do |distortion|
   with_fx :octaver do |octaver|
   with_fx :flanger do |flanger|
@@ -240,7 +271,7 @@ with_fx :rlpf do |rlpf|
         print "synth thread failed"
       end
     end
-  end
+  #end
   end
   end
   end

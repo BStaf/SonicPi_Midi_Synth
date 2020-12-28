@@ -1,9 +1,9 @@
-name	mix	room	damp	Phase	Decay	max_phase	threshold	clamp_time	slope_above	slope_below	relax_time	Transpose	max_delay_time	deltime	grainsize	cutoff	resonance	distort	Phase	pulse_width	delay	depth	decay	feedback
-reverb 	0	0.6	0.5																					
-echo	0			0.25	2	2																		
-compressor	0						0.2	0.01	0.5	1	0.01													
-whammy 	0											12	1	0.05	0.075									
-rhpf 	0															100	0.5							
-distortion 	0																	0.5						
-octaver 	0																							
-flanger	0																		4	0.5	5	5	2	0
+name	reverb_mix	echo_mix	compressor_mix	whammy_mix	rlpf_mix	distortion_mix	octaver_mix	flanger_mix	reverb_room	reverb_damp	echo_phase	echo_decay	echo_max_phase	compressor_threshold	compressor_clamp_time	compressor_slope_above	compressor_slope_below	compressor_relax_time	whammy_transpose	whammy_max_delay_time	whammy_deltime	whammy_grainsize	rlpf_cutoff	rlpf_res	distortion_distort	flanger_phase	flanger_pulse_flanger_width	delay	flanger_depth	flanger_decay	flanger_feedback
+reverb 	0								0.6	0.5																					
+echo		0									0.25	2	2																		
+compressor			0											0.2	0.01	0.5	1	0.01													
+whammy 				0															12	1	0.05	0.075									
+rlpf 					1																		100	0.5							
+distortion 						0																			0.5						
+octaver 							0																								
+flanger								0																		4	0.5	5	5	2	0

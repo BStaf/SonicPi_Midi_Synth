@@ -1,84 +1,39 @@
+from SynthSettingsObject import *
 import copy
 
-class Fxs:
+class Fxs(SynthSettingsObject):
     def __init__(self, fxData, fxParamsData, midiMaster):
-        self.__midiUpdateHandlers = []
-        self.__fxUpdateHandlers = []
-        self.currentInstrument = ""#{}#firstFx
-        self.__fxParamsData = fxParamsData
-        self.fxData = self.__filterFxData(fxData,fxParamsData)
-        self.__midiMaster = midiMaster
-        #self.__midiMaster.onUpdate(self.midiInHandler)
-        self.__curFxSettings = {}
-        #self.__loadCurrentSettingsForAll()
-        
-    def onMidiInUpdate(self, handler):
-        self.__midiUpdateHandlers.append(handler)
+        SynthSettingsObject.__init__(self, fxData, fxParamsData, midiMaster)
+        self._midiMaster.onUpdate(self.midiInHandler)
+        self.__updatgeAllFxSettings()
 
-    def onInstrumentUpdate(self, handler):
-        self.__fxUpdateHandlers.append(handler)
+    def setCurrent(self, name):
+        #self.currentInstrument = name
+        index = super().getList().index(name)
+        #self._midiMaster.midiOut.sendProgramChange(index)
 
-    def getFxList(self):
-        return list(self.fxData.keys())
+        super().setCurrent(name)
 
-    def getCurentSettings(self):
-        #print(self.__curFxSettings)
-        return self.__curFxSettings.items()
-
-    def setFx(self, fxName):
-        self.currentInstrument = fxName
-        #index = self.getFxList().index(self.currentInstrument)
-        #self.__midiMaster.midiOut.sendProgramChange(index)
-        self.__loadCurrentSettings()
-        for handler in self.__fxUpdateHandlers:
-            handler(fxName)
-
-    def setFxSetting(self, settingName, value):
-        self.__curFxSettings[settingName] = float(value)
+    def setSetting(self, name, value):
+        super().setSetting(name,value)
+      #  val = value / 100.0
+        #self.__curInstSettings[settingName] = float(value)
         #self.__midiMaster.sendControlOutputForControlName(settingName, self.__scaleTo0To100ForControlName(value, settingName))
     
-    def getControlRangeData(self, controlName):
-        data = self.__fxParamsData[controlName]
-        start = float(data["start_value"])
-        stop = float(data["stop_value"])
-        return [start, stop]
+    def midiInHandler(self, name, value):
+        print(f"midi In {name}")
+        self._currentObject[name] = self._scaleToExpectedRangeFrom0To100(value, name)
+        #print(self.__curInstSettings[controlName])
+        for handler in self._midiUpdateHandlers:
+            handler(name, self._currentObject[name])
 
-    def __filterFxData(self, fxData, paramData):
-        filteredDict = {}
-        namesToUse = ({k:v for (k,v) in paramData.items() if v["type"] == "range"}).keys()
-        for instName,controlData in fxData.items():
-            filteredData = {k: controlData[k] for k in namesToUse if k in controlData.keys() }
-            filteredDict[instName] = filteredData
-
-        return filteredDict
-
-    def __loadCurrentSettings(self):
-        self.__curFxSettings = self.fxData[self.currentInstrument]
-        print(self.__curFxSettings.items())
-        for key, value in self.__curFxSettings.items():
-            self.setFxSetting(key,value)
-
-    # def __scaleTo0To100ForControlName(self, val, name):
-    #     low = float(self.__fxParamsData[name]["start_value"])
-    #     high = float(self.__fxParamsData[name]["stop_value"])
-    #     value = float(val)
-    #     if value < low:
-    #         value = low
-    #         print(f"{val} below low range of {low}")
-    #     elif value > high:
-    #         value = high
-    #         print(f"{val} above high range of {high}")
-    #     return ((value-low) / (high - low)) * 100
-
-    # def __scaleToExpectedRangeFrom0To100(self, val, name):
-    #     low = float(self.__fxParamsData[name]["start_value"])
-    #     high = float(self.__fxParamsData[name]["stop_value"])
-    #     value = float(val)
-        
-    #     return (((high - low) / 100)*value) + low
-
-    # def midiInHandler(self, controlName, value):
-    #     self.__curFxSettings[controlName] = self.__scaleToExpectedRangeFrom0To100(value, controlName)
-    #     print(self.__curFxSettings[controlName])
-    #     for handler in self.__midiUpdateHandlers:
-    #         handler(controlName, self.__curFxSettings[controlName])
+    def __updatgeAllFxSettings(self):
+        #send midicommands to set all fx to base values
+        #print(self._objectData)
+        for fxObject in self._objectData.values():
+            for name, value in fxObject.items():
+                #print(f"{name}-{value}")
+                scaledVal = self._scaleTo0To100ForControlName(value, name)
+                self._midiMaster.sendControlOutputForControlName(name, scaledVal)
+            #filteredData = {k: controlData[k] for k in namesToUse if k in controlData.keys() }
+            #filteredDict[name] = filteredData

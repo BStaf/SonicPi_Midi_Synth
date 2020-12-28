@@ -56,7 +56,7 @@ class MidiMaster:
     def onUpdate(self, handler):
         self.__handlers.append(handler)
 
-    def sendControlOutputForControlName(self,controlName, value):
+    def sendControlOutputForControlName(self, controlName, value):
         controlId = int(self.__midiControlData[controlName]["midi_out_control"])
         midiVal = int(value)/100 * 127
         self.midiOut.sendControlChange(int(controlId), int(midiVal))

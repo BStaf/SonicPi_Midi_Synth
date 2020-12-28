@@ -27,7 +27,7 @@ class InstrumentPage(Frame):
     
     def instSelectBtnCallback(self, event, name):
         print(name)
-        self.__instruments.setInstrument(name)
+        self.__instruments.setCurrent(name)
         self.__pages["mainPage"].show()
 
     def populateTopCanvas(self, canvas):
@@ -41,7 +41,7 @@ class InstrumentPage(Frame):
         #draw new sliders
         i = 0
         j = 0
-        for instName in self.__instruments.getInstrumentList():
+        for instName in self.__instruments.getList():
             InstrumentSelectBtn(canvas, i*78+10, j*40+10, 70, 30, instName, self.instSelectBtnCallback)
 
             j = j+1

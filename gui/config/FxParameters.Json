@@ -1,115 +1,155 @@
 {
-    "mix": {
+    "reverb_mix": {
         "type": "range",
         "start_value": "0",
         "stop_value": "1"
     },
-    "room": {
+    "echo_mix": {
         "type": "range",
         "start_value": "0",
         "stop_value": "1"
     },
-    "damp": {
+    "compressor_mix": {
         "type": "range",
         "start_value": "0",
         "stop_value": "1"
     },
-    "Phase": {
+    "whammy_mix": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "rlpf_mix": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "distortion_mix": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "octaver_mix": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "flanger_mix": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "reverb_room": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "reverb_damp": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "echo_phase": {
         "type": "range",
         "start_value": "0.1",
         "stop_value": "10"
     },
-    "Decay": {
+    "echo_decay": {
         "type": "range",
         "start_value": "0.1",
         "stop_value": "10"
     },
-    "max_phase": {
+    "echo_max_phase": {
         "type": "range",
         "start_value": "0.1",
         "stop_value": "10"
     },
-    "threshold": {
+    "compressor_threshold": {
         "type": "range",
         "start_value": "0",
         "stop_value": "10"
     },
-    "clamp_time": {
+    "compressor_clamp_time": {
         "type": "range",
         "start_value": "0",
         "stop_value": "10"
     },
-    "slope_above": {
+    "compressor_slope_above": {
         "type": "range",
         "start_value": "0",
         "stop_value": "10"
     },
-    "slope_below": {
+    "compressor_slope_below": {
         "type": "range",
         "start_value": "0",
         "stop_value": "10"
     },
-    "relax_time": {
+    "compressor_relax_time": {
         "type": "range",
         "start_value": "0",
         "stop_value": "10"
     },
-    "transpose": {
+    "whammy_transpose": {
         "type": "range",
         "start_value": "0",
         "stop_value": "24"
     },
-    "max_delay_time": {
+    "whammy_max_delay_time": {
         "type": "range",
         "start_value": "0",
         "stop_value": "10"
     },
-    "deltime": {
+    "whammy_deltime": {
         "type": "range",
         "start_value": "0",
         "stop_value": "2"
     },
-    "grainsize": {
+    "whammy_grainsize": {
         "type": "range",
         "start_value": "0",
         "stop_value": "2"
     },
-    "cutoff": {
+    "rlpf_cutoff": {
         "type": "range",
         "start_value": "0",
         "stop_value": "100"
     },
-    "resonance": {
+    "rlpf_res": {
         "type": "range",
         "start_value": "0",
         "stop_value": "1"
     },
-    "distort": {
+    "distortion_distort": {
         "type": "range",
         "start_value": "0",
         "stop_value": "0.99"
     },
-    "pulse_width": {
+    "flanger_phase": {
+        "type": "range",
+        "start_value": "0.1",
+        "stop_value": "10"
+    },
+    "flanger_pulse_flanger_width": {
         "type": "range",
         "start_value": "0",
         "stop_value": "1"
     },
-    "delay": {
+    "flanger_delay": {
         "type": "range",
         "start_value": "0",
         "stop_value": "10"
     },
-    "depth": {
+    "flanger_depth": {
         "type": "range",
         "start_value": "0",
         "stop_value": "10"
     },
-    "decay": {
+    "flanger_decay": {
         "type": "range",
         "start_value": "0",
         "stop_value": "10"
     },
-    "feedback": {
+    "flanger_feedback": {
         "type": "range",
         "start_value": "0",
         "stop_value": "10"

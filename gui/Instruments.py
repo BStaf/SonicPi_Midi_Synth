@@ -1,84 +1,26 @@
+from SynthSettingsObject import *
 import copy
 
-class Instruments:
+class Instruments(SynthSettingsObject):
     def __init__(self, instrumentData, instrumentParamsData, firstInstrument, midiMaster):
-        self.__midiUpdateHandlers = []
-        self.__instrumentUpdateHandlers = []
-        self.currentInstrument = firstInstrument
-        self.__instrumentParamsData = instrumentParamsData
-        self.instrumentData = self.__filterInstrumentData(instrumentData,instrumentParamsData)
-        self.__midiMaster = midiMaster
-        self.__midiMaster.onUpdate(self.midiInHandler)
-        self.__curInstSettings = {}
-        self.__loadCurrentSettings()
-        
-    def onMidiInUpdate(self, handler):
-        self.__midiUpdateHandlers.append(handler)
+        SynthSettingsObject.__init__(self, instrumentData, instrumentParamsData, midiMaster)
+        self._midiMaster.onUpdate(self.midiInHandler)
+        self.setCurrent(firstInstrument)
 
-    def onInstrumentUpdate(self, handler):
-        self.__instrumentUpdateHandlers.append(handler)
+    def setCurrent(self, name):      
+        super().setCurrent(name)
+        self.currentInstrument = name
+        index = super().getList().index(name)
+        for key, value in self._currentObject.items():
+            self.setSetting(key,value)
+        self._midiMaster.midiOut.sendProgramChange(index)      
 
-    def getInstrumentList(self):
-        return list(self.instrumentData.keys())
+    def setSetting(self, name, value):
+        super().setSetting(name,value)
 
-    def getCurentSettings(self):
-        return self.__curInstSettings.items()
-
-    def setInstrument(self, instrumentName):
-        self.currentInstrument = instrumentName
-        index = self.getInstrumentList().index(self.currentInstrument)
-        self.__midiMaster.midiOut.sendProgramChange(index)
-        self.__loadCurrentSettings()
-        for handler in self.__instrumentUpdateHandlers:
-            handler(instrumentName)
-
-    def setInstrumentSetting(self, settingName, value):
-      #  val = value / 100.0
-        self.__curInstSettings[settingName] = float(value)
-        self.__midiMaster.sendControlOutputForControlName(settingName, self.__scaleTo0To100ForControlName(value, settingName))
-    
-    def getControlRangeData(self, controlName):
-        data = self.__instrumentParamsData[controlName]
-        start = float(data["start_value"])
-        stop = float(data["stop_value"])
-        return [start, stop]
-
-    def __filterInstrumentData(self, instrumentData, paramData):
-        filteredDict = {}
-        namesToUse = ({k:v for (k,v) in paramData.items() if v["type"] == "range"}).keys()
-        for instName,controlData in instrumentData.items():
-            filteredData = {k: controlData[k] for k in namesToUse if k in controlData.keys() }
-            filteredDict[instName] = filteredData
-
-        return filteredDict
-
-    def __loadCurrentSettings(self):
-        self.__curInstSettings = copy.deepcopy(self.instrumentData[self.currentInstrument])
-        for key, value in self.__curInstSettings.items():
-            self.__curInstSettings[key] = float(value)
-            self.setInstrumentSetting(key,value)
-
-    def __scaleTo0To100ForControlName(self, val, name):
-        low = float(self.__instrumentParamsData[name]["start_value"])
-        high = float(self.__instrumentParamsData[name]["stop_value"])
-        value = float(val)
-        if value < low:
-            value = low
-            print(f"{val} below low range of {low}")
-        elif value > high:
-            value = high
-            print(f"{val} above high range of {high}")
-        return ((value-low) / (high - low)) * 100
-
-    def __scaleToExpectedRangeFrom0To100(self, val, name):
-        low = float(self.__instrumentParamsData[name]["start_value"])
-        high = float(self.__instrumentParamsData[name]["stop_value"])
-        value = float(val)
-        
-        return (((high - low) / 100)*value) + low
-
-    def midiInHandler(self, controlName, value):
-        self.__curInstSettings[controlName] = self.__scaleToExpectedRangeFrom0To100(value, controlName)
-        print(self.__curInstSettings[controlName])
-        for handler in self.__midiUpdateHandlers:
-            handler(controlName, self.__curInstSettings[controlName])
+    def midiInHandler(self, name, value):
+        print(f"midi In {name}")
+        self._currentObject[name] = self._scaleToExpectedRangeFrom0To100(value, name)
+        #print(self.__curInstSettings[controlName])
+        for handler in self._midiUpdateHandlers:
+            handler(name, self._currentObject[name])

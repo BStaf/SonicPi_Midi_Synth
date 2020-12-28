@@ -138,5 +138,5 @@ class InstSettingsPage(Frame):
         for key, value in self._sliders.items():
             if value == obj:
                 #print (f"Found {key}, {event}")
-                self.__instruments.setSetting(key, event)
+                self.__instruments.setInstrumentSetting(key, event)
                 #self.__midiMaster.sendControlOutputForControlName(key, event)

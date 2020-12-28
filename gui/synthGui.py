@@ -2,18 +2,21 @@ from tkinter import *
 from MidiHelpers import *
 from AppPalette import *
 from Fxs import *
+from FxSettingsPage import *
 from FxPage import *
 from MainPage import *
 from Instruments import *
 from InstSettingsPage import *
 from InstrumentPage import *
+from SynthObjectSettingsPage import *
+
 
 import tkinter.font as tkFont
 import os
 import json
 
 instrumentJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/config/InstrumentData.Json"
-instrumentParamsPath = os.path.dirname(os.path.realpath(__file__)) +"/config/ControlParameters.Json"
+instrumentParamsPath = os.path.dirname(os.path.realpath(__file__)) +"/config/InstrumentParameters.Json"
 fxJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/config/FxData.Json"
 fxParamsPath = os.path.dirname(os.path.realpath(__file__)) +"/config/FxParameters.Json"
 midiControlJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/config/ControlData.Json"
@@ -32,10 +35,12 @@ class MainFrame(Frame):
 
         pages = {}
 
-        pages["instConfigPage"] = InstSettingsPage(pages, instruments, midiMaster, root, width=windowWidth, height=windowHeight)
+        pages["instConfigPage"] = SynthObjectSettingsPage(pages, instruments, "mainPage", root, width=windowWidth, height=windowHeight)
+        #pages["instConfigPage"] = InstSettingsPage(pages, instruments, midiMaster, root, width=windowWidth, height=windowHeight)
         pages["mainPage"] = MainPage(pages, instruments, midiMaster, root, width=windowWidth, height=windowHeight)
         pages["instSelectPage"] = InstrumentPage(pages, instruments, root, width=windowWidth, height=windowHeight)
-        pages["fxConfigPage"] = InstSettingsPage(pages, fxs, midiMaster, root, width=windowWidth, height=windowHeight)
+        pages["fxConfigPage"] = FxSettingsPage(pages, fxs, "fxSelectPage", root, width=windowWidth, height=windowHeight)
+        #pages["fxConfigPage"] = InstSettingsPage(pages, fxs, midiMaster, root, width=windowWidth, height=windowHeight)
         pages["fxSelectPage"] = FxPage(pages, fxs, root, width=windowWidth, height=windowHeight)
         
 

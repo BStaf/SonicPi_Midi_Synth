@@ -27,7 +27,7 @@ class FxPage(Frame):
     
     def fxSelectBtnCallback(self, event, name):
         print(name)
-        self.__fxs.setFx(name)
+        self.__fxs.setCurrent(name)
         self.__pages["fxConfigPage"].show()
 
     def populateTopCanvas(self, canvas):
@@ -41,7 +41,7 @@ class FxPage(Frame):
         #draw new sliders
         i = 0
         j = 0
-        for fxName in self.__fxs.getFxList():
+        for fxName in self.__fxs.getList():
             InstrumentSelectBtn(canvas, i*90+10, j*40+10, 80, 30, fxName, self.fxSelectBtnCallback)
 
             j = j+1
