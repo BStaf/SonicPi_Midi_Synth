@@ -1,19 +1,19 @@
 from tkinter import * 
-from MidiHelpers import *
-from AppPalette import *
-from Fxs import *
-from FxSettingsPage import *
-from FxPage import *
-from MainPage import *
-from Instruments import *
-from InstSettingsPage import *
-from InstrumentPage import *
-from SynthObjectSettingsPage import *
-
-
 import tkinter.font as tkFont
 import os
 import json
+
+from AppPalette import *
+from pages.FxSettingsPage import *
+from pages.FxPage import *
+from pages.MainPage import *
+from pages.InstSettingsPage import *
+from pages.InstrumentPage import *
+from pages.SynthObjectSettingsPage import *
+from midi.MidiHelpers import *
+from synth_objects.Fxs import *
+from synth_objects.Instruments import *
+
 
 instrumentJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/config/InstrumentData.Json"
 instrumentParamsPath = os.path.dirname(os.path.realpath(__file__)) +"/config/InstrumentParameters.Json"

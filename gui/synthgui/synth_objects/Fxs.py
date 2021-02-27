@@ -1,4 +1,4 @@
-from SynthSettingsObject import *
+from .SynthSettingsObject import *
 import copy
 
 class Fxs(SynthSettingsObject):
