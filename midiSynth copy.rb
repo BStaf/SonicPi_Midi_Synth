@@ -1,34 +1,75 @@
 MidiBaseStr = "/midi:*:*:*"
 
 #FX vars
-# FX_Settigns = {:Rlpf_Mix => {:control => 66, :val => 0.01, :min => 0, :max => 1 },
-#   :Rlpf_Res => {:control => 66, :val => 0.0, :min => 0, :max => 1 },
-#   :Rlpf_Cutoff => {:control => 66, :val => 0.0, :min => 0, :max => 100 }}
+FX_Settigns = {:Compressor_Clamp_Time => {:default => 0.01 }
+FX_Compressor_Clamp_Time = 0.01 
+FX_Compressor_Mix = 0
+FX_Compressor_Relax_Time = 0.01
+FX_Compressor_Slope_Above = 0.5
+FX_Compressor_Slope_Below = 1
+FX_Compressor_Threshold = 0.2
+FX_Distortion_Distort = 0.5
+FX_Distortion_Mix = 0
+FX_Echo_Decay = 2
+FX_Echo_Max_Phase = 2
+FX_Echo_Mix = 0
+FX_Echo_Phase = 0.25
+FX_Flanger_Decay = 2
+FX_Flanger_Delay = 5
+FX_Flanger_Depth = 5
+FX_Flanger_Feedback = 0
+FX_Flanger_Mix = 0
+FX_Flanger_Phase = 4
+FX_Flanger_Pulse_Flanger_Width = 0.5
+FX_Octaver_Mix = 0
+FX_Reverb_Damp = 0.5
+FX_Reverb_Mix = 0
+FX_Reverb_Room = 0.6
+FX_Rlpf_Cutoff = 100
+FX_Rlpf_Mix = 1
+FX_Rlpf_Res = 0.5
+FX_Whammy_Deltime = 0.05
+FX_Whammy_Grainsize = 0.075
+FX_Whammy_Max_Delay_Time = 1
+FX_Whammy_Mix = 0
+FX_Whammy_Transpose = 12
 
-Settings = {:Compressor_Clamp_Time=>{:control=>104,:val=>0.01,:min=>0,:max=>10},{:Compressor_Mix=>{:control=>92,:val=>0,:min=>0,:max=>1},{:Compressor_Relax_Time=>{:control=>107,:val=>0.01,:min=>0,:max=>10},
-{:Compressor_Slope_Above=>{:control=>105,:val=>0.5,:min=>0,:max=>10},{:Compressor_Slope_Below=>{:control=>106,:val=>1,:min=>0,:max=>10},{:Compressor_Threshold=>{:control=>103,:val=>0.2,:min=>0,:max=>10},
-{:Distortion_Distort=>{:control=>116,:val=>0.5,:min=>0,:max=>0.99},{:Distortion_Mix=>{:control=>95,:val=>0,:min=>0,:max=>1},{:Echo_Decay=>{:control=>101,:val=>2,:min=>0.1,:max=>10},
-{:Echo_Max_Phase=>{:control=>102,:val=>2,:min=>0.1,:max=>10},{:Echo_Mix=>{:control=>91,:val=>0,:min=>0,:max=>1},{:Echo_Phase=>{:control=>100,:val=>0.25,:min=>0.1,:max=>10},
-{:Flanger_Decay=>{:control=>121,:val=>2,:min=>0,:max=>10},{:Flanger_Delay=>{:control=>119,:val=>5,:min=>0,:max=>10},{:Flanger_Depth=>{:control=>120,:val=>5,:min=>0,:max=>10},
-{:Flanger_Feedback=>{:control=>122,:val=>0,:min=>0,:max=>10},{:Flanger_Mix=>{:control=>97,:val=>0,:min=>0,:max=>1},{:Flanger_Phase=>{:control=>117,:val=>4,:min=>0.1,:max=>10},
-{:Flanger_Pulse_Flanger_Width=>{:control=>118,:val=>0.5,:min=>0,:max=>1},{:Octaver_Mix=>{:control=>96,:val=>0,:min=>0,:max=>1},{:Reverb_Damp=>{:control=>99,:val=>0.5,:min=>0,:max=>1},
-{:Reverb_Mix=>{:control=>90,:val=>0,:min=>0,:max=>1},{:Reverb_Room=>{:control=>98,:val=>0.6,:min=>0,:max=>1},{:Rlpf_Cutoff=>{:control=>114,:val=>100,:min=>0,:max=>100},
-{:Rlpf_Mix=>{:control=>94,:val=>1,:min=>0,:max=>1},{:Rlpf_Res=>{:control=>115,:val=>0.5,:min=>0,:max=>1},{:Whammy_Deltime=>{:control=>110,:val=>0.05,:min=>0,:max=>2},
-{:Whammy_Grainsize=>{:control=>111,:val=>0.075,:min=>0,:max=>2},{:Whammy_Max_Delay_Time=>{:control=>109,:val=>1,:min=>0,:max=>10},{:Whammy_Mix=>{:control=>93,:val=>0,:min=>0,:max=>1},
-{:Whammy_Transpose=>{:control=>108,:val=>12,:min=>0,:max=>24},
-{:Attack=>{:midi=>33,:val=>0,:min=>0,:max=>1}, {:Attack_Level=>{:midi=>36,:val=>1,:min=>0,:max=>1}, {:Coef=>{:midi=>71,:val=>0.3,:min=>-1,:max=>1},
-{:Decay=>{:midi=>34,:val=>0,:min=>0,:max=>1}, {:Decay_Level=>{:midi=>37,:val=>1,:min=>0,:max=>1}, {:Depth=>{:midi=>46,:val=>1,:min=>0,:max=>20},
-{:Detune=>{:midi=>43,:val=>0.1,:min=>0,:max=>5}, {:Detune1=>{:midi=>54,:val=>12,:min=>-24,:max=>24}, {:Detune2=>{:midi=>55,:val=>24,:min=>-24,:max=>24},
-{:Divisor=>{:midi=>45,:val=>2,:min=>0,:max=>20}, {:Dpulse_Width=>{:midi=>44,:val=>0.5,:min=>0,:max=>1}, {:Hard=>{:midi=>66,:val=>0.5,:min=>0,:max=>1},
-{:Max_Delay_Time=>{:midi=>69,:val=>0.125,:min=>0.125,:max=>1}, {:Mod_Phase=>{:midi=>47,:val=>0.25,:min=>0,:max=>5}, {:Mod_Phase_Offset=>{:midi=>50,:val=>0,:min=>0,:max=>1},
-{:Mod_Pulse_Width=>{:midi=>49,:val=>0.5,:min=>0,:max=>1}, {:Mod_Range=>{:midi=>48,:val=>5,:min=>0,:max=>12}, {:Noise_Amp=>{:midi=>68,:val=>0.8,:min=>0,:max=>1},
-{:Pluck_Decay=>{:midi=>70,:val=>30,:min=>1,:max=>100}, {:Pulse_Width=>{:midi=>40,:val=>0.5,:min=>0,:max=>1}, {:Release=>{:midi=>35,:val=>1,:min=>0,:max=>1},
-{:Reverb_Time=>{:midi=>59,:val=>100,:min=>0.1,:max=>200}, {:Ring=>{:midi=>57,:val=>0.2,:min=>0.1,:max=>50}, {:Room=>{:midi=>58,:val=>70,:min=>0.1,:max=>300},
-{:Stereo_Width=>{:midi=>67,:val=>0,:min=>0,:max=>1}, {:Sub_Amp=>{:midi=>41,:val=>1,:min=>0,:max=>2}, {:Sub_Detune=>{:midi=>42,:val=>-12,:min=>-24,:max=>24},
-{:Vel=>{:midi=>65,:val=>0.2,:min=>0,:max=>1}, {:Vibrato_Delay=>{:midi=>63,:val=>0.5,:min=>0,:max=>2}, {:Vibrato_Depth=>{:midi=>62,:val=>0.15,:min=>0,:max=>5},
-{:Vibrato_Onset=>{:midi=>64,:val=>0.1,:min=>0,:max=>2}, {:Vibrato_Rate=>{:midi=>61,:val=>6,:min=>0,:max=>20}}
-
++#Envelope vars
+ENV_Attack = 0
+ENV_Release = 1
+ENV_Sustain = 0
+ENV_Decay = 0
+ENV_Attack_Level = 1
+ENV_Decay_Level = 1
 ENV_Curve = 1 #(1,3,6,7)
+
+ENV_Coef = 0.3
+ENV_Depth = 1
+ENV_Detune = 0.1
+ENV_Detune1 = 12
+ENV_Detune2 = 24
+ENV_Divisor = 2
+ENV_Dpulse_Width = 0.5
+ENV_Hard = 0.5
+ENV_Max_Delay_Time = 0.125
+ENV_Mod_Phase = 0.25
+ENV_Mod_Phase_Offset = 0
+ENV_Mod_Pulse_Width = 0.5
+ENV_Mod_Range = 5
+ENV_Noise_Amp = 0.8
+ENV_Pluck_Decay = 30
+ENV_Pulse_Width = 0.5
+ENV_Reverb_Time = 100
+ENV_Ring = 0.2
+ENV_Room = 70
+ENV_Stereo_Width = 0
+ENV_Sub_Amp = 1
+ENV_Sub_Detune = -12
+ENV_Vel = 0.2
+ENV_Vibrato_Delay = 0.5
+ENV_Vibrato_Depth = 0.15
+ENV_Vibrato_Onset = 0.1
+ENV_Vibrato_Rate = 6
 
 PITCH_ADJ = 0
 
@@ -117,7 +158,7 @@ define :setControlSettings do |cntrlNum, cntrlValue|
   #  FX_Rlpf_Res = scaleMidiAi cntrlValue, 0, 0.9
   #elsif cntrlNum == 39
   #  FX_rlpf_cutoff = scaleMidiAi cntrlValue, 50, 130
-  Settings.each { |key, value| puts "k: #{key}, v: #{value}" }
+
   if cntrlNum == 33
     ENV_Attack = scaleMidiAi cntrlValue, 0, 1
   elsif cntrlNum == 34
@@ -182,6 +223,70 @@ define :setControlSettings do |cntrlNum, cntrlValue|
       ENV_Pluck_Decay = scaleMidiAi cntrlValue, 1, 100
   elsif cntrlNum == 71
       ENV_Coef = scaleMidiAi cntrlValue, -1, 1
+  
+  elsif cntrlNum == 90
+      FX_Reverb_Mix = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 91
+      FX_Echo_Mix = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 92
+      FX_Compressor_Mix = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 93
+      FX_Whammy_Mix = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 94
+      FX_Rlpf_Mix = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 95
+      FX_Distortion_Mix = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 96
+      FX_Octaver_Mix = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 97
+      FX_Flanger_Mix = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 98
+      FX_Reverb_Room = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 99
+      FX_Reverb_Damp = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 100
+      FX_Echo_Phase = scaleMidiAi cntrlValue, 0.1, 10
+  elsif cntrlNum == 101
+      FX_Echo_Decay = scaleMidiAi cntrlValue, 0.1, 10
+  elsif cntrlNum == 102
+      FX_Echo_Max_Phase = scaleMidiAi cntrlValue, 0.1, 10
+  elsif cntrlNum == 103
+      FX_Compressor_Threshold = scaleMidiAi cntrlValue, 0, 10
+  elsif cntrlNum == 104
+      FX_Compressor_Clamp_Time = scaleMidiAi cntrlValue, 0, 10
+  elsif cntrlNum == 105
+      FX_Compressor_Slope_Above = scaleMidiAi cntrlValue, 0, 10
+  elsif cntrlNum == 106
+      FX_Compressor_Slope_Below = scaleMidiAi cntrlValue, 0, 10
+  elsif cntrlNum == 107
+      FX_Compressor_Relax_Time = scaleMidiAi cntrlValue, 0, 10
+  elsif cntrlNum == 108
+      FX_Whammy_Transpose = scaleMidiAi cntrlValue, 0, 24
+  elsif cntrlNum == 109
+      FX_Whammy_Max_Delay_Time = scaleMidiAi cntrlValue, 0, 10
+  elsif cntrlNum == 110
+      FX_Whammy_Deltime = scaleMidiAi cntrlValue, 0, 2
+  elsif cntrlNum == 111
+      FX_Whammy_Grainsize = scaleMidiAi cntrlValue, 0, 2
+  elsif cntrlNum == 114
+      FX_Rlpf_Cutoff = scaleMidiAi cntrlValue, 0, 100
+  elsif cntrlNum == 115
+      FX_Rlpf_Res = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 116
+      FX_Distortion_Distort = scaleMidiAi cntrlValue, 0, 0.99
+  elsif cntrlNum == 117
+      FX_Flanger_Phase = scaleMidiAi cntrlValue, 0.1, 10
+  elsif cntrlNum == 118
+      FX_Flanger_Pulse_Flanger_Width = scaleMidiAi cntrlValue, 0, 1
+  elsif cntrlNum == 119
+      FX_Flanger_Delay = scaleMidiAi cntrlValue, 0, 10
+  elsif cntrlNum == 120
+      FX_Flanger_Depth = scaleMidiAi cntrlValue, 0, 10
+  elsif cntrlNum == 121
+      FX_Flanger_Decay = scaleMidiAi cntrlValue, 0, 10
+  elsif cntrlNum == 122
+      FX_Flanger_Feedback = scaleMidiAi cntrlValue, 0, 10
+
   elsif cntrlNum == 32
     PITCH_ADJ = (scaleMidiAi cntrlValue, 0, 12) - 6
     if PITCH_ADJ < 0.1 && PITCH_ADJ > -0.1
@@ -214,9 +319,7 @@ with_fx :rlpf do |rlpf|
           #sync :PlaySynthSync
           begin
             control pitchShift, pitch: PITCH_ADJ
-            print FX_Settings[:Rlpf_Mix][:val]
-            control rlpf, mix: FX_Settings[:Rlpf_Mix][:val], res: FX_Settings[:Rlpf_Res][:val], cutoff: FX_Settings[:Rlpf_Cutoff][:val]
-            # control rlpf, mix: FX_Rlpf_Mix, res: FX_Rlpf_Res, cutoff: FX_Rlpf_Cutoff
+            control rlpf, mix: FX_Rlpf_Mix, res: FX_Rlpf_Res, cutoff: FX_Rlpf_Cutoff
             # control reverb, mix: FX_Reverb_Mix, damp: FX_Reverb_Damp, room: FX_Reverb_Room
             # control echo, mix: FX_Echo_Phase, decay: FX_Echo_Decay, phase: FX_Echo_Phase, max_phase: FX_Echo_Max_Phase
             # control compressor, mix: FX_Compressor_Mix, clamp_time: FX_Compressor_Clamp_Time, relax_time: FX_Compressor_Relax_Time, 
@@ -233,7 +336,7 @@ with_fx :rlpf do |rlpf|
           rescue
             print "synth failed"
           end
-          sleep 1.05
+          sleep 0.05
         end
       rescue
         print "synth thread failed"
