@@ -21,10 +21,10 @@ fxJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/config/FxData.Json"
 fxParamsPath = os.path.dirname(os.path.realpath(__file__)) +"/config/FxParameters.Json"
 midiControlJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/config/ControlData.Json"
 
-#midiInSubstring = "Arduino"
-midiInSubstring = "loop"
-#midiOutSubstring = "Midi Through"
-midiOutSubstring = "loop"
+midiInSubstring = "Arduino"
+#midiInSubstring = "VMPK"#"loop"
+midiOutSubstring = "Midi Through"
+#midiOutSubstring = "RtMidi"#"loop"
 
 windowHeight = 320
 windowWidth = 480
@@ -72,7 +72,7 @@ instruments = Instruments(instrumentData, instrumentParamsData, "piano", midiMas
 fxs = Fxs(fxData, fxParamsData, midiMaster)
 
 root = Tk() 
-#root.wm_attributes('-type', 'splash')
+root.wm_attributes('-type', 'splash')
 root.geometry(f"{windowWidth}x{windowHeight}")
 
 main = MainFrame(root)

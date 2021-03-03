@@ -182,15 +182,6 @@
     "whammy_transpose": {
         "midi_out_control": "108"
     },
-    "whammy_max_delay_time": {
-        "midi_out_control": "109"
-    },
-    "whammy_deltime": {
-        "midi_out_control": "110"
-    },
-    "whammy_grainsize": {
-        "midi_out_control": "111"
-    },
     "rlpf_cutoff": {
         "midi_in_control": "74",
         "midi_out_control": "114"
@@ -205,7 +196,7 @@
     "flanger_phase": {
         "midi_out_control": "117"
     },
-    "flanger_pulse_flanger_width": {
+    "flanger_pulse_width": {
         "midi_out_control": "118"
     },
     "flanger_delay": {

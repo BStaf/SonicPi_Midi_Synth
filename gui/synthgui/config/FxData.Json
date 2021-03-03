@@ -20,13 +20,10 @@
     },
     "whammy": {
         "whammy_mix": "0",
-        "whammy_transpose": "12",
-        "whammy_max_delay_time": "1",
-        "whammy_deltime": "0.05",
-        "whammy_grainsize": "0.075"
+        "whammy_transpose": "12"
     },
     "rlpf": {
-        "rlpf_mix": "1",
+        "rlpf_mix": "0",
         "rlpf_cutoff": "100",
         "rlpf_res": "0.5"
     },
@@ -40,7 +37,7 @@
     "flanger": {
         "flanger_mix": "0",
         "flanger_phase": "4",
-        "flanger_pulse_flanger_width": "0.5",
+        "flanger_pulse_width": "0.5",
         "flanger_delay": "5",
         "flanger_depth": "5",
         "flanger_decay": "2",

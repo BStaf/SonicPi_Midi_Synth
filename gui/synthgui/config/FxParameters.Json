@@ -94,21 +94,6 @@
         "start_value": "0",
         "stop_value": "24"
     },
-    "whammy_max_delay_time": {
-        "type": "range",
-        "start_value": "0",
-        "stop_value": "10"
-    },
-    "whammy_deltime": {
-        "type": "range",
-        "start_value": "0",
-        "stop_value": "2"
-    },
-    "whammy_grainsize": {
-        "type": "range",
-        "start_value": "0",
-        "stop_value": "2"
-    },
     "rlpf_cutoff": {
         "type": "range",
         "start_value": "0",
@@ -117,7 +102,7 @@
     "rlpf_res": {
         "type": "range",
         "start_value": "0",
-        "stop_value": "1"
+        "stop_value": "0.99"
     },
     "distortion_distort": {
         "type": "range",
@@ -129,7 +114,7 @@
         "start_value": "0.1",
         "stop_value": "10"
     },
-    "flanger_pulse_flanger_width": {
+    "flanger_pulse_width": {
         "type": "range",
         "start_value": "0",
         "stop_value": "1"
