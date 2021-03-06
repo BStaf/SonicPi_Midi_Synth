@@ -30,6 +30,7 @@ class MidiIn(Thread):
         while True:
             # Get the work from the queue and expand the tuple
             for msg in self.midiIn:
+                #print(msg)
                 self.processMidi(msg)
 
     def processMidi(self, msg):

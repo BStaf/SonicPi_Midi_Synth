@@ -56,7 +56,6 @@ class SynthSettingsObject(ABC):
 
     def _scaleToExpectedRangeFrom0To100(self, val, name):
         #print(self._objectParamsData)
-        #print(f"{name}-{val}")
         low = float(self._objectParamsData[name]["start_value"])
         high = float(self._objectParamsData[name]["stop_value"])
         value = float(val)
