@@ -25,6 +25,34 @@ Settings = {:Compressor_Clamp_Time=>{:midi=>104,:val=>0.01,:min=>0,:max=>10},:Co
 
 ENV_Curve = 1 #(1,3,6,7)
 
+ENV_Coef = 0.3
+ENV_Depth = 1
+ENV_Detune = 0.1
+ENV_Detune1 = 12
+ENV_Detune2 = 24
+ENV_Divisor = 2
+ENV_Dpulse_Width = 0.5
+ENV_Hard = 0.5
+ENV_Max_Delay_Time = 0.125
+ENV_Mod_Phase = 0.25
+ENV_Mod_Phase_Offset = 0
+ENV_Mod_Pulse_Width = 0.5
+ENV_Mod_Range = 5
+ENV_Noise_Amp = 0.8
+ENV_Pluck_Decay = 30
+ENV_Pulse_Width = 0.5
+ENV_Reverb_Time = 100
+ENV_Ring = 0.2
+ENV_Room = 70
+ENV_Stereo_Width = 0
+ENV_Sub_Amp = 1
+ENV_Sub_Detune = -12
+ENV_Vel = 0.2
+ENV_Vibrato_Delay = 0.5
+ENV_Vibrato_Depth = 0.15
+ENV_Vibrato_Onset = 0.1
+ENV_Vibrato_Rate = 6
+
 PITCH_ADJ = 0
 
 MAX_NODES = 9
