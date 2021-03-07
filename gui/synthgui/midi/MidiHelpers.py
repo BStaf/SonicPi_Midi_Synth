@@ -30,6 +30,7 @@ class MidiIn(Thread):
         while True:
             # Get the work from the queue and expand the tuple
             for msg in self.midiIn:
+                #print(msg)
                 self.processMidi(msg)
 
     def processMidi(self, msg):
@@ -56,7 +57,7 @@ class MidiMaster:
     def onUpdate(self, handler):
         self.__handlers.append(handler)
 
-    def sendControlOutputForControlName(self,controlName, value):
+    def sendControlOutputForControlName(self, controlName, value):
         controlId = int(self.__midiControlData[controlName]["midi_out_control"])
         midiVal = int(value)/100 * 127
         self.midiOut.sendControlChange(int(controlId), int(midiVal))

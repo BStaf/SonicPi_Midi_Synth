@@ -1,12 +1,12 @@
 import os
 import json 
 
-controlDataPath = os.path.dirname(os.path.realpath(__file__)) +"/ControlData.Json"
-paramsPath = os.path.dirname(os.path.realpath(__file__)) +"/ControlParameters.Json"
+controlDataPath = os.path.dirname(os.path.realpath(__file__)) +"/config/ControlData.Json"
+paramsPath = os.path.dirname(os.path.realpath(__file__)) +"/config/FxParameters.Json"
 
 def makeName(name):
     varName = '_'.join([(i[0].upper() + i[1:]) for i in name.split("_")]) 
-    return f"ENV_{varName}"
+    return f"FX_{varName}"
 
 with open(paramsPath, 'r') as reader:
     paramData = json.load(reader)

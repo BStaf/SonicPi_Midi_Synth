@@ -1,0 +1,142 @@
+{
+    "reverb_mix": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "echo_mix": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "compressor_mix": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "whammy_mix": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "rlpf_mix": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "distortion_mix": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "octaver_mix": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "flanger_mix": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "reverb_room": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "reverb_damp": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "echo_phase": {
+        "type": "range",
+        "start_value": "0.1",
+        "stop_value": "10"
+    },
+    "echo_decay": {
+        "type": "range",
+        "start_value": "0.1",
+        "stop_value": "10"
+    },
+    "echo_max_phase": {
+        "type": "range",
+        "start_value": "0.1",
+        "stop_value": "10"
+    },
+    "compressor_threshold": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "compressor_clamp_time": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "compressor_slope_above": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "compressor_slope_below": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "compressor_relax_time": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "whammy_transpose": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "24"
+    },
+    "rlpf_cutoff": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "100"
+    },
+    "rlpf_res": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "0.99"
+    },
+    "distortion_distort": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "0.99"
+    },
+    "flanger_phase": {
+        "type": "range",
+        "start_value": "0.1",
+        "stop_value": "10"
+    },
+    "flanger_pulse_width": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "1"
+    },
+    "flanger_delay": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "flanger_depth": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "flanger_decay": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    },
+    "flanger_feedback": {
+        "type": "range",
+        "start_value": "0",
+        "stop_value": "10"
+    }
+}

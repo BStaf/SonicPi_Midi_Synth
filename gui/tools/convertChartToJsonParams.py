@@ -2,7 +2,7 @@ import os
 import json 
 
 readFilePath = os.path.dirname(os.path.realpath(__file__)) +"/notes/parameters.txt"
-outFilePath = os.path.dirname(os.path.realpath(__file__)) +"/ControlParameters.Json"
+outFilePath = os.path.dirname(os.path.realpath(__file__)) +"/InstrumentParameters.Json"
 headers = []
 dataDict = {}
 

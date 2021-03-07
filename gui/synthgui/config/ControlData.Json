@@ -31,10 +31,6 @@
     "env_curve": {
         "midi_out_control": "38"
     },
-    "cutoff": {
-        "midi_in_control": "74",
-        "midi_out_control": "39"
-    },
     "pulse_width": {
         "midi_out_control": "40"
     },
@@ -74,10 +70,6 @@
     },
     "mod_wave": {
         "midi_out_control": "52"
-    },
-    "res": {
-        "midi_in_control": "71",
-        "midi_out_control": "53"
     },
     "detune1": {
         "midi_out_control": "54"
@@ -132,5 +124,91 @@
     },
     "coef": {
         "midi_out_control": "71"
+    },
+    "reverb_mix": {
+        "midi_out_control": "90"
+    },
+    "echo_mix": {
+        "midi_out_control": "91"
+    },
+    "compressor_mix": {
+        "midi_out_control": "92"
+    },
+    "whammy_mix": {
+        "midi_out_control": "93"
+    },
+    "rlpf_mix": {
+        "midi_out_control": "94"
+    },
+    "distortion_mix": {
+        "midi_out_control": "95"
+    },
+    "octaver_mix": {
+        "midi_out_control": "96"
+    },
+    "flanger_mix": {
+        "midi_out_control": "97"
+    },
+    "reverb_room": {
+        "midi_out_control": "98"
+    },
+    "reverb_damp": {
+        "midi_out_control": "99"
+    },
+    "echo_phase": {
+        "midi_out_control": "100"
+    },
+    "echo_decay": {
+        "midi_out_control": "101"
+    },
+    "echo_max_phase": {
+        "midi_out_control": "102"
+    },
+    "compressor_threshold": {
+        "midi_out_control": "103"
+    },
+    "compressor_clamp_time": {
+        "midi_out_control": "104"
+    },
+    "compressor_slope_above": {
+        "midi_out_control": "105"
+    },
+    "compressor_slope_below": {
+        "midi_out_control": "106"
+    },
+    "compressor_relax_time": {
+        "midi_out_control": "107"
+    },
+    "whammy_transpose": {
+        "midi_out_control": "108"
+    },
+    "rlpf_cutoff": {
+        "midi_in_control": "74",
+        "midi_out_control": "114"
+    },
+    "rlpf_res": {
+        "midi_in_control": "71",
+        "midi_out_control": "115"
+    },
+    "distortion_distort": {
+        "midi_out_control": "116"
+    },
+    "flanger_phase": {
+        "midi_out_control": "117"
+    },
+    "flanger_pulse_width": {
+        "midi_out_control": "118"
+    },
+    "flanger_delay": {
+        "midi_out_control": "119"
+    },
+    "flanger_depth": {
+        "midi_out_control": "120"
+    },
+    "flanger_decay": {
+        "midi_out_control": "121"
+    },
+    "flanger_feedback": {
+        "midi_out_control": "122"
     }
 }

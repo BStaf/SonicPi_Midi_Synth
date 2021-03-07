@@ -8,7 +8,6 @@ release	72	35
 attack_level		36
 decay_level		37
 env_curve		38
-cutoff	74	39
 pulse_width		40
 sub_amp		41
 sub_detune		42
@@ -22,7 +21,6 @@ mod_pulse_width		49
 mod_phase_offset		50
 mod_invert_wave		51
 mod_wave		52
-res	71	53
 detune1		54
 detune2		55
 noise		56
@@ -41,3 +39,34 @@ noise_amp		68
 max_delay_time		69
 pluck_decay		70
 coef		71
+reverb_mix		90
+echo_mix		91
+compressor_mix		92
+whammy_mix		93
+rlpf_mix		94
+distortion_mix		95
+octaver_mix		96
+flanger_mix		97
+reverb_room		98
+reverb_damp		99
+echo_phase		100
+echo_decay		101
+echo_max_phase		102
+compressor_threshold		103
+compressor_clamp_time		104
+compressor_slope_above		105
+compressor_slope_below		106
+compressor_relax_time		107
+whammy_transpose		108
+whammy_max_delay_time		109
+whammy_deltime		110
+whammy_grainsize		111
+rlpf_cutoff	74	114
+rlpf_res	71	115
+distortion_distort		116
+flanger_phase		117
+flanger_pulse_flanger_width		118
+flanger_delay		119
+flanger_depth		120
+flanger_decay		121
+flanger_feedback		122

@@ -29,11 +29,6 @@
         "selections": "1,2,3,4,6,7",
         "descriptions": "1=linear,2=exponential,3=sine,4=welch,6=squared,7=cubed"
     },
-    "cutoff": {
-        "type": "range",
-        "start_value": "0",
-        "stop_value": "130"
-    },
     "pulse_width": {
         "type": "range",
         "start_value": "0",
@@ -98,11 +93,6 @@
         "type": "selection",
         "selections": "0,1,2,3",
         "descriptions": "0=saw wave,1=pulse,2=tri wave,3=sine wave"
-    },
-    "res": {
-        "type": "range",
-        "start_value": "0",
-        "stop_value": "0.9"
     },
     "detune1": {
         "type": "range",

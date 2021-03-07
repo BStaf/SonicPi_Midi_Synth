@@ -4,12 +4,12 @@ from tkinter import ttk
 from widgets.AppWidgets import *
 from AppPalette import *
 
-class InstrumentPage(Frame):
-    def __init__(self, pages, instruments, *args, **kwargs):
+class FxPage(Frame):
+    def __init__(self, pages, fxs, *args, **kwargs):
         Frame.__init__(self, *args, **kwargs)
         self.config(bg=AppPalette.Blue)
         self.__pages = pages
-        self.__instruments = instruments
+        self.__fxs = fxs
         canvasTop = Canvas(self, width=self['width'], height=50, bg=AppPalette.DarkBlue,highlightthickness=0) 
         canvasBottom = Canvas(self, width=self['width'], height=self['height'], bg=AppPalette.Blue,highlightthickness=0)  
 
@@ -25,10 +25,10 @@ class InstrumentPage(Frame):
     def backBtnCallback(self, event):
         self.__pages["mainPage"].show()
     
-    def instSelectBtnCallback(self, event, name):
+    def fxSelectBtnCallback(self, event, name):
         print(name)
-        self.__instruments.setInstrument(name)
-        self.__pages["mainPage"].show()
+        self.__fxs.setCurrent(name)
+        self.__pages["fxConfigPage"].show()
 
     def populateTopCanvas(self, canvas):
         titleLbl = Label(canvas, text="SP1X")
@@ -41,8 +41,8 @@ class InstrumentPage(Frame):
         #draw new sliders
         i = 0
         j = 0
-        for instName in self.__instruments.getInstrumentList():
-            InstrumentSelectBtn(canvas, i*78+10, j*40+10, 70, 30, instName, self.instSelectBtnCallback)
+        for fxName in self.__fxs.getList():
+            InstrumentSelectBtn(canvas, i*90+10, j*40+10, 80, 30, fxName, self.fxSelectBtnCallback)
 
             j = j+1
             if j > 5:

@@ -1,0 +1,46 @@
+{
+    "reverb": {
+        "reverb_mix": "0",
+        "reverb_room": "0.6",
+        "reverb_damp": "0.5"
+    },
+    "echo": {
+        "echo_mix": "0",
+        "echo_phase": "0.25",
+        "echo_decay": "2",
+        "echo_max_phase": "2"
+    },
+    "compressor": {
+        "compressor_mix": "0",
+        "compressor_threshold": "0.2",
+        "compressor_clamp_time": "0.01",
+        "compressor_slope_above": "0.5",
+        "compressor_slope_below": "1",
+        "compressor_relax_time": "0.01"
+    },
+    "whammy": {
+        "whammy_mix": "0",
+        "whammy_transpose": "12"
+    },
+    "rlpf": {
+        "rlpf_mix": "0",
+        "rlpf_cutoff": "100",
+        "rlpf_res": "0.5"
+    },
+    "distortion": {
+        "distortion_mix": "0",
+        "distortion_distort": "0.5"
+    },
+    "octaver": {
+        "octaver_mix": "0"
+    },
+    "flanger": {
+        "flanger_mix": "0",
+        "flanger_phase": "4",
+        "flanger_pulse_width": "0.5",
+        "flanger_delay": "5",
+        "flanger_depth": "5",
+        "flanger_decay": "2",
+        "flanger_feedback": "0"
+    }
+}

@@ -14,3 +14,13 @@ else
   echo "fbcon=map:10 fbcon=font:ProFont6x11" >> /boot/comdline.txt
 fi
 
+run on headless install
+sudo apt-get install --no-install-recommends xserver-xorg
+inside /etc/X11/xinit/xinitrc
+#. /etc/X11/Xsession
+exec openbox-session
+
+inside /etc/X11/openbox/autostart
+add at end
+bash /home/pi/SonicPi_Midi_Synth/startSynth.sh &
+/usr/bin/python3 /home/pi/SonicPi_Midi_Synth/gui/synthgui/synthGui.py &

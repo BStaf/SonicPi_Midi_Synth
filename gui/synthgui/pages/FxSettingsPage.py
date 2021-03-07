@@ -3,35 +3,33 @@ from tkinter import ttk
 from widgets.AppWidgets import *
 from AppPalette import *
 
-class InstSettingsPage(Frame):
-    def __init__(self, pages, instruments, midiMaster, *args, **kwargs):
+class FxSettingsPage(Frame):
+    def __init__(self, pages, synthSettingsObject, backPageName, *args, **kwargs):
         Frame.__init__(self, *args, **kwargs)
         self.config(bg=AppPalette.Blue)
-        self.__instruments = instruments
-        self.__instruments.onMidiInUpdate(self.midiInHandler)
-        self.__instruments.onInstrumentUpdate(self.instrumentChangeHandler)
+        self.__synthSettingsObject = synthSettingsObject
+        self.__synthSettingsObject.onMidiInUpdate(self.midiInHandler)
+        self.__backpageName = backPageName
+        #self.__synthSettingsObject.onInstrumentUpdate(self.instrumentChangeHandler)
 
         self._sliders = {}
         self._sliderLabels = []
-        self.__pages = pages
+        self.__sliderPos = 0
 
-        self.__midiMaster = midiMaster
-        #self.__midiMaster.onUpdate(self.midiInHandler)
-        
+        self.__pages = pages
+ 
         self.__canvasTop = Canvas(self, width=self['width'], height=50, bg=AppPalette.DarkBlue,highlightthickness=0) 
         self.__canvasBottom = Canvas(self, width=self['width'], height=self['height']-50, bg=AppPalette.Blue,highlightthickness=0)  
 
-        self.__setupForNewInstrument(self.__instruments.currentInstrument)
-
         self.__populateTopCanvas(self.__canvasTop)
-        self.__populateBottomCanvas(self.__canvasBottom)
+        self._populateBottomCanvas(self.__canvasBottom)
 
         self.__canvasTop.pack(side="top", expand=YES)
         self.__canvasBottom.pack(side="bottom", expand=YES)#3fill=BOTH, expand=YES)
 
     def show(self):
+        self._populateBottomCanvas(self.__canvasBottom)
         self.__updateAllSliders()
-        #self.__populateBottomCanvas(self.__canvasBottom)
         self.lift()
 
     def midiInHandler(self, controlName, value):
@@ -41,23 +39,17 @@ class InstSettingsPage(Frame):
         if slider is not None:
             slider.setToValue(value)
 
-    def instrumentChangeHandler(self, instrumentName):
-        self.__setupForNewInstrument(instrumentName)
-        self.__populateBottomCanvas(self.__canvasBottom)
-
-    def __setupForNewInstrument(self, instrumentName):
-        self.__sliderCount = len(self.__instruments.getCurentSettings())
-        self.__slidersPos = 0
-
     def __btnCallback(self, event):
-        self.__pages["mainPage"].show()
+        self.__pages[self.__backpageName].show()
 
-    def __settingsShiftLeftCallback(self, event):    
-        newSlidersPos = self.__slidersPos + 2
-        #5 is the number of sliders eveer on the screen
-        if (newSlidersPos + 5) >= self.__sliderCount:
-            newSlidersPos = self.__sliderCount - 5
-        self.__moveSliders(newSlidersPos, -1)
+    def __settingsShiftLeftCallback(self, event):   
+        sliderCount = len(self.__synthSettingsObject.getCurentSettings()) 
+        if sliderCount > 5:
+            newSlidersPos = self.__slidersPos + 2
+            #5 is the number of sliders eveer on the screen
+            if (newSlidersPos + 5) >= sliderCount:
+                newSlidersPos = sliderCount - 5
+            self.__moveSliders(newSlidersPos, -1)
        
     def __settingsShiftRightCallback(self, event):    
         newSlidersPos = self.__slidersPos - 2
@@ -75,10 +67,8 @@ class InstSettingsPage(Frame):
         labelNames = list(self._sliders.keys())
         i=0
         for lbl in self._sliderLabels:
-            lbl.config(text = labelNames[i+newSlidersPos])
+            lbl.config(text = self.__getname(labelNames[i+newSlidersPos]))
             i = i+1
-            #curXPos = int(lbl.winfo_x()+(lbl.winfo_width()/2))
-            #lbl.place(x=curXPos+dif)
         self.__slidersPos = newSlidersPos
 
     def __populateTopCanvas(self, canvas):
@@ -88,7 +78,7 @@ class InstSettingsPage(Frame):
 
         MenuBtn(canvas, 20, 10, 120, 30, "Back", self.__btnCallback)
 
-    def __populateBottomCanvas(self, canvas):
+    def _populateBottomCanvas(self, canvas):
         sliderStartXPos = 60
         sliderSpacing = 75
 
@@ -101,20 +91,23 @@ class InstSettingsPage(Frame):
 
         #draw sliders
         i = 0
-        for name, value in self.__instruments.getCurentSettings():
+        #print("slides for")
+        #print(self.__synthSettingsObject.getCurentSettings())
+        for name, value in self.__synthSettingsObject.getCurentSettings():
+            #print(f"{name}-{value}")
             if i < 5:
-                lbl = LowerLabel(canvas, text=name)
+                lbl = LowerLabel(canvas, text=self.__getname(name))
                 lbl.place(x = (i*sliderSpacing)+sliderStartXPos+25,y = 13, anchor="center")
                 self._sliderLabels.append(lbl)
             xPos = (i*sliderSpacing)+sliderStartXPos
             
-            rangeData = self.__instruments.getControlRangeData(name)
+            rangeData = self.__synthSettingsObject.getControlRangeData(name)
             #print(f"rangeData is {rangeData}")
             slider = StandardMidiSliderControl(canvas, xPos, 26, rangeData[0], rangeData[1], float(value))
             slider.OnUpdate(self.__handleSliderChange)
             self._sliders[name] = slider          
             i = i+1
-
+        #print("done")
         canvas.create_rectangle(0, 0, 50, 300, fill=AppPalette.Blue, outline="")
         canvas.create_rectangle(430, 0, 430+50, 300, fill=AppPalette.Blue, outline="")
         MenuBtn(canvas, 10, 66, 30, 150, "<", self.__settingsShiftRightCallback)
@@ -122,8 +115,11 @@ class InstSettingsPage(Frame):
         
         
     def __updateAllSliders(self):
+        #self.__sliderCount = len(self.__synthSettingsObject.getCurentSettings())
+        self.__slidersPos = 0
         i = 0
-        for name, value in self.__instruments.getCurentSettings():
+        #print(self.__synthSettingsObject.getCurentSettings())
+        for name, value in self.__synthSettingsObject.getCurentSettings():
             if i > 4:
                 break
             slider = self._sliders.get(name, None)
@@ -135,5 +131,10 @@ class InstSettingsPage(Frame):
         for key, value in self._sliders.items():
             if value == obj:
                 #print (f"Found {key}, {event}")
-                self.__instruments.setInstrumentSetting(key, event)
-                #self.__midiMaster.sendControlOutputForControlName(key, event)
+                self.__synthSettingsObject.setSetting(key, event)
+
+    def __getname(self, name):
+        pos = name.find('_')
+        if pos != -1:
+            return name[(pos+1):]
+        return name
