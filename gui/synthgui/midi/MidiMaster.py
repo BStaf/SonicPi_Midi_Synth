@@ -1,48 +1,7 @@
-from threading import Thread
-import time
+from .MidiIn import *
+from .MidiOut import *
 import mido
 
-class MidiOut:
-    def __init__(self, midiOutSubstring):
-        port = [x for x in mido.get_output_names() if midiOutSubstring in x][0]
-        self.midiOut = mido.open_output(port)
-        #print(mido.get_output_names())
-        self.channel = 15
-
-    def sendProgramChange(self, index):
-        msg = mido.Message('program_change', channel=self.channel, program =index)
-        self.midiOut.send(msg)
-
-    def sendControlChange(self, cntrlId, value):
-        #print(f"midi out = {cntrlId} - {value}")
-        msg = mido.Message('control_change', channel=self.channel, control=cntrlId, value=value)
-        self.midiOut.send(msg)
-    
-class MidiIn(Thread):
-    def __init__(self, midiInSubstring):
-        Thread.__init__(self)
-        print(mido.get_input_names())
-        self.handlers = []
-        port = [x for x in mido.get_input_names() if midiInSubstring in x][0] 
-        self.midiIn = mido.open_input(port)
-
-    def run(self):
-        while True:
-            # Get the work from the queue and expand the tuple
-            for msg in self.midiIn:
-                #print(msg)
-                self.processMidi(msg)
-
-    def processMidi(self, msg):
-        if msg.channel != 15 and msg.type == "control_change":
-            
-            #send event
-            for handler in self.handlers:
-                handler(msg.control, msg.value)
-
-    def OnUpdate(self, handler):
-        self.handlers.append(handler)
-            
 class MidiMaster:
     def __init__(self, midiControlData, midiInSubstring, midiOutSubstring):
         self.__handlers = []

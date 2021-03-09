@@ -10,7 +10,7 @@ from pages.MainPage import *
 from pages.InstSettingsPage import *
 from pages.InstrumentPage import *
 from pages.SynthObjectSettingsPage import *
-from midi.MidiHelpers import *
+from midi.MidiMaster import *
 from synth_objects.Fxs import *
 from synth_objects.Instruments import *
 
