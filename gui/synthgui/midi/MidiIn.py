@@ -2,19 +2,21 @@ from threading import Thread
 import mido
 
 class MidiIn(Thread):
-    def __init__(self, midiInSubstring):
+    def __init__(self):
         Thread.__init__(self)
         print(mido.get_input_names())
         self.handlers = []
-        port = [x for x in mido.get_input_names() if midiInSubstring in x][0] 
-        self.midiIn = mido.open_input(port)
+        print("midi in")
+        print(mido.get_input_names())
+        self.__midiInList = [mido.open_input(x) for x in mido.get_input_names()]       
 
     def run(self):
         while True:
             # Get the work from the queue and expand the tuple
-            for msg in self.midiIn:
-                #print(msg)
-                self.processMidi(msg)
+            for m in self.__midiInList:
+                for msg in m:
+                    #print(msg)
+                    self.processMidi(msg)
 
     def processMidi(self, msg):
         if msg.channel != 15 and msg.type == "control_change":

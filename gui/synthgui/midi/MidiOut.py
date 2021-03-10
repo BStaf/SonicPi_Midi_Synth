@@ -2,9 +2,11 @@ import mido
 
 class MidiOut:
     def __init__(self, midiOutSubstring):
-        port = [x for x in mido.get_output_names() if midiOutSubstring in x][0]
+        port = [x for x in mido.get_output_names()][0]
+       # port = [x for x in mido.get_output_names() if midiOutSubstring in x][0]
         self.midiOut = mido.open_output(port)
-        #print(mido.get_output_names())
+        print("midi out")
+        print(mido.get_output_names())
         self.channel = 15
 
     def sendProgramChange(self, index):

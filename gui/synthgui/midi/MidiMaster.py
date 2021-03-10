@@ -1,12 +1,11 @@
 from .MidiIn import *
 from .MidiOut import *
-import mido
 
 class MidiMaster:
-    def __init__(self, midiControlData, midiInSubstring, midiOutSubstring):
+    def __init__(self, midiControlData, midiOutSubstring):
         self.__handlers = []
         self.midiOut = MidiOut(midiOutSubstring)
-        self.__midiIn = MidiIn(midiInSubstring)
+        self.__midiIn = MidiIn()
         self.__midiIn.daemon = True #set this thread as a Daemon Thread
         self.__midiIn.OnUpdate(self.midiInHandler)
         self.__midiIn.start()

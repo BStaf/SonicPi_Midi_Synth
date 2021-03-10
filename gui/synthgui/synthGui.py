@@ -21,8 +21,6 @@ fxJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/config/FxData.Json"
 fxParamsPath = os.path.dirname(os.path.realpath(__file__)) +"/config/FxParameters.Json"
 midiControlJsonPath = os.path.dirname(os.path.realpath(__file__)) + "/config/ControlData.Json"
 
-#midiInSubstring = "Arduino"
-midiInSubstring = "VMPK"#"loop"
 #midiOutSubstring = "Midi Through"
 midiOutSubstring = "RtMidi"#"loop"
 
@@ -67,7 +65,7 @@ with open(fxJsonPath, 'r') as reader:
 with open(fxParamsPath, 'r') as reader:
     fxParamsData = json.load(reader)
 
-midiMaster = MidiMaster(midiControlData, midiInSubstring, midiOutSubstring)
+midiMaster = MidiMaster(midiControlData, midiOutSubstring)
 instruments = Instruments(instrumentData, instrumentParamsData, "piano", midiMaster)
 fxs = Fxs(fxData, fxParamsData, midiMaster)
 
